@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 8870fc7ae2216544da7c23660241d6c4
+timeCreated: 1492189074
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - roomContent: {instanceID: 0}
+  - roomItem: {fileID: 1441339283687762, guid: ae972ad6a63686b4895e9adba0691dd0, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
