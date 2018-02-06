@@ -521,7 +521,7 @@ GameObject:
   - component: {fileID: 69058508}
   - component: {fileID: 69058507}
   m_Layer: 5
-  m_Name: BlokusShowYourName
+  m_Name: text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -577,7 +577,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u8BF7\u9009\u62E9\u989C\u8272"
+  m_Text: 'choose color :'
 --- !u!222 &69058508
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -639,12 +639,12 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 23ccffaf915b101419d098a118141d9a, type: 3}
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 50
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 2
-    m_MaxSize: 50
+    m_MaxSize: 300
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -2753,7 +2753,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u540D\u5B57"
+  m_Text: name
 --- !u!222 &535893455
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2797,6 +2797,8 @@ MonoBehaviour:
   roomNameInput: {fileID: 643118304}
   roomListPanel: {fileID: 958036146}
   blokusRoomPanel: {fileID: 2059373225}
+  joinRoomNameInput: {fileID: 770859576}
+  joinRoomButton: {fileID: 243919735}
   roomContent: {fileID: 0}
   roomItem: {fileID: 1441339283687762, guid: ae972ad6a63686b4895e9adba0691dd0, type: 2}
   GameName: {fileID: 0}
@@ -2816,7 +2818,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &643118302
 GameObject:
@@ -3245,7 +3247,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u51C6\u5907\u72B6\u6001"
+  m_Text: status
 --- !u!222 &746496013
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3446,11 +3448,11 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 30
+    m_FontSize: 70
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 3
-    m_MaxSize: 40
+    m_MaxSize: 70
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 0
@@ -3764,7 +3766,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u73A9\u5BB6\u4E00"
+  m_Text: player1
 --- !u!222 &810542256
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3826,7 +3828,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 23ccffaf915b101419d098a118141d9a, type: 3}
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 50
     m_FontStyle: 1
     m_BestFit: 0
@@ -3838,7 +3840,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u968F\u673A\u52A0\u5165\u623F\u95F4"
+  m_Text: join room
 --- !u!222 &810863774
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4056,7 +4058,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u4F60\u7684\u540D\u5B57:"
+  m_Text: your name
 --- !u!222 &864132546
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4438,7 +4440,7 @@ Transform:
   m_Children:
   - {fileID: 1047709914}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1007051644
 GameObject:
@@ -4650,7 +4652,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u73A9\u5BB6\u4E8C"
+  m_Text: player2
 --- !u!222 &1024011288
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5431,7 +5433,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u623F\u95F4\u540D\u5B57:"
+  m_Text: 'room name:'
 --- !u!222 &1138843404
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5763,12 +5765,12 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 23ccffaf915b101419d098a118141d9a, type: 3}
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 50
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 2
-    m_MaxSize: 50
+    m_MaxSize: 70
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -6167,7 +6169,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1307611640
 GameObject:
@@ -6933,7 +6935,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1588619532}
+      - m_Target: {fileID: 0}
         m_MethodName: OnReady
         m_Mode: 1
         m_Arguments:
@@ -6987,10 +6989,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1588619534}
-  - component: {fileID: 1588619533}
   - component: {fileID: 1588619532}
   m_Layer: 5
-  m_Name: BlokusRoomControl
+  m_Name: BlokusRoomUIController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7007,17 +7008,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c0102e23c307af42a83062f128e015e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1588619533
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1588619531}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  BlokusRoomName: {fileID: 1692460682}
+  BlokusYourName: {fileID: 864132545}
+  playerOneName: {fileID: 1714319542}
+  playerTwoName: {fileID: 90637562}
+  playerThreeName: {fileID: 1007051646}
+  playerFourName: {fileID: 1322118864}
+  playerOneChoice: {fileID: 513745330}
+  playerTwoChoice: {fileID: 1307611642}
+  playerThreeChoice: {fileID: 381256624}
+  playerFourChoice: {fileID: 218498586}
+  playerOneReady: {fileID: 1544691039}
+  playerTwoReady: {fileID: 1946718296}
+  playerThreeReady: {fileID: 369556858}
+  playerFourReady: {fileID: 1931409762}
+  Red: {fileID: 1464210060}
+  Blue: {fileID: 893050793}
+  yellow: {fileID: 35589970}
+  green: {fileID: 1777985487}
+  back: {fileID: 1865013162}
+  start: {fileID: 1568248896}
 --- !u!224 &1588619534
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7029,11 +7039,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1206, y: 2767}
+  m_AnchoredPosition: {x: -211, y: 436}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1629090208
@@ -7368,7 +7378,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u623F\u95F4\u540D\u5B57:"
+  m_Text: room name
 --- !u!222 &1692460683
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7511,7 +7521,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u73A9\u5BB6\u4E09"
+  m_Text: player3
 --- !u!222 &1707248971
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7881,7 +7891,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u73A9\u5BB6\u56DB"
+  m_Text: player4
 --- !u!222 &1769237605
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8144,7 +8154,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1588619532}
+      - m_Target: {fileID: 0}
         m_MethodName: OnBackLobby
         m_Mode: 1
         m_Arguments:
@@ -8278,7 +8288,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1871975641
 MonoBehaviour:
@@ -8675,7 +8685,7 @@ RectTransform:
   - {fileID: 2059373225}
   - {fileID: 1079420471}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -8883,7 +8893,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u9009\u62E9\u989C\u8272"
+  m_Text: color
 --- !u!222 &2050916818
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9192,7 +9202,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u8F93\u5165ID:"
+  m_Text: 'Room Name:'
 --- !u!222 &2121701648
 CanvasRenderer:
   m_ObjectHideFlags: 0

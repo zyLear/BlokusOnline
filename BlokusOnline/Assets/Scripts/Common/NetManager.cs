@@ -6,9 +6,6 @@ using System.IO;
 using System.Net.Sockets;
 using System.Threading;
 using System.Net;
-using System.Text;
-using UnityEngine.UI;
-using System.Collections.Concurrent;
 using System;
 using protos.blokus;
 
@@ -165,8 +162,25 @@ public class NetManager : Singleton<NetManager> {
             case OperationCode.CONNECT_SUCCESS: connectSucess(); break;
             case OperationCode.LOGIN: login(message); break;
             case OperationCode.CREATE_ROOM: createRoom(message); break;
+            case OperationCode.UPDATE_ROOM_PLAYERS_INFO: updateRoomPlayersInfo(message); break;
+            case OperationCode.JOIN_ROOM: joinRoom(message); break;
             default: break;
         }
+    }
+
+    private void joinRoom(MessageBean message) {
+        //BLOKUSCreateRoom room = ProtobufHelper.DederializerFromBytes<BLOKUSCreateRoom>(message.data);
+        if (message.statusCode == StatusCode.SUCCESS) {
+            GameCache.roomName = GameCache.roomNameRequest;
+            GameObject.Find("UIController").SendMessage("joinRoomSuccess");
+        } else {
+            //GameObject.Find("UIController").SendMessage("createRoomFail");
+        }
+    }
+
+    private void updateRoomPlayersInfo(MessageBean message) {
+        BLOKUSRoomPlayerList bLOKUSRoomPlayerList = ProtobufHelper.DederializerFromBytes<BLOKUSRoomPlayerList>(message.data);
+        GameObject.Find("BlokusRoomUIController").SendMessage("updateRoomPlayersInfo", bLOKUSRoomPlayerList);
     }
 
     private void connectSucess() {
@@ -175,14 +189,12 @@ public class NetManager : Singleton<NetManager> {
     }
 
     private void login(MessageBean message) {
-        Debug.Log(message.operationCode);
-        Debug.Log(message.statusCode);
-        Debug.Log(message.data);
+        //Debug.Log(message.operationCode);
+        //Debug.Log(message.statusCode);
+        //Debug.Log(message.data);
         BLOKUSAccount account = ProtobufHelper.DederializerFromBytes<BLOKUSAccount>(message.data);
-        Debug.Log(account.account);
-        Debug.Log(account.password);
         if (message.statusCode == StatusCode.SUCCESS) {
-            GameCache.account = account.account;
+            GameCache.account = GameCache.accountReqest;
             GameObject.Find("UIController").SendMessage("hidePanel", GameObject.Find("LoginPanel").transform);
             GameObject.Find("UIController").SendMessage("showPanel", GameObject.Find("RoomListPanel").transform);
         } else {
@@ -192,15 +204,9 @@ public class NetManager : Singleton<NetManager> {
     }
 
     private void createRoom(MessageBean message) {
-        Debug.Log(message.operationCode);
-        Debug.Log(message.statusCode);
-        Debug.Log(message.data);
-        BLOKUSCreateRoom room = ProtobufHelper.DederializerFromBytes<BLOKUSCreateRoom>(message.data);
-        if (room != null) {
-            Debug.Log(room.roomName);
-            Debug.Log(room.roomType);
-        }
+        //BLOKUSCreateRoom room = ProtobufHelper.DederializerFromBytes<BLOKUSCreateRoom>(message.data);
         if (message.statusCode == StatusCode.SUCCESS) {
+            GameCache.roomName = GameCache.roomNameRequest;
             GameObject.Find("UIController").SendMessage("createRoomSuccess");
         } else {
             GameObject.Find("UIController").SendMessage("createRoomFail");

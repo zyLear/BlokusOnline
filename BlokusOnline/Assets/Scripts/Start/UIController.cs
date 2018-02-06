@@ -3,6 +3,8 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 using UnityEngine.UI;
 using protos.blokus;
+using System;
+using UnityEngine.Events;
 //using ExitGames.Client.Photon;
 
 public class UIController : MonoBehaviour {
@@ -29,6 +31,14 @@ public class UIController : MonoBehaviour {
 
 
     public Transform blokusRoomPanel;
+
+
+    public Text joinRoomNameInput;
+    public Button joinRoomButton;
+
+
+
+
 
 
     Text UISureText;
@@ -72,24 +82,30 @@ public class UIController : MonoBehaviour {
     }
 
     public void Start() {
+        joinRoomButton.onClick.AddListener(joinRoom);
         // lobby = GameObject.Find("Lobby").GetComponent<Transform>();
-        panel = GameObject.Find("Panel").GetComponent<Transform>();
-        room = GameObject.Find("Room").GetComponent<Transform>(); ;
+        //panel = GameObject.Find("Panel").GetComponent<Transform>();
+        //room = GameObject.Find("Room").GetComponent<Transform>(); ;
 
-        //   proptWithButton = GameObject.Find("Message").GetComponent<Transform>();
-        getName = GameObject.Find("GetName").GetComponent<Text>();
-        getRoomName = GameObject.Find("GetRoomName").GetComponent<Text>();
-        yourNameLabel = GameObject.Find("YourName").GetComponent<Text>();
-        roomNameLabel = GameObject.Find("RoomName").GetComponent<Text>();
-        matchNameLabel = GameObject.Find("MatchName").GetComponent<Text>();
-        yourChoiceLabel = GameObject.Find("YourChoice").GetComponent<Text>();
-        matchChoiceLabel = GameObject.Find("MatchChoice").GetComponent<Text>();
-        readyLabel = GameObject.Find("GetReady").GetComponent<Text>();
-        getMatchReady = GameObject.Find("MatchGetReady").GetComponent<Text>();
-        UISureText = GameObject.Find("UIInfo").GetComponent<Text>();
+        ////   proptWithButton = GameObject.Find("Message").GetComponent<Transform>();
+        //getName = GameObject.Find("GetName").GetComponent<Text>();
+        //getRoomName = GameObject.Find("GetRoomName").GetComponent<Text>();
+        //yourNameLabel = GameObject.Find("YourName").GetComponent<Text>();
+        //roomNameLabel = GameObject.Find("RoomName").GetComponent<Text>();
+        //matchNameLabel = GameObject.Find("MatchName").GetComponent<Text>();
+        //yourChoiceLabel = GameObject.Find("YourChoice").GetComponent<Text>();
+        //matchChoiceLabel = GameObject.Find("MatchChoice").GetComponent<Text>();
+        //readyLabel = GameObject.Find("GetReady").GetComponent<Text>();
+        //getMatchReady = GameObject.Find("MatchGetReady").GetComponent<Text>();
+        //UISureText = GameObject.Find("UIInfo").GetComponent<Text>();
 
         //   myPhotonView = GetComponent<PhotonView>();
         //   StartCoroutine(JudgeConnected());
+    }
+
+    private void joinRoom() {
+        GameCache.roomNameRequest = joinRoomNameInput.text;
+        NetManager.Instance.TransferMessage(MessageFormater.formatJoinRoomMessage(joinRoomNameInput.text));
     }
 
     /**********************************************协程*/
@@ -188,8 +204,8 @@ public class UIController : MonoBehaviour {
         //} else {
         //    roomOptions = new RoomOptions() { IsVisible = true, MaxPlayers = 4 };
         //}
-
-        NetManager.Instance.TransferMessage(SendMessageHelper.createRoom(roomName));
+        GameCache.roomNameRequest = roomName;
+        NetManager.Instance.TransferMessage(MessageFormater.createRoom(roomName));
 
         //PhotonNetwork.CreateRoom(str, roomOptions, TypedLobby.Default);
     }
@@ -204,6 +220,11 @@ public class UIController : MonoBehaviour {
 
         promptWithButtonText.text = "create room fail!";
         showPanel(promptWithButtonPanel);
+    }
+
+    public void joinRoomSuccess() {
+        hidePanel(roomListPanel);
+        showPanel(blokusRoomPanel);
     }
 
 
@@ -402,16 +423,8 @@ public class UIController : MonoBehaviour {
 
 
     public void login() {
-        BLOKUSAccount account = new BLOKUSAccount();
-        account.account = accountText.text;
-        account.password = passwordText.text;
-
-        MessageBean message = new MessageBean();
-        message.operationCode = OperationCode.LOGIN;
-        message.statusCode = StatusCode.SUCCESS;
-        message.data = ProtobufHelper.SerializerToBytes(account);
-        Debug.Log(message.data);
-        NetManager.Instance.TransferMessage(message);
+        GameCache.accountReqest = accountText.text;
+        NetManager.Instance.TransferMessage(MessageFormater.formatLoginMessage(accountText.text, passwordText.text));
     }
 
 

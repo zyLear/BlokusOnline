@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.3.0f3</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -286,7 +288,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Blokus\BlokusController.cs" />
-    <Compile Include="Assets\Scripts\Blokus\BlokusUIControl.cs" />
+    <Compile Include="Assets\Scripts\Blokus\BlokusUIController.cs" />
+    <Compile Include="Assets\Scripts\Common\Constant\Color.cs" />
     <Compile Include="Assets\Scripts\Blokus\InitSquare.cs" />
     <Compile Include="Assets\Scripts\Blokus\Square.cs" />
     <Compile Include="Assets\Scripts\Blokus\UI\aaa.cs" />
@@ -304,11 +307,11 @@
     <Compile Include="Assets\Scripts\Common\Proto\blokus.cs" />
     <Compile Include="Assets\Scripts\Common\Singleton.cs" />
     <Compile Include="Assets\Scripts\Common\Util\CodeUtil.cs" />
+    <Compile Include="Assets\Scripts\Common\Util\MessageFormater.cs" />
     <Compile Include="Assets\Scripts\Common\Util\ProtobufHelper.cs" />
-    <Compile Include="Assets\Scripts\Common\Util\SendMessageHelper.cs" />
     <Compile Include="Assets\Scripts\Message.cs" />
-    <Compile Include="Assets\Scripts\Start\BlokusRoomControl.cs" />
-    <Compile Include="Assets\Scripts\Start\RoomData.cs" />
+    <Compile Include="Assets\Scripts\Start\BlokusRoomUIController.cs" />
+    <Compile Include="Assets\Scripts\Start\RoomItemData.cs" />
     <Compile Include="Assets\Scripts\Start\UIController.cs" />
   </ItemGroup>
   <ItemGroup>

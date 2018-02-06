@@ -80,4 +80,89 @@ namespace protos.blokus
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"BLOKUSRoomPlayerInfo")]
+  public partial class BLOKUSRoomPlayerInfo : global::ProtoBuf.IExtensible
+  {
+    public BLOKUSRoomPlayerInfo() {}
+    
+    private string _account = "";
+    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"account", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string account
+    {
+      get { return _account; }
+      set { _account = value; }
+    }
+    private int _color = default(int);
+    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"color", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int color
+    {
+      get { return _color; }
+      set { _color = value; }
+    }
+    private bool _isReady = default(bool);
+    [global::ProtoBuf.ProtoMember(3, IsRequired = false, Name=@"isReady", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(default(bool))]
+    public bool isReady
+    {
+      get { return _isReady; }
+      set { _isReady = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"BLOKUSRoomPlayerList")]
+  public partial class BLOKUSRoomPlayerList : global::ProtoBuf.IExtensible
+  {
+    public BLOKUSRoomPlayerList() {}
+    
+    private readonly global::System.Collections.Generic.List<BLOKUSRoomPlayerInfo> _itmes = new global::System.Collections.Generic.List<BLOKUSRoomPlayerInfo>();
+    [global::ProtoBuf.ProtoMember(1, Name=@"itmes", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public global::System.Collections.Generic.List<BLOKUSRoomPlayerInfo> itmes
+    {
+      get { return _itmes; }
+    }
+  
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"BLOKUSChooseColor")]
+  public partial class BLOKUSChooseColor : global::ProtoBuf.IExtensible
+  {
+    public BLOKUSChooseColor() {}
+    
+    private string _account = "";
+    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"account", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string account
+    {
+      get { return _account; }
+      set { _account = value; }
+    }
+    private string _roomName = "";
+    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"roomName", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string roomName
+    {
+      get { return _roomName; }
+      set { _roomName = value; }
+    }
+    private int _color = default(int);
+    [global::ProtoBuf.ProtoMember(3, IsRequired = false, Name=@"color", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int color
+    {
+      get { return _color; }
+      set { _color = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
 }
