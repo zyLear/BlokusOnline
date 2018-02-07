@@ -18,7 +18,7 @@ public class BtnClick_turnAround : MonoBehaviour {
 		//turnBtn.GetComponent<Image> ().sprite = rotateImage;
 		//turnBtn.transform.localScale*=-1;
 		//GameObject.Find ("Canvas/squareAdjust_Panel/rotateBtn").GetComponent<BtnClick_Rotate> ().setTurnFlag (1);
-		GameObject.Find ("BlokusControl").GetComponent<BlokusControl> ().squareSymmetry();
+		GameObject.Find ("BlokusController").GetComponent<BlokusController> ().squareSymmetry();
 
 	}
 	// Update is called once per frame

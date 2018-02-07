@@ -24,6 +24,12 @@ class OperationCode {
 
     public const short CHOOSE_COLOR = 9;
 
+    public const short START_BLOKUS = 10;
+
+    public const short START_BLOKUS_TWO_PEOPLE = 11;
+
+
+
 
 
     public const short CONNECT_SUCCESS = 10001;
