@@ -164,7 +164,16 @@ public class NetManager : Singleton<NetManager> {
             case OperationCode.CREATE_ROOM: createRoom(message); break;
             case OperationCode.UPDATE_ROOM_PLAYERS_INFO: updateRoomPlayersInfo(message); break;
             case OperationCode.JOIN_ROOM: joinRoom(message); break;
+            case OperationCode.START_BLOKUS: startBlokus(message);break;
             default: break;
+        }
+    }
+
+    private void startBlokus(MessageBean message) {
+        if (message.statusCode == StatusCode.SUCCESS) {
+            GameObject.Find("BlokusRoomUIController").SendMessage("StartBlokus");
+        } else {
+            //GameObject.Find("UIController").SendMessage("createRoomFail");
         }
     }
 

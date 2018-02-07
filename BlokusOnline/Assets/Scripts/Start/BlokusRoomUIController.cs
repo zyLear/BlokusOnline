@@ -64,7 +64,7 @@ public class BlokusRoomUIController : MonoBehaviour {
     }
 
     private void OnStart() {
-        NetManager.Instance.TransferMessage(MessageFormater.formatReadyMessage(GameCache.account, GameCache.roomName)); 
+        NetManager.Instance.TransferMessage(MessageFormater.formatReadyMessage(GameCache.account, GameCache.roomName));
     }
 
     private void OnBack() {
@@ -159,25 +159,25 @@ public class BlokusRoomUIController : MonoBehaviour {
             switch (i) {
                 case 0: {
                         playerOneName.text = playerInfo.account;
-                        playerOneChoice.text = getColorText(playerInfo.color);
+                        playerOneChoice.text = Color.getColorText(playerInfo.color);
                         playerOneReady.text = getReadyText(playerInfo.isReady);
                         break;
                     }
                 case 1: {
                         playerTwoName.text = playerInfo.account;
-                        playerTwoChoice.text = getColorText(playerInfo.color);
+                        playerTwoChoice.text = Color.getColorText(playerInfo.color);
                         playerTwoReady.text = getReadyText(playerInfo.isReady);
                         break;
                     }
                 case 2: {
                         playerThreeName.text = playerInfo.account;
-                        playerThreeChoice.text = getColorText(playerInfo.color);
+                        playerThreeChoice.text = Color.getColorText(playerInfo.color);
                         playerThreeReady.text = getReadyText(playerInfo.isReady);
                         break;
                     }
                 case 3: {
                         playerFourName.text = playerInfo.account;
-                        playerFourChoice.text = getColorText(playerInfo.color);
+                        playerFourChoice.text = Color.getColorText(playerInfo.color);
                         playerFourReady.text = getReadyText(playerInfo.isReady);
                         break;
                     }
@@ -185,15 +185,7 @@ public class BlokusRoomUIController : MonoBehaviour {
         }
     }
 
-    private string getColorText(int color) {
-        switch (color) {
-            case Color.BLUE: return "blue";
-            case Color.GREEN: return "green";
-            case Color.RED: return "red";
-            case Color.YELLOW: return "yellow";
-            default: return "blue";
-        }
-    }
+
 
     private string getReadyText(bool ready) {
         if (ready) {
@@ -260,7 +252,7 @@ public class BlokusRoomUIController : MonoBehaviour {
     //}
 
     //[PunRPC]
-    public void BlokusStart() {
+    public void StartBlokus() {
         //UpDateBlokusRoomInfo();        //更新信息
         myUIController.hidePanel(myUIController.blokusRoomPanel);
         Application.LoadLevelAdditive("Blokus");
