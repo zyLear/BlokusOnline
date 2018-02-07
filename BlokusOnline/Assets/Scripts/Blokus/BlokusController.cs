@@ -1,10 +1,11 @@
+using protos.blokus;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BlokusController : MonoBehaviour {
 
-    public GameObject currentCenterPictrue;
+    public GameObject currentCenterPrefab;
 
     //每个棋子的预设体
     public GameObject green1_a_p;
@@ -100,7 +101,7 @@ public class BlokusController : MonoBehaviour {
     int[] c1 = new int[5];
     int[] d1 = new int[5];
     int[] e1 = new int[5];
-    int firstFour = 4;     //判断前四次下棋子
+    int firstFour = 1;     //判断前四次下棋子
     string CurrentSquareName;   //当前选择的棋子的名字
     bool isSelect = false;     //是否已经选择棋子
     int[,] allChess = new int[20, 20];    //棋盘数组，记录棋局信息
@@ -221,17 +222,24 @@ public class BlokusController : MonoBehaviour {
                     if (judgeFirstTime(x, y, CurrentSquare.model, CurrentSquare.color)) //四个角的判断
                     {
                         print("OK,可以放下,第一次");
-                        setModel();
+                        //setModel();
                         GameObject.Find("Canvas").GetComponent<ChoosePanel>().DestoryBtn();//销毁图形
+
                         //   GetComponent<PhotonView>().RPC("judgeSuccess", PhotonTargets.AllBuffered,x, y,CurrentSquareName,CurrentSquare.rotationFlag,CurrentSquare.symmetryFlag,a1,b1,c1,d1,e1);
-                        //   print("OK,可以放下,第一次");                        
+                        //   print("OK,可以放下,第一次");    
+                        // judgeSuccess(x, y, CurrentSquareName, CurrentSquare.rotationFlag, CurrentSquare.symmetryFlag, a1, b1, c1, d1, e1);
+
+
+
+                        NetManager.Instance.TransferMessage(MessageFormater.formatChessDoneMessage(x, y, CurrentSquareName, CurrentSquare.rotationFlag, CurrentSquare.symmetryFlag, CurrentSquare.model));
+
                     }
                 } else if (judge(x, y, CurrentSquare.model, CurrentSquare.color)) //判断是否可以放下
                   {
-                    setModel();
+                    //  setModel();
                     GameObject.Find("Canvas").GetComponent<ChoosePanel>().DestoryBtn();//销毁图形
-                    //   GetComponent<PhotonView>().RPC("judgeSuccess", PhotonTargets.AllBuffered, x, y, CurrentSquareName, CurrentSquare.rotationFlag, CurrentSquare.symmetryFlag, a1, b1, c1, d1, e1);
-
+                    print("OK,可以放下,后面");                                                                 //   GetComponent<PhotonView>().RPC("judgeSuccess", PhotonTargets.AllBuffered, x, y, CurrentSquareName, CurrentSquare.rotationFlag, CurrentSquare.symmetryFlag, a1, b1, c1, d1, e1);
+                    NetManager.Instance.TransferMessage(MessageFormater.formatChessDoneMessage(x, y, CurrentSquareName, CurrentSquare.rotationFlag, CurrentSquare.symmetryFlag, CurrentSquare.model));
                 }
             }
         }
@@ -273,6 +281,8 @@ public class BlokusController : MonoBehaviour {
         for (int i = 0; i < 5; i++)
             e1[i] = CurrentSquare.model[4, i];
     }
+
+
 
     int[,] getModel(int[] a, int[] b, int[] c, int[] d, int[] e) {  //一维数组组成二维数组
 
@@ -339,6 +349,32 @@ public class BlokusController : MonoBehaviour {
     }
 
 
+    void judgeSuccess(BLOKUSChessDoneInfo chessDoneInfo) {
+        Square oweSquare = (Square)allSquare[chessDoneInfo.squareName];
+        int oldRF = oweSquare.rotationFlag;
+        int oldSF = oweSquare.symmetryFlag;
+        oweSquare.rotationFlag = chessDoneInfo.rotationFlag;
+        oweSquare.symmetryFlag = chessDoneInfo.symmetryFlag;
+        int x = chessDoneInfo.x;
+        int y = chessDoneInfo.y;
+        oweSquare.set(x + 0.5f, -(y + 0.5f));
+        Destroy(currentCenter);
+        print("实例化");
+        currentCenter = (GameObject)Instantiate(currentCenterPrefab, new Vector2((float)(x + 0.5), -(float)(y + 0.5)), Quaternion.identity); //中心 图片转换   
+        updateChess(x, y, chessDoneInfo.model, oweSquare.color);
+        isSelect = false;
+        //changeCurrentColor();
+        //GameObject.Find("Canvas").GetComponent<ChoosePanel>().setPanelColor();//切换画板
+
+        if (firstFour > 0) {
+            firstFour--;
+        }
+        oweSquare.rotationFlag = oldRF;
+        oweSquare.symmetryFlag = oldSF;
+    }
+
+
+
     // [PunRPC]
     void judgeSuccess(int x, int y, string name, int rFlag, int sFlag, int[] a, int[] b, int[] c, int[] d, int[] e) {
         Square oweSquare = (Square)allSquare[name];
@@ -349,10 +385,10 @@ public class BlokusController : MonoBehaviour {
         oweSquare.set(x + 0.5f, -(y + 0.5f));
         Destroy(currentCenter);
         print("实例化");
-        currentCenter = (GameObject)Instantiate(currentCenterPictrue, new Vector2((float)(x + 0.5), -(float)(y + 0.5)), Quaternion.identity); //中心 图片转换   
+        currentCenter = (GameObject)Instantiate(currentCenterPrefab, new Vector2((float)(x + 0.5), -(float)(y + 0.5)), Quaternion.identity); //中心 图片转换   
         updateChess(x, y, getModel(a, b, c, d, e), oweSquare.color);
         isSelect = false;
-        changeCurrentColor();
+        //  changeCurrentColor();
         //GameObject.Find("Canvas").GetComponent<ChoosePanel>().setPanelColor();//切换画板
 
         if (firstFour > 0) {
@@ -361,6 +397,9 @@ public class BlokusController : MonoBehaviour {
         oweSquare.rotationFlag = oldRF;
         oweSquare.symmetryFlag = oldSF;
     }
+
+
+
 
     bool touchOutLine(int x, int y)  //判断触摸出界
     {
@@ -395,6 +434,27 @@ public class BlokusController : MonoBehaviour {
                     int wy = y - 2 + j;
                     allChess[wx, wy] = color;
                 }
+            }
+        }
+    }
+
+    void updateChess(int x, int y, byte[] model, int color) //成功下棋子之后更新棋盘数组
+    {
+        //for (int j = 0; j < 5; j++) {
+        //    for (int i = 0; i < 5; i++) {
+        //        if (model[j, i] == 1) {
+        //            int wx = x - 2 + i;
+        //            int wy = y - 2 + j;
+        //            allChess[wx, wy] = color;
+        //        }
+        //    }
+        //}
+
+        for (int i = 0; i < 25; i++) {
+            if (model[i] == 1) {
+                int wx = x - 2 + i % 5;
+                int wy = y - 2 + i / 5;
+                allChess[wx, wy] = color;
             }
         }
     }
