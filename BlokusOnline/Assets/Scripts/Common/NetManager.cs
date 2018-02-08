@@ -164,8 +164,17 @@ public class NetManager : Singleton<NetManager> {
             case OperationCode.CREATE_ROOM: createRoom(message); break;
             case OperationCode.UPDATE_ROOM_PLAYERS_INFO: updateRoomPlayersInfo(message); break;
             case OperationCode.JOIN_ROOM: joinRoom(message); break;
-            case OperationCode.START_BLOKUS: startBlokus(message);break;
+            case OperationCode.START_BLOKUS: startBlokus(message); break;
+            case OperationCode.CHESS_DONE: chessDone(message); break;
             default: break;
+        }
+    }
+
+    private void chessDone(MessageBean message) {
+        if (message.statusCode == StatusCode.SUCCESS) {
+            BLOKUSChessDoneInfo bLOKUSChessDoneInfo = ProtobufHelper.DederializerFromBytes<BLOKUSChessDoneInfo>(message.data);
+            GameObject.Find("BlokusController").SendMessage("judgeSuccess", bLOKUSChessDoneInfo);
+
         }
     }
 
@@ -201,8 +210,9 @@ public class NetManager : Singleton<NetManager> {
         //Debug.Log(message.operationCode);
         //Debug.Log(message.statusCode);
         //Debug.Log(message.data);
-        BLOKUSAccount account = ProtobufHelper.DederializerFromBytes<BLOKUSAccount>(message.data);
+
         if (message.statusCode == StatusCode.SUCCESS) {
+            BLOKUSAccount account = ProtobufHelper.DederializerFromBytes<BLOKUSAccount>(message.data);
             GameCache.account = GameCache.accountReqest;
             GameObject.Find("UIController").SendMessage("hidePanel", GameObject.Find("LoginPanel").transform);
             GameObject.Find("UIController").SendMessage("showPanel", GameObject.Find("RoomListPanel").transform);

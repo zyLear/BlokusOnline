@@ -165,4 +165,62 @@ namespace protos.blokus
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"BLOKUSChessDoneInfo")]
+  public partial class BLOKUSChessDoneInfo : global::ProtoBuf.IExtensible
+  {
+    public BLOKUSChessDoneInfo() {}
+    
+    private int _x = default(int);
+    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"x", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int x
+    {
+      get { return _x; }
+      set { _x = value; }
+    }
+    private int _y = default(int);
+    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"y", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int y
+    {
+      get { return _y; }
+      set { _y = value; }
+    }
+    private string _squareName = "";
+    [global::ProtoBuf.ProtoMember(3, IsRequired = false, Name=@"squareName", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string squareName
+    {
+      get { return _squareName; }
+      set { _squareName = value; }
+    }
+    private int _rotationFlag = default(int);
+    [global::ProtoBuf.ProtoMember(4, IsRequired = false, Name=@"rotationFlag", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int rotationFlag
+    {
+      get { return _rotationFlag; }
+      set { _rotationFlag = value; }
+    }
+    private int _symmetryFlag = default(int);
+    [global::ProtoBuf.ProtoMember(5, IsRequired = false, Name=@"symmetryFlag", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int symmetryFlag
+    {
+      get { return _symmetryFlag; }
+      set { _symmetryFlag = value; }
+    }
+    private byte[] _model = null;
+    [global::ProtoBuf.ProtoMember(6, IsRequired = false, Name=@"model", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(null)]
+    public byte[] model
+    {
+      get { return _model; }
+      set { _model = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
 }

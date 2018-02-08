@@ -12,9 +12,11 @@ public class MessageFormater {
         message.operationCode = OperationCode.CREATE_ROOM;
         message.statusCode = StatusCode.SUCCESS;
 
-        BLOKUSRoomName bLOKUSRoomName = new BLOKUSRoomName();
-        bLOKUSRoomName.roomName = roomName;
-        message.data = ProtobufHelper.SerializerToBytes(bLOKUSRoomName);
+        BLOKUSCreateRoom bLOKUSCreateRoom = new BLOKUSCreateRoom();
+        bLOKUSCreateRoom.roomName = roomName;
+        bLOKUSCreateRoom.roomType = RoomType.BLOKUS_FOUR;
+
+        message.data = ProtobufHelper.SerializerToBytes(bLOKUSCreateRoom);
         return message;
     }
 
@@ -71,6 +73,43 @@ public class MessageFormater {
         bLOKUSRoomName.roomName = roomName;
         message.data = ProtobufHelper.SerializerToBytes(bLOKUSRoomName);
         return message;
+    }
+
+    internal static MessageBean formatChessDoneMessage(int x, int y, string currentSquareName, int rotationFlag, int symmetryFlag, int[,] model) {
+
+        MessageBean message = new MessageBean();
+        message.operationCode = OperationCode.CHESS_DONE;
+        message.statusCode = StatusCode.SUCCESS;
+
+        BLOKUSChessDoneInfo chessDoneInfo = new BLOKUSChessDoneInfo();
+        chessDoneInfo.x = x;
+        chessDoneInfo.y = y;
+        chessDoneInfo.squareName = currentSquareName;
+        chessDoneInfo.rotationFlag = rotationFlag;
+        chessDoneInfo.symmetryFlag = symmetryFlag;
+        chessDoneInfo.model = getModelBytes(model);
+        message.data = ProtobufHelper.SerializerToBytes(chessDoneInfo);
+        return message;
+    }
+
+    private static byte[] getModelBytes(int[,] model) {
+        byte[] modelBytes = new byte[25];
+
+
+        for (int i = 0; i < 25; i++) {
+            modelBytes[i] = (byte)model[i / 5, i % 5];
+        }
+
+        return modelBytes;
+        //for (int j = 0; j < 5; j++) {
+        //    for (int i = 0; i < 5; i++) {
+        //        if (model[j, i] == 1) {
+        //            int wx = x - 2 + i;
+        //            int wy = y - 2 + j;
+        //            modelBytes[wx, wy]=
+        //        }
+        //    }
+        //}
     }
 }
 
