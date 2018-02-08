@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 
 class OperationCode {
 
@@ -28,7 +24,11 @@ class OperationCode {
 
     public const short START_BLOKUS_TWO_PEOPLE = 11;
 
+    public const short WIN = 12;
 
+    public const short FAIL = 13;
+
+    public const short GIVE_UP = 13;
 
 
 

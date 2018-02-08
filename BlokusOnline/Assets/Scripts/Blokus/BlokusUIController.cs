@@ -68,6 +68,7 @@ public class BlokusUIController : MonoBehaviour {
                 print(myBlokusController.CurrentColor);
                 if (myBlokusController.CurrentColor == myBlokusController.myColor) {
                     ShowMessage("恭喜你赢了！");
+                    NetManager.Instance.TransferMessage(MessageFormater.formatWinMessage());
                 }
                 break;
             }
@@ -75,7 +76,8 @@ public class BlokusUIController : MonoBehaviour {
             currentShowTime = DEADLINETIME;
 
             if (myBlokusController.CurrentColor == myBlokusController.myColor) {
-                ShowMessage("下棋截止时间到，很遗憾，你输啦~~");
+                ShowMessage("下棋截止时间到，很遗憾，你输了");
+                NetManager.Instance.TransferMessage(MessageFormater.formatFailMessage());
             } else {
                 ShowMessage("下棋截止时间到，" + getColor(myBlokusController.CurrentColor) + "方输了！");
             }
@@ -113,9 +115,11 @@ public class BlokusUIController : MonoBehaviour {
     public void OnGiveUp() {
         if (myBlokusController.loseCount < 3) {
             if (myBlokusController.loseColor[myBlokusController.myColor] == 0) {
-                //   myBlokusController.getFail(myBlokusController.myColor);
+                myBlokusController.giveUp(myBlokusController.myColor);
+                NetManager.Instance.TransferMessage(MessageFormater.formatGiveUpMessage(myBlokusController.myColor));
+            } else {
+                ShowMessage("你已经输了~");
             }
-            ShowMessage("你已经输了~");
         }
         ShowMessage("恭喜你赢啦！");
     }
