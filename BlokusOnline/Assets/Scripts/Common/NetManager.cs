@@ -166,7 +166,15 @@ public class NetManager : Singleton<NetManager> {
             case OperationCode.JOIN_ROOM: joinRoom(message); break;
             case OperationCode.START_BLOKUS: startBlokus(message); break;
             case OperationCode.CHESS_DONE: chessDone(message); break;
+            case OperationCode.GIVE_UP: giveUp(message); break;
             default: break;
+        }
+    }
+
+    private void giveUp(MessageBean message) {
+        if (message.statusCode == StatusCode.SUCCESS) {
+            BLOKUSChooseColor bLOKUSChooseColor = ProtobufHelper.DederializerFromBytes<BLOKUSChooseColor>(message.data);
+            GameObject.Find("BlokusController").SendMessage("fail", bLOKUSChooseColor.color);
         }
     }
 
@@ -174,7 +182,6 @@ public class NetManager : Singleton<NetManager> {
         if (message.statusCode == StatusCode.SUCCESS) {
             BLOKUSChessDoneInfo bLOKUSChessDoneInfo = ProtobufHelper.DederializerFromBytes<BLOKUSChessDoneInfo>(message.data);
             GameObject.Find("BlokusController").SendMessage("judgeSuccess", bLOKUSChessDoneInfo);
-
         }
     }
 

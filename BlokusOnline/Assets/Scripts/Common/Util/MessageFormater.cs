@@ -64,6 +64,13 @@ public class MessageFormater {
         return message;
     }
 
+    internal static MessageBean formatWinMessage() {
+        MessageBean message = new MessageBean();
+        message.operationCode = OperationCode.WIN;
+        message.statusCode = StatusCode.SUCCESS;
+        return message;
+    }
+
     public static MessageBean formatJoinRoomMessage(string roomName) {
         MessageBean message = new MessageBean();
         message.operationCode = OperationCode.JOIN_ROOM;
@@ -72,6 +79,13 @@ public class MessageFormater {
         BLOKUSRoomName bLOKUSRoomName = new BLOKUSRoomName();
         bLOKUSRoomName.roomName = roomName;
         message.data = ProtobufHelper.SerializerToBytes(bLOKUSRoomName);
+        return message;
+    }
+
+    internal static MessageBean formatFailMessage() {
+        MessageBean message = new MessageBean();
+        message.operationCode = OperationCode.FAIL;
+        message.statusCode = StatusCode.SUCCESS;
         return message;
     }
 
@@ -92,9 +106,19 @@ public class MessageFormater {
         return message;
     }
 
+    internal static MessageBean formatGiveUpMessage(int myColor) {
+        MessageBean message = new MessageBean();
+        message.operationCode = OperationCode.READY;
+        message.statusCode = StatusCode.SUCCESS;
+
+        BLOKUSChooseColor bLOKUSChooseColor = new BLOKUSChooseColor();
+        bLOKUSChooseColor.color = myColor;
+        message.data = ProtobufHelper.SerializerToBytes(bLOKUSChooseColor);
+        return message;
+    }
+
     private static byte[] getModelBytes(int[,] model) {
         byte[] modelBytes = new byte[25];
-
 
         for (int i = 0; i < 25; i++) {
             modelBytes[i] = (byte)model[i / 5, i % 5];

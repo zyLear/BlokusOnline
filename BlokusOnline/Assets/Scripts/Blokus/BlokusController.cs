@@ -128,8 +128,7 @@ public class BlokusController : MonoBehaviour {
     //    GetComponent<PhotonView>().RPC("fail", PhotonTargets.AllBuffered, CurrentColor);
     //}
 
-    //public void getFail(int color)
-    //{
+    //public void giveUp(int color) {
     //    //if (loseCount == 3)
     //    //{
     //    //    return;
@@ -267,39 +266,39 @@ public class BlokusController : MonoBehaviour {
         }
     }
 
-    void setModel()//获取数组模型的一维数组，用来传递
-    {
+    //void setModel()//获取数组模型的一维数组，用来传递
+    //{
 
-        for (int i = 0; i < 5; i++)
-            a1[i] = CurrentSquare.model[0, i];
-        for (int i = 0; i < 5; i++)
-            b1[i] = CurrentSquare.model[1, i];
-        for (int i = 0; i < 5; i++)
-            c1[i] = CurrentSquare.model[2, i];
-        for (int i = 0; i < 5; i++)
-            d1[i] = CurrentSquare.model[3, i];
-        for (int i = 0; i < 5; i++)
-            e1[i] = CurrentSquare.model[4, i];
-    }
-
-
-
-    int[,] getModel(int[] a, int[] b, int[] c, int[] d, int[] e) {  //一维数组组成二维数组
+    //    for (int i = 0; i < 5; i++)
+    //        a1[i] = CurrentSquare.model[0, i];
+    //    for (int i = 0; i < 5; i++)
+    //        b1[i] = CurrentSquare.model[1, i];
+    //    for (int i = 0; i < 5; i++)
+    //        c1[i] = CurrentSquare.model[2, i];
+    //    for (int i = 0; i < 5; i++)
+    //        d1[i] = CurrentSquare.model[3, i];
+    //    for (int i = 0; i < 5; i++)
+    //        e1[i] = CurrentSquare.model[4, i];
+    //}
 
 
-        int[,] m = new int[5, 5];
-        for (int i = 0; i < 5; i++)
-            m[0, i] = a[i];
-        for (int i = 0; i < 5; i++)
-            m[1, i] = b[i];
-        for (int i = 0; i < 5; i++)
-            m[2, i] = c[i];
-        for (int i = 0; i < 5; i++)
-            m[3, i] = d[i];
-        for (int i = 0; i < 5; i++)
-            m[4, i] = e[i];
-        return m;
-    }
+
+    //int[,] getModel(int[] a, int[] b, int[] c, int[] d, int[] e) {  //一维数组组成二维数组
+
+
+    //    int[,] m = new int[5, 5];
+    //    for (int i = 0; i < 5; i++)
+    //        m[0, i] = a[i];
+    //    for (int i = 0; i < 5; i++)
+    //        m[1, i] = b[i];
+    //    for (int i = 0; i < 5; i++)
+    //        m[2, i] = c[i];
+    //    for (int i = 0; i < 5; i++)
+    //        m[3, i] = d[i];
+    //    for (int i = 0; i < 5; i++)
+    //        m[4, i] = e[i];
+    //    return m;
+    //}
 
 
     //public void OtherCallFail(int color)
@@ -334,7 +333,7 @@ public class BlokusController : MonoBehaviour {
         //if (loseColor[color] == 1)
         //{
         //    //color已经输了，不能再输
-        //    return;
+        //    return;  
         //}
         loseCount++;
         loseColor[color] = 1;
@@ -345,7 +344,7 @@ public class BlokusController : MonoBehaviour {
         if (color == CurrentColor) {
             changeCurrentColor();
         }
-        GameObject.Find("BlokusUIController").GetComponent<BlokusUIController>().ChangeMessageByYourself(color);
+       // GameObject.Find("BlokusUIController").GetComponent<BlokusUIController>().ChangeMessageByYourself(color);
     }
 
 
@@ -375,28 +374,28 @@ public class BlokusController : MonoBehaviour {
 
 
 
-    // [PunRPC]
-    void judgeSuccess(int x, int y, string name, int rFlag, int sFlag, int[] a, int[] b, int[] c, int[] d, int[] e) {
-        Square oweSquare = (Square)allSquare[name];
-        int oldRF = oweSquare.rotationFlag;
-        int oldSF = oweSquare.symmetryFlag;
-        oweSquare.rotationFlag = rFlag;
-        oweSquare.symmetryFlag = sFlag;
-        oweSquare.set(x + 0.5f, -(y + 0.5f));
-        Destroy(currentCenter);
-        print("实例化");
-        currentCenter = (GameObject)Instantiate(currentCenterPrefab, new Vector2((float)(x + 0.5), -(float)(y + 0.5)), Quaternion.identity); //中心 图片转换   
-        updateChess(x, y, getModel(a, b, c, d, e), oweSquare.color);
-        isSelect = false;
-        //  changeCurrentColor();
-        //GameObject.Find("Canvas").GetComponent<ChoosePanel>().setPanelColor();//切换画板
+    //// [PunRPC]
+    //void judgeSuccess(int x, int y, string name, int rFlag, int sFlag, int[] a, int[] b, int[] c, int[] d, int[] e) {
+    //    Square oweSquare = (Square)allSquare[name];
+    //    int oldRF = oweSquare.rotationFlag;
+    //    int oldSF = oweSquare.symmetryFlag;
+    //    oweSquare.rotationFlag = rFlag;
+    //    oweSquare.symmetryFlag = sFlag;
+    //    oweSquare.set(x + 0.5f, -(y + 0.5f));
+    //    Destroy(currentCenter);
+    //    print("实例化");
+    //    currentCenter = (GameObject)Instantiate(currentCenterPrefab, new Vector2((float)(x + 0.5), -(float)(y + 0.5)), Quaternion.identity); //中心 图片转换   
+    //    updateChess(x, y, getModel(a, b, c, d, e), oweSquare.color);
+    //    isSelect = false;
+    //    //  changeCurrentColor();
+    //    //GameObject.Find("Canvas").GetComponent<ChoosePanel>().setPanelColor();//切换画板
 
-        if (firstFour > 0) {
-            firstFour--;
-        }
-        oweSquare.rotationFlag = oldRF;
-        oweSquare.symmetryFlag = oldSF;
-    }
+    //    if (firstFour > 0) {
+    //        firstFour--;
+    //    }
+    //    oweSquare.rotationFlag = oldRF;
+    //    oweSquare.symmetryFlag = oldSF;
+    //}
 
 
 
