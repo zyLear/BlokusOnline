@@ -1,0 +1,5 @@
+执行一下命令
+使.ignore 文件生效 
+
+git rm -r --cached .
+git add .
