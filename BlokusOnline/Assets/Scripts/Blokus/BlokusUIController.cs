@@ -115,7 +115,7 @@ public class BlokusUIController : MonoBehaviour {
     public void OnGiveUp() {
         if (myBlokusController.loseCount < 3) {
             if (myBlokusController.loseColor[myBlokusController.myColor] == 0) {
-                myBlokusController.giveUp(myBlokusController.myColor);
+                //myBlokusController.giveUp(myBlokusController.myColor);
                 NetManager.Instance.TransferMessage(MessageFormater.formatGiveUpMessage(myBlokusController.myColor));
             } else {
                 ShowMessage("你已经输了~");
