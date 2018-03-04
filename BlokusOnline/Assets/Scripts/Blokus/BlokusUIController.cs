@@ -25,7 +25,7 @@ public class BlokusUIController : MonoBehaviour {
     public Scrollbar scrollbar;
     public Text CurrentColor;
     public Text ShowTime;
-    const int DEADLINETIME = 60;
+    const int DEADLINE_TIME = 10;
 
 
     const int blue = Color.BLUE;//定义颜色常量
@@ -33,10 +33,14 @@ public class BlokusUIController : MonoBehaviour {
     const int red = Color.RED;
     const int yellow = Color.YELLOW;
 
-    float deadline = DEADLINETIME;
-    int currentShowTime = DEADLINETIME;
+    float deadline = DEADLINE_TIME;
+    int currentShowTime = DEADLINE_TIME;
 
     BlokusController myBlokusController;
+
+    private Queue<string> showMessageQueue = new Queue<string>();
+
+    private static object lockObject = new object();
 
     public void Start() {
         myUIController = GameObject.Find("UIController").GetComponent<UIController>();
@@ -54,7 +58,11 @@ public class BlokusUIController : MonoBehaviour {
 
     /********协程***************/
     IEnumerator JudgeTimeOut() {
+
         while (true) {
+            if (BlokusController.gameOver) {
+                break;
+            }
             while (deadline > 0) {
                 deadline -= Time.deltaTime;
                 int time = (int)deadline;
@@ -64,24 +72,68 @@ public class BlokusUIController : MonoBehaviour {
                 }
                 yield return 0;
             }
-            if (myBlokusController.loseCount == 3) {
-                print(myBlokusController.CurrentColor);
-                if (myBlokusController.CurrentColor == myBlokusController.myColor) {
-                    ShowMessage("恭喜你赢了！");
-                    NetManager.Instance.TransferMessage(MessageFormater.formatWinMessage());
-                }
-                break;
-            }
-            deadline = DEADLINETIME;
-            currentShowTime = DEADLINETIME;
 
-            if (myBlokusController.CurrentColor == myBlokusController.myColor) {
-                ShowMessage("下棋截止时间到，很遗憾，你输了");
+            //if (myBlokusController.loseCount == 1) {
+            //    print(myBlokusController.CurrentColor);
+            //    if (myBlokusController.CurrentColor == myBlokusController.myColor) {
+            //        ShowMessage("恭喜你赢了！");
+            //        NetManager.Instance.TransferMessage(MessageFormater.formatWinMessage());
+            //    }
+            //    break;
+            //}
+
+
+
+
+            //if (myBlokusController.loseCount == 2) {
+            //    print(myBlokusController.CurrentColor);
+            //    if (myBlokusController.CurrentColor == myBlokusController.myColor) {
+            //        ShowMessage("下棋截止时间到，很遗憾，你输了");
+            //        NetManager.Instance.TransferMessage(MessageFormater.formatFailMessage());
+            //    } else {
+
+            //    }
+            //    break;
+            //}
+
+            deadline = DEADLINE_TIME;
+            currentShowTime = DEADLINE_TIME;
+            fail(myBlokusController.CurrentColor);
+
+        }
+    }
+
+
+    public void fail(int color) {
+        lock (lockObject) {
+            if (myBlokusController.loseColor[color] == 1) {
+                return;
+            }
+
+            if (BlokusController.maxPlayersCount - myBlokusController.loseCount == 2) {
+                int nextColor = myBlokusController.getNextColor(color);
+                Debug.LogError("nextColor:" + nextColor);
+                if (color == myBlokusController.myColor) {
+                    NetManager.Instance.TransferMessage(MessageFormater.formatFailMessage());
+                    ShowMessage(getColor(nextColor) + "方赢了！");
+                } else if (nextColor == myBlokusController.myColor) {
+                    NetManager.Instance.TransferMessage(MessageFormater.formatWinMessage());
+                    ShowMessage("恭喜你赢了！");
+                } else {
+                    ShowMessage(getColor(nextColor) + "方赢了！");
+                }
+                BlokusController.gameOver = true;
+                return;
+            }
+
+            if (color == myBlokusController.myColor) {
+                ShowMessage("很遗憾，你输了");  //下棋截止时间到，
                 NetManager.Instance.TransferMessage(MessageFormater.formatFailMessage());
             } else {
-                ShowMessage("下棋截止时间到，" + getColor(myBlokusController.CurrentColor) + "方输了！");
+                ShowMessage(getColor(color) + "方输了！");//"下棋截止时间到，" +
             }
-            myBlokusController.fail(myBlokusController.CurrentColor);
+            myBlokusController.fail(color);
+            Debug.Log("lock  end*********************************!!!!!!!!!1");
         }
     }
 
@@ -121,8 +173,9 @@ public class BlokusUIController : MonoBehaviour {
                 ShowMessage("你已经输了~");
             }
         }
-        ShowMessage("恭喜你赢啦！");
     }
+
+
 
     //public void OnShow()
     //{
@@ -145,7 +198,7 @@ public class BlokusUIController : MonoBehaviour {
         Destroy(myBlokusController.currentCenter);
         OnGiveUp();
 
-        //    UIControl.PanelChange(myUIControl.BlokusRoom);
+        myUIController.showPanel(myUIController.blokusRoomPanel);
 
         Application.UnloadLevel("Blokus");
     }
@@ -157,8 +210,8 @@ public class BlokusUIController : MonoBehaviour {
     public void BlokusUIUpdate(int color)   //其他脚本调用的函数
     {
         CurrentColor.text = "目前下棋的颜色:" + getColor(color);
-        deadline = DEADLINETIME;
-        currentShowTime = DEADLINETIME;
+        deadline = DEADLINE_TIME;
+        currentShowTime = DEADLINE_TIME;
     }
 
     //void OnPhotonPlayerDisconnected(PhotonPlayer player)  //玩家断开连接

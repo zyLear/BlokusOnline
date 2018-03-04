@@ -219,6 +219,7 @@ public class UIController : MonoBehaviour {
     public void createRoomFail() {
 
         promptWithButtonText.text = "create room fail!";
+        hidePanel(promptPanel);
         showPanel(promptWithButtonPanel);
     }
 

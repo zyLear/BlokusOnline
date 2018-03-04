@@ -57,10 +57,10 @@ public class MessageFormater {
         message.operationCode = OperationCode.READY;
         message.statusCode = StatusCode.SUCCESS;
 
-        BLOKUSChooseColor bLOKUSChooseColor = new BLOKUSChooseColor();
-        bLOKUSChooseColor.account = account;
-        bLOKUSChooseColor.roomName = roomName;
-        message.data = ProtobufHelper.SerializerToBytes(bLOKUSChooseColor);
+        //BLOKUSChooseColor bLOKUSChooseColor = new BLOKUSChooseColor();
+        //bLOKUSChooseColor.account = account;
+        //bLOKUSChooseColor.roomName = roomName;
+        //message.data = ProtobufHelper.SerializerToBytes(bLOKUSChooseColor);
         return message;
     }
 
@@ -108,7 +108,7 @@ public class MessageFormater {
 
     internal static MessageBean formatGiveUpMessage(int myColor) {
         MessageBean message = new MessageBean();
-        message.operationCode = OperationCode.READY;
+        message.operationCode = OperationCode.GIVE_UP;
         message.statusCode = StatusCode.SUCCESS;
 
         BLOKUSChooseColor bLOKUSChooseColor = new BLOKUSChooseColor();

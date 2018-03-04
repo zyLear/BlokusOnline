@@ -143,7 +143,10 @@ public class NetManager : Singleton<NetManager> {
 
         MessageBean message = MessageQueue.take();
         if (message != null) {
-            handleMessage(message);
+            try {
+                handleMessage(message);
+            } catch (Exception e) {
+            }
         }
 
     }
@@ -174,14 +177,14 @@ public class NetManager : Singleton<NetManager> {
     private void giveUp(MessageBean message) {
         if (message.statusCode == StatusCode.SUCCESS) {
             BLOKUSChooseColor bLOKUSChooseColor = ProtobufHelper.DederializerFromBytes<BLOKUSChooseColor>(message.data);
-            GameObject.Find("BlokusController").SendMessage("fail", bLOKUSChooseColor.color);
+            GameObject.Find("BlokusUIController").SendMessage("fail", bLOKUSChooseColor.color);
         }
     }
 
     private void chessDone(MessageBean message) {
         if (message.statusCode == StatusCode.SUCCESS) {
             BLOKUSChessDoneInfo bLOKUSChessDoneInfo = ProtobufHelper.DederializerFromBytes<BLOKUSChessDoneInfo>(message.data);
-            GameObject.Find("BlokusController").SendMessage("judgeSuccess", bLOKUSChessDoneInfo);
+            GameObject.Find("BlokusController").SendMessage("chessDone", bLOKUSChessDoneInfo);
         }
     }
 
