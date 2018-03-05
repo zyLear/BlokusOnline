@@ -101,7 +101,8 @@ public class BlokusController : MonoBehaviour {
     int[] c1 = new int[5];
     int[] d1 = new int[5];
     int[] e1 = new int[5];
-    int firstFour = 1;     //判断前四次下棋子
+    public static int maxPlayersCount = 2; //玩家数量
+    int firstFour = maxPlayersCount;     //判断前四次下棋子
     string CurrentSquareName;   //当前选择的棋子的名字
     bool isSelect = false;     //是否已经选择棋子
     int[,] allChess = new int[20, 20];    //棋盘数组，记录棋局信息
@@ -117,6 +118,9 @@ public class BlokusController : MonoBehaviour {
     public int CurrentColor = blue;    //当前下棋子的颜色
     public int myColor = 0;  //玩家的颜色
     public int loseCount = 0;  //已经输的玩家的个数
+
+    public static bool gameOver = false;
+
 
 
     //public void getFailCurrent()
@@ -159,18 +163,23 @@ public class BlokusController : MonoBehaviour {
     }
 
     void changeCurrentColor() {
-        CurrentColor++;
-        if (CurrentColor > 4) {
-            CurrentColor = 1;
+        CurrentColor = getNextColor(CurrentColor);
+        GameObject.Find("BlokusUIController").GetComponent<BlokusUIController>().BlokusUIUpdate(CurrentColor);
+    }
+
+    public int getNextColor(int color) {
+        color++;
+        if (color > maxPlayersCount) {
+            color = 1;
         }
 
-        while (loseColor[CurrentColor] == 1) {
-            CurrentColor++;
-            if (CurrentColor > 4) {
-                CurrentColor = 1;
+        while (loseColor[color] == 1) {
+            color++;
+            if (color > maxPlayersCount) {
+                color = 1;
             }
         }
-        GameObject.Find("BlokusUIController").GetComponent<BlokusUIController>().BlokusUIUpdate(CurrentColor);
+        return color;
     }
 
     // Use this for initialization
@@ -218,8 +227,8 @@ public class BlokusController : MonoBehaviour {
                 print("选择了");
                 if (firstFour > 0) {
                     print("firstfour");
-                    if (judgeFirstTime(x, y, CurrentSquare.model, CurrentSquare.color)) //四个角的判断
-                    {
+                    //四个角的判断
+                    if (judgeFirstTime(x, y, CurrentSquare.model, CurrentSquare.color)) {
                         print("OK,可以放下,第一次");
                         //setModel();
                         GameObject.Find("Canvas").GetComponent<ChoosePanel>().DestoryBtn();//销毁图形
@@ -325,16 +334,26 @@ public class BlokusController : MonoBehaviour {
 
     // [PunRPC]
     public void fail(int color) {
-        //if (loseCount == 3)
-        //{
-        //    //color赢啦
+        if (loseCount == 3) {
+            //color赢啦
+            return;
+        }
+        if (loseColor[color] == 1) {
+            //color已经输了，不能再输
+            return;
+        }
+
+
+        //if (loseCount == 2) {
+        //    if (color == myColor) {
+        //        changeCurrentColor();
+        //    } else {
+        //        ShowMessage("恭喜你赢了！");
+        //        NetManager.Instance.TransferMessage(MessageFormater.formatWinMessage());
+        //    }
         //    return;
         //}
-        //if (loseColor[color] == 1)
-        //{
-        //    //color已经输了，不能再输
-        //    return;  
-        //}
+
         loseCount++;
         loseColor[color] = 1;
 
@@ -344,11 +363,12 @@ public class BlokusController : MonoBehaviour {
         if (color == CurrentColor) {
             changeCurrentColor();
         }
-       // GameObject.Find("BlokusUIController").GetComponent<BlokusUIController>().ChangeMessageByYourself(color);
+        // GameObject.Find("BlokusUIController").GetComponent<BlokusUIController>().ChangeMessageByYourself(color);
     }
 
 
-    void judgeSuccess(BLOKUSChessDoneInfo chessDoneInfo) {
+    void chessDone(BLOKUSChessDoneInfo chessDoneInfo) {
+        Debug.Log("show dao************************************************************");
         Square oweSquare = (Square)allSquare[chessDoneInfo.squareName];
         int oldRF = oweSquare.rotationFlag;
         int oldSF = oweSquare.symmetryFlag;
@@ -359,10 +379,10 @@ public class BlokusController : MonoBehaviour {
         oweSquare.set(x + 0.5f, -(y + 0.5f));
         Destroy(currentCenter);
         print("实例化");
-        currentCenter = (GameObject)Instantiate(currentCenterPrefab, new Vector2((float)(x + 0.5), -(float)(y + 0.5)), Quaternion.identity); //中心 图片转换   
+        currentCenter = Instantiate(currentCenterPrefab, new Vector2((float)(x + 0.5), -(float)(y + 0.5)), Quaternion.identity); //中心 图片转换   
         updateChess(x, y, chessDoneInfo.model, oweSquare.color);
         isSelect = false;
-        //changeCurrentColor();
+        changeCurrentColor();
         //GameObject.Find("Canvas").GetComponent<ChoosePanel>().setPanelColor();//切换画板
 
         if (firstFour > 0) {
@@ -399,33 +419,32 @@ public class BlokusController : MonoBehaviour {
 
 
 
-
-    bool touchOutLine(int x, int y)  //判断触摸出界
-    {
+    //判断触摸出界
+    bool touchOutLine(int x, int y) {
         if (x < 0 || x > 19 || y < 0 || y > 19) {
             return true;
         }
         return false;
     }
 
-    bool outLine(int x, int y)   //判断棋子位置是否出界
-    {
+    //判断棋子位置是否出界
+    bool outLine(int x, int y) {
         if (x < 0 || x > 19 || y < 0 || y > 19) {
             return true;
         }
         return false;
     }
 
-    bool modelOutLine(int x, int y)   //判断数组模型是否出界
-    {
+    //判断数组模型是否出界
+    bool modelOutLine(int x, int y) {
         if (x < 0 || x > 4 || y < 0 || y > 4) {
             return true;
         }
         return false;
     }
 
-    void updateChess(int x, int y, int[,] model, int color) //成功下棋子之后更新棋盘数组
-    {
+    //成功下棋子之后更新棋盘数组
+    void updateChess(int x, int y, int[,] model, int color) {
         for (int j = 0; j < 5; j++) {
             for (int i = 0; i < 5; i++) {
                 if (model[j, i] == 1) {
@@ -437,8 +456,8 @@ public class BlokusController : MonoBehaviour {
         }
     }
 
-    void updateChess(int x, int y, byte[] model, int color) //成功下棋子之后更新棋盘数组
-    {
+    //成功下棋子之后更新棋盘数组
+    void updateChess(int x, int y, byte[] model, int color) {
         //for (int j = 0; j < 5; j++) {
         //    for (int i = 0; i < 5; i++) {
         //        if (model[j, i] == 1) {
@@ -458,8 +477,8 @@ public class BlokusController : MonoBehaviour {
         }
     }
 
-    bool judgeFirstTime(int x, int y, int[,] model, int color)//前四次下棋子判断
-    {
+    //前四次下棋子判断
+    bool judgeFirstTime(int x, int y, int[,] model, int color) {
         for (int j = 0; j < 5; j++) {
             for (int i = 0; i < 5; i++) {
                 if (model[j, i] == 1) {

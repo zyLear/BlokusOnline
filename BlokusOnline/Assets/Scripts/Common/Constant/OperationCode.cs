@@ -28,7 +28,7 @@ class OperationCode {
 
     public const short FAIL = 13;
 
-    public const short GIVE_UP = 13;
+    public const short GIVE_UP = 14;
 
 
 
