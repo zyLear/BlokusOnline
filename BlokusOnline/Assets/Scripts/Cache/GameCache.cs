@@ -10,5 +10,7 @@ public class GameCache {
 
     public static string accountReqest { get; set; }
 
+    public static int roomType = RoomType.BLOKUS_TWO;
+
 }
 

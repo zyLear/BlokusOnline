@@ -12,6 +12,8 @@ public class UIController : MonoBehaviour {
     //string lobby = "Lobby";
     //string panel = "Panel";
     //string room = "Room";
+    public Toggle toggleFour;
+  //  public Toggle toggleTwo;
 
     public Transform loginPanel;
     public Text accountText;
@@ -205,7 +207,12 @@ public class UIController : MonoBehaviour {
         //    roomOptions = new RoomOptions() { IsVisible = true, MaxPlayers = 4 };
         //}
         GameCache.roomNameRequest = roomName;
-        NetManager.Instance.TransferMessage(MessageFormater.createRoom(roomName));
+        //  = GameObject.Find("ToggleGroup").GetComponent<ToggleGroup>();
+        if (toggleFour.isOn) {
+            NetManager.Instance.TransferMessage(MessageFormater.createRoom(roomName, RoomType.BLOKUS_FOUR));
+        } else {
+            NetManager.Instance.TransferMessage(MessageFormater.createRoom(roomName, RoomType.BLOKUS_TWO));
+        }
 
         //PhotonNetwork.CreateRoom(str, roomOptions, TypedLobby.Default);
     }

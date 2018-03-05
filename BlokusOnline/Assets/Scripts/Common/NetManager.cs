@@ -11,7 +11,7 @@ using protos.blokus;
 
 public class NetManager : Singleton<NetManager> {
 
-    private string ip = "127.0.0.1";
+    private string ip = "172.19.56.1"; //172.19.56.1 127.0.0.1
     private int port = 9090;
     private Socket client;
     //public Queue<string> messageQueue = new Queue<string>();
@@ -197,9 +197,10 @@ public class NetManager : Singleton<NetManager> {
     }
 
     private void joinRoom(MessageBean message) {
-        //BLOKUSCreateRoom room = ProtobufHelper.DederializerFromBytes<BLOKUSCreateRoom>(message.data);
+        BLOKUSCreateRoom room = ProtobufHelper.DederializerFromBytes<BLOKUSCreateRoom>(message.data);
         if (message.statusCode == StatusCode.SUCCESS) {
-            GameCache.roomName = GameCache.roomNameRequest;
+            GameCache.roomName = room.roomName;
+            GameCache.roomType = room.roomType;
             GameObject.Find("UIController").SendMessage("joinRoomSuccess");
         } else {
             //GameObject.Find("UIController").SendMessage("createRoomFail");
@@ -233,9 +234,10 @@ public class NetManager : Singleton<NetManager> {
     }
 
     private void createRoom(MessageBean message) {
-        //BLOKUSCreateRoom room = ProtobufHelper.DederializerFromBytes<BLOKUSCreateRoom>(message.data);
+        BLOKUSCreateRoom room = ProtobufHelper.DederializerFromBytes<BLOKUSCreateRoom>(message.data);
         if (message.statusCode == StatusCode.SUCCESS) {
-            GameCache.roomName = GameCache.roomNameRequest;
+            GameCache.roomName = room.roomName;
+            GameCache.roomType = room.roomType;
             GameObject.Find("UIController").SendMessage("createRoomSuccess");
         } else {
             GameObject.Find("UIController").SendMessage("createRoomFail");

@@ -11,3 +11,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Blokus.unity
     guid: efc2eb7de7a7c294cb5478d902218b2b
+  - enabled: 1
+    path: Assets/Scenes/BlokusTP.unity
+    guid: b09618b5a4019504aa146465eaa8407d

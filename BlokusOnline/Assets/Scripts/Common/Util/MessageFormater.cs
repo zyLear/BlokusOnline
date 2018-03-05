@@ -7,14 +7,14 @@ using System.Text;
 
 public class MessageFormater {
 
-    public static MessageBean createRoom(string roomName) {
+    public static MessageBean createRoom(string roomName, int roomType) {
         MessageBean message = new MessageBean();
         message.operationCode = OperationCode.CREATE_ROOM;
         message.statusCode = StatusCode.SUCCESS;
 
         BLOKUSCreateRoom bLOKUSCreateRoom = new BLOKUSCreateRoom();
         bLOKUSCreateRoom.roomName = roomName;
-        bLOKUSCreateRoom.roomType = RoomType.BLOKUS_FOUR;
+        bLOKUSCreateRoom.roomType = roomType;
 
         message.data = ProtobufHelper.SerializerToBytes(bLOKUSCreateRoom);
         return message;
@@ -135,5 +135,7 @@ public class MessageFormater {
         //    }
         //}
     }
+
+
 }
 

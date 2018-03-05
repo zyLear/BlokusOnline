@@ -14,6 +14,8 @@ public class BlokusPlayer {
 
 public class BlokusRoomUIController : MonoBehaviour {
 
+    public GameObject buttonGroup;
+
     UIController myUIController;
     public Text BlokusRoomName;
     public Text BlokusYourName;
@@ -255,7 +257,24 @@ public class BlokusRoomUIController : MonoBehaviour {
     public void StartBlokus() {
         //UpDateBlokusRoomInfo();        //更新信息
         myUIController.hidePanel(myUIController.blokusRoomPanel);
-        Application.LoadLevelAdditive("Blokus");
+        if (GameCache.roomType == RoomType.BLOKUS_FOUR) {
+            Application.LoadLevelAdditive("Blokus");
+        } else {
+            Application.LoadLevelAdditive("BlokusTP");
+        }
+
+    }
+
+    public void Update() {
+        if (GameCache.roomType == RoomType.BLOKUS_FOUR) {
+            if (!buttonGroup.activeSelf) {
+                buttonGroup.SetActive(true);
+            }
+        } else {
+            if (buttonGroup.activeSelf) {
+                buttonGroup.SetActive(false);
+            }
+        }
     }
 
 

@@ -23798,6 +23798,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 005ccf384827601479a3bc9e863b53e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MAX_PLAYERS_COUNT: 4
+  MAX_ROW_AND_COLUMN: 20
   currentCenterPrefab: {fileID: 1051096315117818, guid: 008ee6289a0bfde4c9987927461d2d43,
     type: 2}
   green1_a_p: {fileID: 1121558811276018, guid: b15d47d1155c7f84091bc4ba46fb4a77, type: 2}
