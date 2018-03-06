@@ -30,6 +30,10 @@ class OperationCode {
 
     public const short GIVE_UP = 14;
 
+    public const short CHAT_IN_GAME = 15;
+
+    public const short ROOM_LIST = 16;
+
 
 
     public const short CONNECT_SUCCESS = 10001;

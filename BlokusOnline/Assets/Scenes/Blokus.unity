@@ -7776,7 +7776,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1695306633}
-        m_MethodName: Siut
+        m_MethodName: OnSendMessage
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -13168,7 +13168,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 891801314}
   m_Direction: 2
   m_Value: 1
-  m_Size: 1
+  m_Size: 0.99999976
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

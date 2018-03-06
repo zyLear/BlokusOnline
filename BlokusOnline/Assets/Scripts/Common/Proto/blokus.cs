@@ -223,4 +223,22 @@ namespace protos.blokus
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"BLOKUSChatMessage")]
+  public partial class BLOKUSChatMessage : global::ProtoBuf.IExtensible
+  {
+    public BLOKUSChatMessage() {}
+    
+    private string _chatMessage = "";
+    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"chatMessage", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string chatMessage
+    {
+      get { return _chatMessage; }
+      set { _chatMessage = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
 }

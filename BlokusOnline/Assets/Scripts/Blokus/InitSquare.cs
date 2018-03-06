@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InitSquare : MonoBehaviour
+public class InitSquare 
 {
     const int blue = 1;//定义颜色常量
     const int green = 2;

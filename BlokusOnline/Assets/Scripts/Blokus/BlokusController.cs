@@ -181,17 +181,29 @@ public class BlokusController : MonoBehaviour {
     }
 
     public int getNextColor(int color) {
-        color++;
-        if (color > MAX_PLAYERS_COUNT) {
-            color = 1;
+        if (loseCount >= MAX_PLAYERS_COUNT) {
+            return color;
         }
 
-        while (loseColor[color] == 1) {
+        //color++;
+        //if (color > MAX_PLAYERS_COUNT) {
+        //    color = 1;
+        //}
+
+        //while (loseColor[color] == 1) {
+        //    color++;
+        //    if (color > MAX_PLAYERS_COUNT) {
+        //        color = 1;
+        //    }
+        //}
+
+        do {
             color++;
             if (color > MAX_PLAYERS_COUNT) {
                 color = 1;
             }
-        }
+        } while (loseColor[color] == 1);
+
         return color;
     }
 
@@ -227,33 +239,98 @@ public class BlokusController : MonoBehaviour {
             }
             if (isSelect) {
                 print("选择了");
-                if (firstFour > 0) {
-                    print("firstfour");
-                    //四个角的判断
-                    if (judgeFirstTime(x, y, CurrentSquare.model, CurrentSquare.color)) {
-                        print("OK,可以放下,第一次");
-                        //setModel();
-                        GameObject.Find("Canvas").GetComponent<ChoosePanel>().DestoryBtn();//销毁图形
 
-                        //   GetComponent<PhotonView>().RPC("judgeSuccess", PhotonTargets.AllBuffered,x, y,CurrentSquareName,CurrentSquare.rotationFlag,CurrentSquare.symmetryFlag,a1,b1,c1,d1,e1);
-                        //   print("OK,可以放下,第一次");    
-                        // judgeSuccess(x, y, CurrentSquareName, CurrentSquare.rotationFlag, CurrentSquare.symmetryFlag, a1, b1, c1, d1, e1);
+                judgeAround(x, y);
 
+                //if (firstFour > 0) {
+                //    print("firstfour");
+                //    //四个角的判断
+                //    if (judgeFirstTime(x, y, CurrentSquare.model, CurrentSquare.color)) {
+                //        print("OK,可以放下,第一次");
+                //        //setModel();
+                //        GameObject.Find("Canvas").GetComponent<ChoosePanel>().DestoryBtn();//销毁图形
 
+                //        //   GetComponent<PhotonView>().RPC("judgeSuccess", PhotonTargets.AllBuffered,x, y,CurrentSquareName,CurrentSquare.rotationFlag,CurrentSquare.symmetryFlag,a1,b1,c1,d1,e1);
+                //        //   print("OK,可以放下,第一次");    
+                //        // judgeSuccess(x, y, CurrentSquareName, CurrentSquare.rotationFlag, CurrentSquare.symmetryFlag, a1, b1, c1, d1, e1);
 
-                        NetManager.Instance.TransferMessage(MessageFormater.formatChessDoneMessage(x, y, CurrentSquareName, CurrentSquare.rotationFlag, CurrentSquare.symmetryFlag, CurrentSquare.model));
+                //        NetManager.Instance.TransferMessage(MessageFormater.formatChessDoneMessage(x, y, CurrentSquareName, CurrentSquare.rotationFlag, CurrentSquare.symmetryFlag, CurrentSquare.model));
 
-                    }
-                } else if (judge(x, y, CurrentSquare.model, CurrentSquare.color)) //判断是否可以放下
-                  {
-                    //  setModel();
-                    GameObject.Find("Canvas").GetComponent<ChoosePanel>().DestoryBtn();//销毁图形
-                    print("OK,可以放下,后面");                                                                 //   GetComponent<PhotonView>().RPC("judgeSuccess", PhotonTargets.AllBuffered, x, y, CurrentSquareName, CurrentSquare.rotationFlag, CurrentSquare.symmetryFlag, a1, b1, c1, d1, e1);
-                    NetManager.Instance.TransferMessage(MessageFormater.formatChessDoneMessage(x, y, CurrentSquareName, CurrentSquare.rotationFlag, CurrentSquare.symmetryFlag, CurrentSquare.model));
-                }
+                //    }
+                //} else if (judge(x, y, CurrentSquare.model, CurrentSquare.color)) //判断是否可以放下
+                //  {
+                //    //  setModel();
+                //    GameObject.Find("Canvas").GetComponent<ChoosePanel>().DestoryBtn();//销毁图形
+                //    print("OK,可以放下,后面");                                                                 //   GetComponent<PhotonView>().RPC("judgeSuccess", PhotonTargets.AllBuffered, x, y, CurrentSquareName, CurrentSquare.rotationFlag, CurrentSquare.symmetryFlag, a1, b1, c1, d1, e1);
+                //    NetManager.Instance.TransferMessage(MessageFormater.formatChessDoneMessage(x, y, CurrentSquareName, CurrentSquare.rotationFlag, CurrentSquare.symmetryFlag, CurrentSquare.model));
+                //}
+
             }
         }
     }
+
+    private void judgeAround(int x, int y) {
+
+        if (judgeOverall(x, y)) {
+            GameObject.Find("Canvas").GetComponent<ChoosePanel>().DestoryBtn();//销毁图形
+            MessageBean message = MessageFormater.formatChessDoneMessage(x, y, CurrentSquareName, CurrentSquare.rotationFlag, CurrentSquare.symmetryFlag, CurrentSquare.model);
+            NetManager.Instance.TransferMessage(message);
+        } else {
+            foreach (ChessPoint ponit in getAroundPoints(x, y)) {
+                if (judgeOverall(ponit.x, ponit.y)) {
+                    GameObject.Find("Canvas").GetComponent<ChoosePanel>().DestoryBtn();//销毁图形
+                    MessageBean message = MessageFormater.formatChessDoneMessage(ponit.x, ponit.y, CurrentSquareName, CurrentSquare.rotationFlag, CurrentSquare.symmetryFlag, CurrentSquare.model);
+                    NetManager.Instance.TransferMessage(message);
+                    return;
+                }
+            }
+        }
+
+    }
+
+    private List<ChessPoint> getAroundPoints(int x, int y) {
+        List<ChessPoint> points = new List<ChessPoint>(8);
+        points.Add(new ChessPoint(x - 1, y - 1));
+        points.Add(new ChessPoint(x - 1, y));
+        points.Add(new ChessPoint(x - 1, y + 1));
+        points.Add(new ChessPoint(x + 1, y - 1));
+        points.Add(new ChessPoint(x + 1, y));
+        points.Add(new ChessPoint(x + 1, y + 1));
+        points.Add(new ChessPoint(x, y - 1));
+        points.Add(new ChessPoint(x, y + 1));
+
+        return points;
+    }
+
+
+    private bool judgeOverall(int x, int y) {
+
+
+        if (firstFour > 0 && judgeFirstTime(x, y, CurrentSquare.model, CurrentSquare.color)) {
+            print("firstfour");
+            //四个角的判断
+
+            print("OK,可以放下,第一次");
+            //setModel();
+
+            //   GetComponent<PhotonView>().RPC("judgeSuccess", PhotonTargets.AllBuffered,x, y,CurrentSquareName,CurrentSquare.rotationFlag,CurrentSquare.symmetryFlag,a1,b1,c1,d1,e1);
+            //   print("OK,可以放下,第一次");    
+            // judgeSuccess(x, y, CurrentSquareName, CurrentSquare.rotationFlag, CurrentSquare.symmetryFlag, a1, b1, c1, d1, e1);
+
+            // NetManager.Instance.TransferMessage(MessageFormater.formatChessDoneMessage(x, y, CurrentSquareName, CurrentSquare.rotationFlag, CurrentSquare.symmetryFlag, CurrentSquare.model));
+            return true;
+        } else if (judge(x, y, CurrentSquare.model, CurrentSquare.color)) //判断是否可以放下
+          {
+            //  setModel();
+            // GameObject.Find("Canvas").GetComponent<ChoosePanel>().DestoryBtn();//销毁图形
+            print("OK,可以放下,后面");
+            //   GetComponent<PhotonView>().RPC("judgeSuccess", PhotonTargets.AllBuffered, x, y, CurrentSquareName, CurrentSquare.rotationFlag, CurrentSquare.symmetryFlag, a1, b1, c1, d1, e1);
+            return true;
+        }
+
+        return false;
+    }
+
 
     void intiChessBoard() //初始化棋盘
     {

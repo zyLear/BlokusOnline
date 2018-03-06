@@ -170,8 +170,18 @@ public class NetManager : Singleton<NetManager> {
             case OperationCode.START_BLOKUS: startBlokus(message); break;
             case OperationCode.CHESS_DONE: chessDone(message); break;
             case OperationCode.GIVE_UP: giveUp(message); break;
+            case OperationCode.CHAT_IN_GAME:chatInGame(message);break;
             default: break;
         }
+    }
+
+    private void chatInGame(MessageBean message) {
+
+        if (message.statusCode == StatusCode.SUCCESS) {
+            BLOKUSChatMessage bLOKUSChatMessage = ProtobufHelper.DederializerFromBytes<BLOKUSChatMessage>(message.data);
+            GameObject.Find("BlokusUIController").SendMessage("chatInGame",bLOKUSChatMessage.chatMessage);
+        }
+
     }
 
     private void giveUp(MessageBean message) {
@@ -246,7 +256,7 @@ public class NetManager : Singleton<NetManager> {
 
 
     public void show() {
-
+        print("BlokusOnline");
     }
 
 }

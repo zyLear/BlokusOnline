@@ -206,7 +206,7 @@ public class UIController : MonoBehaviour {
         //} else {
         //    roomOptions = new RoomOptions() { IsVisible = true, MaxPlayers = 4 };
         //}
-        GameCache.roomNameRequest = roomName;
+        //GameCache.roomNameRequest = roomName;
         //  = GameObject.Find("ToggleGroup").GetComponent<ToggleGroup>();
         if (toggleFour.isOn) {
             NetManager.Instance.TransferMessage(MessageFormater.createRoom(roomName, RoomType.BLOKUS_FOUR));
@@ -237,75 +237,12 @@ public class UIController : MonoBehaviour {
 
 
 
-    //public void OnBackLobby() {
-    //    print("back");
-    //    PanelChange(panel);
-    //    PanelChange(room);
-    //    PhotonNetwork.LeaveRoom();
-    //}
 
 
 
-    //public void OnReady() {
-    //    if (!IsSuitColor()) {
-    //        return;
-    //    }
-    //    MyGetReady();
-    //    myPhotonView.RPC("MatchGetReady", PhotonTargets.Others);
-    //}
-
-    //public void OnChoiceBlack() {
-    //    MyGetColor("black");
-    //    myPhotonView.RPC("MatchGetColor", PhotonTargets.Others, "black");
-    //}
-
-    //public void OnChoiceWhite() {
-    //    MyGetColor("white");
-    //    myPhotonView.RPC("MatchGetColor", PhotonTargets.Others, "white");
-    //}
-
-    //public void OnUISure() {
-    //    PanelChange(message);
-    //}
 
 
-    //void OnJoinedLobby()           //加入大厅成功
-    //{
-    //    GameName.GetComponent<Text>().text = PhotonNetwork.lobby.Name;
-    //    PanelChange(ChooseGame);
-    //    PanelChange(panel);
-    //    print("进入大厅成功");
-    //}
 
-    //void joinRoomSuccess()           //加入房间成功
-    //{
-    //    yourName = getName.text;
-    //    //if (message.position.y == 0) {
-    //    //    message.position = new Vector3(0, -1080, 0);
-    //    //}
-    //    //PhotonNetwork.player.NickName = yourName;
-
-    //    //if (PhotonNetwork.lobby.Name.Equals("Gobang")) {
-    //    //    GetComponent<PhotonView>().RPC("UpdateRoomInfo", PhotonTargets.All);
-    //    //    PanelChange(room);
-    //    //} else {
-    //    //    GameObject.Find("BlokusRoomControl").GetComponent<BlokusRoomControl>().JoinRoomSucceed();
-    //    //    PanelChange(BlokusRoom);
-    //    //}
-
-    //    //PanelChange(Information);
-    //    //PanelChange(panel);
-    //}
-
-
-    //void OnPhotonJoinRoomFailed()        //房间加入失败  
-    //{
-    //    print("房间加入失败");
-    //    UISureText.text = "加入房间失败！";
-    //    PanelChange(message);
-    //    PanelChange(Information);
-    //    OnReceivedRoomListUpdate();
-    //}
 
     //void OnPhotonRandomJoinFailed()  //加入随机房间失败
     //{
@@ -316,108 +253,41 @@ public class UIController : MonoBehaviour {
     //    OnReceivedRoomListUpdate();
     //}
 
-    //void OnPhotonCreateGameFailed()  //创建游戏房间失败
-    //{
-    //    PanelChange(Information);
-    //    PanelChange(message);
-    //    UISureText.text = "创建房间失败！";
-    //}
-
-    //void OnReceivedRoomListUpdate()   //房间列表更新
-    //{
-    //    print("改变");
-
-    //    foreach (GameObject r in roomList) {
-    //        Destroy(r);
-    //    }
-    //    roomList.Clear();
-    //    foreach (RoomInfo r in PhotonNetwork.GetRoomList()) {
-    //        GameObject room = (GameObject)Instantiate(roomItem);
-    //        roomList.Add(room);
-    //        room.transform.SetParent(roomContent.transform);
-
-    //        RoomData rd = room.GetComponent<RoomData>();
-    //        rd.roomName = r.Name;
-    //        rd.connectPlayer = r.PlayerCount;
-    //        rd.maxPlayer = r.MaxPlayers;
-    //        rd.ShowRoomInfo();
-
-    //        room.GetComponent<Button>().onClick.AddListener(delegate {
-    //            if (IsNameNull()) {
-    //                return;
-    //            }
-    //            PhotonNetwork.JoinRoom(rd.roomName);
-    //        });
-    //    }
-    //}
 
 
-    //private bool IsSuitColor() {
-    //    if (!Message.myChoice.Equals("") && !Message.matchChoice.Equals("") && !Message.myChoice.Equals(Message.matchChoice)) {
-    //        return true;
-    //    }
-    //    return false;
-    //}
+    void OnRoomListUpdate()   //房间列表更新
+    {
+        //print("改变");
+
+        //foreach (GameObject r in roomList) {
+        //    Destroy(r);
+        //}
+        //roomList.Clear();
+        //foreach (RoomInfo r in PhotonNetwork.GetRoomList()) {
+        //    GameObject room = (GameObject)Instantiate(roomItem);
+        //    roomList.Add(room);
+        //    room.transform.SetParent(roomContent.transform);
+
+        //    RoomData rd = room.GetComponent<RoomData>();
+        //    rd.roomName = r.Name;
+        //    rd.connectPlayer = r.PlayerCount;
+        //    rd.maxPlayer = r.MaxPlayers;
+        //    rd.ShowRoomInfo();
+
+        //    room.GetComponent<Button>().onClick.AddListener(delegate {
+        //        if (IsNameNull()) {
+        //            return;
+        //        }
+        //        PhotonNetwork.JoinRoom(rd.roomName);
+        //    });
+        //}
+    }
 
 
 
 
-    //[PunRPC]
-    //public void MatchGetColor(string color) {
-    //    Message.matchChoice = color;
-    //    UpdateRoomInfo();
-    //}
-
-    //public void MyGetColor(string color) {
-    //    Message.myChoice = color;
-    //    UpdateRoomInfo();
-    //}
 
 
-
-    //[PunRPC]
-    //public void MatchGetReady() {
-    //    Message.matchReady = !Message.matchReady;
-    //    UpdateRoomInfo();
-    //    if (Message.yourReady && Message.matchReady) {
-    //        PanelChange(room);
-    //        Application.LoadLevelAdditive("Gobang");
-
-    //    }
-    //}
-
-    //public void MyGetReady() {
-    //    Message.yourReady = !Message.yourReady;
-    //    UpdateRoomInfo();
-    //    if (Message.yourReady && Message.matchReady) {
-    //        PanelChange(room);
-    //        Application.LoadLevelAdditive("Gobang");
-    //    }
-    //}
-
-    //[PunRPC]
-    //public void UpdateRoomInfo() {
-    //    roomNameLabel.text = "房间名字：" + PhotonNetwork.room.Name;
-    //    yourNameLabel.text = "你的名字：" + yourName;
-    //    PhotonPlayer[] op = PhotonNetwork.otherPlayers;
-    //    if (op.Length > 0) {
-    //        matchNameLabel.text = "对手的名字：" + op[0].NickName;
-    //    }
-    //    matchChoiceLabel.text = "对手选择的颜色：" + Message.matchChoice;
-    //    yourChoiceLabel.text = "你选择的颜色:" + Message.myChoice;
-    //    readyLabel.text = "准备状态:" + (Message.yourReady ? "已准备" : "未准备");
-    //    getMatchReady.text = "对手准备状态:" + (Message.matchReady ? "已准备" : "未准备");
-    //}
-
-
-    //public bool IsNameNull() {
-    //    if (getName.text.Equals("")) {
-    //        UISureText.text = "名字不能为空！";
-    //        PanelChange(message);
-    //        return true;
-    //    }
-    //    return false;
-    //}
 
     public bool isRoomNameNull() {
         if (roomNameInput.text.Equals("")) {
