@@ -33,7 +33,7 @@ public class MessageFormater {
         return message;
     }
 
-    internal static MessageBean formatLoginMessage(string accountText, string password) {
+    public static MessageBean formatLoginMessage(string accountText, string password) {
         BLOKUSAccount account = new BLOKUSAccount();
         account.account = accountText;
         account.password = password;
@@ -82,14 +82,14 @@ public class MessageFormater {
         return message;
     }
 
-    internal static MessageBean formatFailMessage() {
+    public static MessageBean formatFailMessage() {
         MessageBean message = new MessageBean();
         message.operationCode = OperationCode.FAIL;
         message.statusCode = StatusCode.SUCCESS;
         return message;
     }
 
-    internal static MessageBean formatChessDoneMessage(int x, int y, string currentSquareName, int rotationFlag, int symmetryFlag, int[,] model) {
+    public static MessageBean formatChessDoneMessage(int x, int y, string currentSquareName, int rotationFlag, int symmetryFlag, int[,] model) {
 
         MessageBean message = new MessageBean();
         message.operationCode = OperationCode.CHESS_DONE;
@@ -106,7 +106,7 @@ public class MessageFormater {
         return message;
     }
 
-    internal static MessageBean formatGiveUpMessage(int myColor) {
+    public static MessageBean formatGiveUpMessage(int myColor) {
         MessageBean message = new MessageBean();
         message.operationCode = OperationCode.GIVE_UP;
         message.statusCode = StatusCode.SUCCESS;
@@ -115,6 +115,19 @@ public class MessageFormater {
         bLOKUSChooseColor.color = myColor;
         message.data = ProtobufHelper.SerializerToBytes(bLOKUSChooseColor);
         return message;
+    }
+
+    public static MessageBean formatChatInGameMessage(string str) {
+
+        MessageBean message = new MessageBean();
+        message.operationCode = OperationCode.CHAT_IN_GAME;
+        message.statusCode = StatusCode.SUCCESS;
+
+        BLOKUSChatMessage bLOKUSChatMessage = new BLOKUSChatMessage();
+        bLOKUSChatMessage.chatMessage = str;
+        message.data = ProtobufHelper.SerializerToBytes(bLOKUSChatMessage);
+        return message;
+
     }
 
     private static byte[] getModelBytes(int[,] model) {
@@ -136,6 +149,6 @@ public class MessageFormater {
         //}
     }
 
-
+   
 }
 

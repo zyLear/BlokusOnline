@@ -59,10 +59,9 @@ public class BlokusUIController : MonoBehaviour {
                                           //   InitBlokusRoomUIInfo();
     }
 
-    //public void Update()
-    //{
-    //   // chatContent.text = chatContentString;
-    //    //testText.text = chatContentString;
+    //public void Update() {
+    //    chatContent.text = chatContentString;
+    ////    testText.text = chatContentString;
 
     //}
 
@@ -164,15 +163,15 @@ public class BlokusUIController : MonoBehaviour {
 
     public void ChangeMessageByYourself(int color) {
         string str = "<size=33>" + getColor(color) + "方已输！</size>";
-        SendMessageToAll(str);
+     //   SendMessageToAll(str);
     }
 
-    //public void Siut()
-    //{
-    //    print("按下发送按钮");
-    //    string str = "<color="+getColor(myBlokusController.myColor) +">" + PhotonNetwork.player.NickName + "说：" + inputInfo.text + "</color>";
-    //    GetComponent<PhotonView>().RPC("SendMessageToAll", PhotonTargets.All, str);
-    //}
+    public void OnSendMessage() {
+        print("按下发送按钮");
+        string str = "<color=" + getColor(myBlokusController.myColor) + ">" + GameCache.account + "(player)：" + inputInfo.text + "</color>";
+        // GetComponent<PhotonView>().RPC("SendMessageToAll", PhotonTargets.All, str);
+        NetManager.Instance.TransferMessage(MessageFormater.formatChatInGameMessage(str));
+    }
 
     public void OnGiveUp() {
         if (myBlokusController.loseCount < 3) {
@@ -211,9 +210,9 @@ public class BlokusUIController : MonoBehaviour {
         myUIController.showPanel(myUIController.blokusRoomPanel);
 
         if (GameCache.roomType == RoomType.BLOKUS_FOUR) {
-            Application.UnloadLevel("BlokusTP");
-        } else {
             Application.UnloadLevel("Blokus");
+        } else {
+            Application.UnloadLevel("BlokusTP");
         }
     }
 
@@ -223,7 +222,7 @@ public class BlokusUIController : MonoBehaviour {
 
     public void BlokusUIUpdate(int color)   //其他脚本调用的函数
     {
-        CurrentColor.text = "目前下棋的颜色:" + getColor(color);
+        CurrentColor.text = "Current Color:" + getColor(color);
         deadline = DEADLINE_TIME;
         currentShowTime = DEADLINE_TIME;
     }
@@ -336,7 +335,12 @@ public class BlokusUIController : MonoBehaviour {
 
 
     // [PunRPC]
-    public void SendMessageToAll(string message) {
+    //public void SendMessageToAll(string message) {
+    //    chatContent.text = chatContent.text + "\n" + message;
+    //    scrollbar.value = 0;
+    //}
+
+    public void chatInGame(string message) {
         chatContent.text = chatContent.text + "\n" + message;
         scrollbar.value = 0;
     }
