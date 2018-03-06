@@ -25,13 +25,15 @@ public class BlokusUIController : MonoBehaviour {
     public Scrollbar scrollbar;
     public Text CurrentColor;
     public Text ShowTime;
-    const int DEADLINE_TIME = 10;
+    const int DEADLINE_TIME = 120;
 
 
     const int blue = Color.BLUE;//定义颜色常量
     const int green = Color.GREEN;
     const int red = Color.RED;
     const int yellow = Color.YELLOW;
+
+    private string currentScenseName;
 
     float deadline = DEADLINE_TIME;
     int currentShowTime = DEADLINE_TIME;
@@ -44,7 +46,15 @@ public class BlokusUIController : MonoBehaviour {
 
     public void Start() {
         myUIController = GameObject.Find("UIController").GetComponent<UIController>();
+        //GameObject gameObject = GameObject.Find("BlokusController");
+        //if (gameObject != null) {
+        //    myBlokusController = gameObject.GetComponent<BlokusController>();
+        //    currentScenseName = "Blokus";
+        //} else {
         myBlokusController = GameObject.Find("BlokusController").GetComponent<BlokusController>();
+        //    currentScenseName = "BlokusTP";
+        //}
+
         StartCoroutine(JudgeTimeOut());   //开启协程
                                           //   InitBlokusRoomUIInfo();
     }
@@ -110,7 +120,7 @@ public class BlokusUIController : MonoBehaviour {
                 return;
             }
 
-            if (BlokusController.maxPlayersCount - myBlokusController.loseCount == 2) {
+            if (myBlokusController.MAX_PLAYERS_COUNT - myBlokusController.loseCount == 2) {
                 int nextColor = myBlokusController.getNextColor(color);
                 Debug.LogError("nextColor:" + nextColor);
                 if (color == myBlokusController.myColor) {
@@ -200,7 +210,11 @@ public class BlokusUIController : MonoBehaviour {
 
         myUIController.showPanel(myUIController.blokusRoomPanel);
 
-        Application.UnloadLevel("Blokus");
+        if (GameCache.roomType == RoomType.BLOKUS_FOUR) {
+            Application.UnloadLevel("BlokusTP");
+        } else {
+            Application.UnloadLevel("Blokus");
+        }
     }
 
     public void OnButtonOnMessage() {

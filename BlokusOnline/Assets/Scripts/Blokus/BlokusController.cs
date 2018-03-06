@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class BlokusController : MonoBehaviour {
 
+    public int MAX_PLAYERS_COUNT; //玩家数量
+    public int MAX_ROW_AND_COLUMN;
+
     public GameObject currentCenterPrefab;
 
     //每个棋子的预设体
@@ -96,16 +99,11 @@ public class BlokusController : MonoBehaviour {
     public GameObject yellow5_k_p;
     public GameObject yellow5_l_p;
 
-    int[] a1 = new int[5];   //记录用来传递的一维数组信息(由二维数组拆成的五个一维数组)
-    int[] b1 = new int[5];
-    int[] c1 = new int[5];
-    int[] d1 = new int[5];
-    int[] e1 = new int[5];
-    public static int maxPlayersCount = 2; //玩家数量
-    int firstFour = maxPlayersCount;     //判断前四次下棋子
+
+    int firstFour;     //判断前四次下棋子
     string CurrentSquareName;   //当前选择的棋子的名字
     bool isSelect = false;     //是否已经选择棋子
-    int[,] allChess = new int[20, 20];    //棋盘数组，记录棋局信息
+    int[,] allChess;  //棋盘数组，记录棋局信息
     Square CurrentSquare;   //当前操作的棋子对象   
     const int blue = 1;//定义颜色常量
     const int green = 2;
@@ -122,6 +120,21 @@ public class BlokusController : MonoBehaviour {
     public static bool gameOver = false;
 
 
+
+    // Use this for initialization
+    void Start() {
+        firstFour = MAX_PLAYERS_COUNT;
+        allChess = new int[MAX_ROW_AND_COLUMN, MAX_ROW_AND_COLUMN];
+        GameObject.Find("BlokusCamera").GetComponent<Camera>().enabled = true;
+        GameObject.Find("StartCamera").GetComponent<Camera>().enabled = false;
+
+        loseColor = new int[5] { 0, 0, 0, 0, 0 };
+        intiChessBoard();
+        getMyColor();
+        InitSquare.init(this);
+
+        // myColor = Temp.myColor;
+    }
 
     //public void getFailCurrent()
     //{
@@ -169,31 +182,20 @@ public class BlokusController : MonoBehaviour {
 
     public int getNextColor(int color) {
         color++;
-        if (color > maxPlayersCount) {
+        if (color > MAX_PLAYERS_COUNT) {
             color = 1;
         }
 
         while (loseColor[color] == 1) {
             color++;
-            if (color > maxPlayersCount) {
+            if (color > MAX_PLAYERS_COUNT) {
                 color = 1;
             }
         }
         return color;
     }
 
-    // Use this for initialization
-    void Start() {
-        GameObject.Find("BlokusCamera").GetComponent<Camera>().enabled = true;
-        GameObject.Find("StartCamera").GetComponent<Camera>().enabled = false;
 
-        loseColor = new int[5] { 0, 0, 0, 0, 0 };
-        intiChessBoard();
-        getMyColor();
-        InitSquare initSquare = new InitSquare();
-
-        // myColor = Temp.myColor;
-    }
 
     // Update is called once per frame
     void Update() {
@@ -255,8 +257,8 @@ public class BlokusController : MonoBehaviour {
 
     void intiChessBoard() //初始化棋盘
     {
-        for (int i = 0; i < 20; i++) {
-            for (int j = 0; j < 20; j++) {
+        for (int i = 0; i < MAX_ROW_AND_COLUMN; i++) {
+            for (int j = 0; j < MAX_ROW_AND_COLUMN; j++) {
                 allChess[i, j] = 0;
             }
         }
@@ -421,7 +423,7 @@ public class BlokusController : MonoBehaviour {
 
     //判断触摸出界
     bool touchOutLine(int x, int y) {
-        if (x < 0 || x > 19 || y < 0 || y > 19) {
+        if (x < 0 || x > MAX_ROW_AND_COLUMN - 1 || y < 0 || y > MAX_ROW_AND_COLUMN - 1) {
             return true;
         }
         return false;
@@ -429,7 +431,7 @@ public class BlokusController : MonoBehaviour {
 
     //判断棋子位置是否出界
     bool outLine(int x, int y) {
-        if (x < 0 || x > 19 || y < 0 || y > 19) {
+        if (x < 0 || x > MAX_ROW_AND_COLUMN - 1 || y < 0 || y > MAX_ROW_AND_COLUMN - 1) {
             return true;
         }
         return false;
@@ -498,19 +500,30 @@ public class BlokusController : MonoBehaviour {
                     int wx = x - 2 + i;
                     int wy = y - 2 + j;
                     //print(wx + "++" + wy);       
-                    switch (color) {
-                        case green:
-                            if (wx == 0 && wy == 0) { return true; }
-                            break;
-                        case red:
-                            if (wx == 0 && wy == 19) { return true; }
-                            break;
-                        case yellow:
-                            if (wx == 19 && wy == 19) { return true; }
-                            break;
-                        case blue:
-                            if (wx == 19 && wy == 0) { return true; }
-                            break;
+                    if (MAX_PLAYERS_COUNT == 2) {
+                        switch (color) {
+                            case green:
+                                if (wx == 0 && wy == MAX_ROW_AND_COLUMN - 1) { return true; }
+                                break;
+                            case blue:
+                                if (wx == MAX_ROW_AND_COLUMN - 1 && wy == 0) { return true; }
+                                break;
+                        }
+                    } else {
+                        switch (color) {
+                            case green:
+                                if (wx == 0 && wy == 0) { return true; }
+                                break;
+                            case red:
+                                if (wx == 0 && wy == MAX_ROW_AND_COLUMN - 1) { return true; }
+                                break;
+                            case yellow:
+                                if (wx == MAX_ROW_AND_COLUMN - 1 && wy == MAX_ROW_AND_COLUMN - 1) { return true; }
+                                break;
+                            case blue:
+                                if (wx == MAX_ROW_AND_COLUMN - 1 && wy == 0) { return true; }
+                                break;
+                        }
                     }
                 }
             }

@@ -8,15 +8,16 @@ public class InitSquare : MonoBehaviour
     const int green = 2;
     const int red = 3;
     const int yellow = 4;
-    BlokusController c;
-    public InitSquare()
-    {
-        c = GameObject.Find("BlokusController").GetComponent<BlokusController>();
-        init();
-    }
+    //static BlokusController c;
+    //public static initSquares(BlokusController blokusController)
+    //{
+    //    // c = GameObject.Find("BlokusController").GetComponent<BlokusController>();
+    //    c = blokusController;
+    //    init(blokusController);
+    //}
 
 
-    public void init()
+    public static void init(BlokusController c)
     {
         int[,] green1_a_m = new int[5, 5]
       {
