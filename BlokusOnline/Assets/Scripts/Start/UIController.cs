@@ -13,7 +13,7 @@ public class UIController : MonoBehaviour {
     //string panel = "Panel";
     //string room = "Room";
     public Toggle toggleFour;
-  //  public Toggle toggleTwo;
+    //  public Toggle toggleTwo;
 
     public Transform loginPanel;
     public Text accountText;
@@ -39,14 +39,16 @@ public class UIController : MonoBehaviour {
     public Button joinRoomButton;
 
 
+    public GameObject roomContent;
+    public GameObject roomItem;
+
 
 
 
 
     Text UISureText;
 
-    public GameObject roomContent;
-    public GameObject roomItem;
+
     public GameObject GameName;//GameName Text
     public Transform Information;
 
@@ -79,6 +81,9 @@ public class UIController : MonoBehaviour {
     bool flag = true;
     //float i = 5;
 
+    private const int UPDATE_ROOM_LIST_TIME_INTERVAL_SECONDS = 2;
+    private float timeTemp = UPDATE_ROOM_LIST_TIME_INTERVAL_SECONDS;
+
     void Awake() {
         //   PhotonNetwork.autoJoinLobby = false; 
     }
@@ -105,8 +110,16 @@ public class UIController : MonoBehaviour {
         //   StartCoroutine(JudgeConnected());
     }
 
+    private void Update() {
+        timeTemp -= Time.deltaTime;
+        if (timeTemp < 0) {
+            NetManager.Instance.TransferMessage(MessageFormater.formatRoomListMessage());
+            timeTemp = UPDATE_ROOM_LIST_TIME_INTERVAL_SECONDS;
+        }
+    }
+
     private void joinRoom() {
-        GameCache.roomNameRequest = joinRoomNameInput.text;
+        //  GameCache.roomNameRequest = joinRoomNameInput.text;
         NetManager.Instance.TransferMessage(MessageFormater.formatJoinRoomMessage(joinRoomNameInput.text));
     }
 
@@ -255,32 +268,35 @@ public class UIController : MonoBehaviour {
 
 
 
-    void OnRoomListUpdate()   //房间列表更新
+    void OnRoomListUpdate(BLOKUSRoomList roomInfos)   //房间列表更新
     {
         //print("改变");
 
-        //foreach (GameObject r in roomList) {
-        //    Destroy(r);
-        //}
-        //roomList.Clear();
-        //foreach (RoomInfo r in PhotonNetwork.GetRoomList()) {
-        //    GameObject room = (GameObject)Instantiate(roomItem);
-        //    roomList.Add(room);
-        //    room.transform.SetParent(roomContent.transform);
+        foreach (GameObject gameObject in roomList) {
+            Destroy(gameObject);
+        }
+        roomList.Clear();
+        foreach (BLOKUSRoomInfo roomInfo in roomInfos.roomItems) {
+            GameObject room = Instantiate(roomItem, roomContent.transform, false);
+            roomList.Add(room);
+            // room.transform.SetParent(roomContent.transform);
 
-        //    RoomData rd = room.GetComponent<RoomData>();
-        //    rd.roomName = r.Name;
-        //    rd.connectPlayer = r.PlayerCount;
-        //    rd.maxPlayer = r.MaxPlayers;
-        //    rd.ShowRoomInfo();
+            RoomItemData roomItemData = room.GetComponent<RoomItemData>();
+            roomItemData.roomName = roomInfo.roomName;
+            roomItemData.connectPlayer = roomInfo.currentPlayers;
+            roomItemData.roomStatus = roomInfo.RoomStatus;
+            if (roomInfo.roomType == RoomType.BLOKUS_FOUR) {
+                roomItemData.maxPlayer = 4;
+            } else {
+                roomItemData.maxPlayer = 2;
+            }
 
-        //    room.GetComponent<Button>().onClick.AddListener(delegate {
-        //        if (IsNameNull()) {
-        //            return;
-        //        }
-        //        PhotonNetwork.JoinRoom(rd.roomName);
-        //    });
-        //}
+            roomItemData.ShowRoomInfo();
+
+            room.GetComponent<Button>().onClick.AddListener(delegate {
+                NetManager.Instance.TransferMessage(MessageFormater.formatJoinRoomMessage(roomInfo.roomName));
+            });
+        }
     }
 
 
@@ -301,7 +317,7 @@ public class UIController : MonoBehaviour {
 
 
     public void login() {
-        GameCache.accountReqest = accountText.text;
+        //  GameCache.accountReqest = accountText.text;
         NetManager.Instance.TransferMessage(MessageFormater.formatLoginMessage(accountText.text, passwordText.text));
     }
 

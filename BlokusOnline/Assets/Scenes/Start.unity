@@ -2950,7 +2950,7 @@ MonoBehaviour:
   blokusRoomPanel: {fileID: 2059373225}
   joinRoomNameInput: {fileID: 770859576}
   joinRoomButton: {fileID: 243919735}
-  roomContent: {fileID: 0}
+  roomContent: {fileID: 221554288}
   roomItem: {fileID: 1441339283687762, guid: ae972ad6a63686b4895e9adba0691dd0, type: 2}
   GameName: {fileID: 0}
   Information: {fileID: 0}
@@ -8380,7 +8380,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Developing
+  m_Text: Room List
 --- !u!222 &1762779664
 CanvasRenderer:
   m_ObjectHideFlags: 0

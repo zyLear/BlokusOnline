@@ -77,7 +77,7 @@ public class BlokusUIController : MonoBehaviour {
                 int time = (int)deadline;
                 if (time < currentShowTime) {
                     currentShowTime = time;
-                    ShowTime.text = "时间：" + currentShowTime;
+                    ShowTime.text = "Dealine：" + currentShowTime;
                 }
                 yield return 0;
             }
@@ -163,7 +163,7 @@ public class BlokusUIController : MonoBehaviour {
 
     public void ChangeMessageByYourself(int color) {
         string str = "<size=33>" + getColor(color) + "方已输！</size>";
-     //   SendMessageToAll(str);
+        //   SendMessageToAll(str);
     }
 
     public void OnSendMessage() {
@@ -222,7 +222,7 @@ public class BlokusUIController : MonoBehaviour {
 
     public void BlokusUIUpdate(int color)   //其他脚本调用的函数
     {
-        CurrentColor.text = "Current Color:" + getColor(color);
+        CurrentColor.text = "Current : " + getColor(color);
         deadline = DEADLINE_TIME;
         currentShowTime = DEADLINE_TIME;
     }

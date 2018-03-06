@@ -173,7 +173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9264706, g: 0.72210205, b: 0.72210205, a: 1}
+  m_Color: {r: 0.6313726, g: 0.78431374, b: 0.93333334, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -235,6 +235,7 @@ MonoBehaviour:
   roomName: 
   connectPlayer: 0
   maxPlayer: 0
+  roomStatus: 0
   textRoomName: {fileID: 114701970613459972}
   textConnectInfo: {fileID: 114041612970909610}
 --- !u!222 &222127924075288310
