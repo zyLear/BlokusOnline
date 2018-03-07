@@ -52,11 +52,10 @@ public class NetManager : Singleton<NetManager> {
                     Debug.Log("connected!");
                     // TransferMessage();
                     connectSuccess();
-
-
                     break;
                 }
                 Thread.Sleep(5 * 1000);
+                client.Connect(endPoint);
             }
         } catch (Exception e) {
             //TODO
@@ -86,7 +85,9 @@ public class NetManager : Singleton<NetManager> {
         } catch {
             //TODO
             Debug.Log("receive message error");
-         //   GameObject.Find("UIController").SendMessage("","");
+            //   GameObject.Find("UIController").SendMessage("","");
+
+            GameObject.Find("UIController").GetComponent<UIController>().SendMessage("showOffline");
         }
     }
 

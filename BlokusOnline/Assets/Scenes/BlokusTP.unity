@@ -13168,7 +13168,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 891801314}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.99999964
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -23764,7 +23764,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u76EE\u524D\u4E0B\u5B50\u60C5\u51B5"
+  m_Text: 'Current : blue'
 --- !u!222 &1652197719
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -28080,7 +28080,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u65F6\u95F4\uFF1A"
+  m_Text: Time
 --- !u!222 &2012020283
 CanvasRenderer:
   m_ObjectHideFlags: 0

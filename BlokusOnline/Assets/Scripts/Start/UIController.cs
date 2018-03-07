@@ -307,7 +307,7 @@ public class UIController : MonoBehaviour {
 
     public bool isRoomNameNull() {
         if (roomNameInput.text.Equals("")) {
-            promptWithButtonText.text = "please input room name!！";
+            promptWithButtonText.text = "please input room name";
             showPanel(promptWithButtonPanel);
             return true;
         }
@@ -349,6 +349,11 @@ public class UIController : MonoBehaviour {
         if (100 > p.y && p.y > -100) {
             change.position = new Vector3(0, -1080, 0);
         }
+    }
+
+    public void showOffline() {
+        promptText.text = "你已经掉线，请重新登录";
+        showPanel(promptPanel);
     }
 
 }
