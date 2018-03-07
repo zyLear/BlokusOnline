@@ -64,7 +64,7 @@ public class MessageFormater {
         return message;
     }
 
-    internal static MessageBean formatWinMessage() {
+    public static MessageBean formatWinMessage() {
         MessageBean message = new MessageBean();
         message.operationCode = OperationCode.WIN;
         message.statusCode = StatusCode.SUCCESS;
@@ -85,6 +85,13 @@ public class MessageFormater {
     public static MessageBean formatFailMessage() {
         MessageBean message = new MessageBean();
         message.operationCode = OperationCode.FAIL;
+        message.statusCode = StatusCode.SUCCESS;
+        return message;
+    }
+
+    public static MessageBean formatRoomListMessage() {
+        MessageBean message = new MessageBean();
+        message.operationCode = OperationCode.ROOM_LIST;
         message.statusCode = StatusCode.SUCCESS;
         return message;
     }

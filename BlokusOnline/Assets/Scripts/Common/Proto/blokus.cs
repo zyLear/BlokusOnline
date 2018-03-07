@@ -241,4 +241,63 @@ namespace protos.blokus
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"BLOKUSRoomInfo")]
+  public partial class BLOKUSRoomInfo : global::ProtoBuf.IExtensible
+  {
+    public BLOKUSRoomInfo() {}
+    
+    private string _roomName = "";
+    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"roomName", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string roomName
+    {
+      get { return _roomName; }
+      set { _roomName = value; }
+    }
+    private int _roomType = default(int);
+    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"roomType", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int roomType
+    {
+      get { return _roomType; }
+      set { _roomType = value; }
+    }
+    private int _RoomStatus = default(int);
+    [global::ProtoBuf.ProtoMember(3, IsRequired = false, Name=@"RoomStatus", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int RoomStatus
+    {
+      get { return _RoomStatus; }
+      set { _RoomStatus = value; }
+    }
+    private int _currentPlayers = default(int);
+    [global::ProtoBuf.ProtoMember(4, IsRequired = false, Name=@"currentPlayers", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int currentPlayers
+    {
+      get { return _currentPlayers; }
+      set { _currentPlayers = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"BLOKUSRoomList")]
+  public partial class BLOKUSRoomList : global::ProtoBuf.IExtensible
+  {
+    public BLOKUSRoomList() {}
+    
+    private readonly global::System.Collections.Generic.List<BLOKUSRoomInfo> _roomItems = new global::System.Collections.Generic.List<BLOKUSRoomInfo>();
+    [global::ProtoBuf.ProtoMember(1, Name=@"roomItems", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public global::System.Collections.Generic.List<BLOKUSRoomInfo> roomItems
+    {
+      get { return _roomItems; }
+    }
+  
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
 }
