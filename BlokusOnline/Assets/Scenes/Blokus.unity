@@ -28080,7 +28080,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u65F6\u95F4\uFF1A"
+  m_Text: Time
 --- !u!222 &2012020283
 CanvasRenderer:
   m_ObjectHideFlags: 0

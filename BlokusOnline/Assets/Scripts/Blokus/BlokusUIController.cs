@@ -69,7 +69,7 @@ public class BlokusUIController : MonoBehaviour {
     IEnumerator JudgeTimeOut() {
 
         while (true) {
-            if (BlokusController.gameOver) {
+            if (myBlokusController.gameOver) {
                 break;
             }
             while (deadline > 0) {
@@ -131,7 +131,7 @@ public class BlokusUIController : MonoBehaviour {
                 } else {
                     ShowMessage(getColor(nextColor) + "方赢了！");
                 }
-                BlokusController.gameOver = true;
+                myBlokusController.gameOver = true;
                 return;
             }
 

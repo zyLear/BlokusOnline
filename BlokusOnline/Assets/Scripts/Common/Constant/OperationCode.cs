@@ -34,6 +34,8 @@ class OperationCode {
 
     public const short ROOM_LIST = 16;
 
+    public const short REGISTER = 17;
+
 
 
     public const short CONNECT_SUCCESS = 10001;

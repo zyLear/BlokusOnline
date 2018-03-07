@@ -71,7 +71,7 @@ public class BlokusRoomUIController : MonoBehaviour {
 
     private void OnBack() {
         NetManager.Instance.TransferMessage(MessageFormater.formatLeaveRoomMessage());
-        GameCache.isInRoom = true;
+        GameCache.isInRoom = false;
         myUIController.hidePanel(myUIController.blokusRoomPanel);
         myUIController.showPanel(myUIController.roomListPanel);
     }

@@ -117,7 +117,7 @@ public class BlokusController : MonoBehaviour {
     public int myColor = 0;  //玩家的颜色
     public int loseCount = 0;  //已经输的玩家的个数
 
-    public static bool gameOver = false;
+    public bool gameOver = false;
 
 
 
@@ -270,22 +270,30 @@ public class BlokusController : MonoBehaviour {
     }
 
     private void judgeAround(int x, int y) {
+        bool judgeSuccess = false;
+        int lastX = x;
+        int lastY = y;
 
         if (judgeOverall(x, y)) {
-            GameObject.Find("Canvas").GetComponent<ChoosePanel>().DestoryBtn();//销毁图形
-            MessageBean message = MessageFormater.formatChessDoneMessage(x, y, CurrentSquareName, CurrentSquare.rotationFlag, CurrentSquare.symmetryFlag, CurrentSquare.model);
-            NetManager.Instance.TransferMessage(message);
+            judgeSuccess = true;
         } else {
-            foreach (ChessPoint ponit in getAroundPoints(x, y)) {
-                if (judgeOverall(ponit.x, ponit.y)) {
-                    GameObject.Find("Canvas").GetComponent<ChoosePanel>().DestoryBtn();//销毁图形
-                    MessageBean message = MessageFormater.formatChessDoneMessage(ponit.x, ponit.y, CurrentSquareName, CurrentSquare.rotationFlag, CurrentSquare.symmetryFlag, CurrentSquare.model);
-                    NetManager.Instance.TransferMessage(message);
-                    return;
+            foreach (ChessPoint point in getAroundPoints(x, y)) {
+                if (judgeOverall(point.x, point.y)) {
+                    judgeSuccess = true;
+                    lastX = point.x;
+                    lastY = point.y;
+                    break;
                 }
             }
         }
 
+        if (judgeSuccess) {
+            GameObject.Find("Canvas").GetComponent<ChoosePanel>().DestoryBtn();//销毁图形
+            MessageBean message = MessageFormater.formatChessDoneMessage(lastX, lastY, CurrentSquareName, CurrentSquare.rotationFlag, CurrentSquare.symmetryFlag, CurrentSquare.model);
+            BLOKUSChessDoneInfo chessDoneInfo = ProtobufHelper.DederializerFromBytes<BLOKUSChessDoneInfo>(message.data);
+            NetManager.Instance.TransferMessage(message);
+            chessDone(chessDoneInfo);
+        }
     }
 
     private List<ChessPoint> getAroundPoints(int x, int y) {
