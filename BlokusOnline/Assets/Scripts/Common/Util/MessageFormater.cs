@@ -137,6 +137,30 @@ public class MessageFormater {
 
     }
 
+
+
+    internal static MessageBean formatRegisterMessage(string account, string password) {
+
+        MessageBean message = new MessageBean();
+        message.operationCode = OperationCode.REGISTER;
+        message.statusCode = StatusCode.SUCCESS;
+
+        BLOKUSGameAccount gameAccount = new BLOKUSGameAccount();
+        gameAccount.account = account;
+        gameAccount.password = password;
+        message.data = ProtobufHelper.SerializerToBytes(gameAccount);
+        return message;
+    }
+
+
+
+
+
+
+
+
+
+
     private static byte[] getModelBytes(int[,] model) {
         byte[] modelBytes = new byte[25];
 
@@ -156,6 +180,5 @@ public class MessageFormater {
         //}
     }
 
-   
 }
 

@@ -17,7 +17,7 @@ public class UIController : MonoBehaviour {
 
     public Transform loginPanel;
     public Text accountText;
-    public Text passwordText;
+    public InputField passwordText;
 
     public Transform promptWithButtonPanel;
     public Text promptWithButtonText;
@@ -44,34 +44,50 @@ public class UIController : MonoBehaviour {
 
 
 
+    public Transform registerPanel;
+    public Text registerAccountText;
+    public InputField registerPasswordText;
+    public InputField registerRepeatedPasswordText;
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     Text UISureText;
 
 
-    public GameObject GameName;//GameName Text
-    public Transform Information;
+    //public GameObject GameName;//GameName Text
+    //public Transform Information;
 
-    Transform lobby;
-    public Transform panel;
-    public static Transform room;
+    //Transform lobby;
+    //public Transform panel;
+    //public static Transform room;
 
-    public Transform ChooseGame;
-    public Transform BlokusRoom;
+    //public Transform ChooseGame;
+    //public Transform BlokusRoom;
 
-    public GameObject InformationText;
+    //public GameObject InformationText;
 
-    Text getRoomName;
-    public static Text getName;
+    //Text getRoomName;
+    //public static Text getName;
 
-    Text yourNameLabel;
-    Text roomNameLabel;
-    Text matchNameLabel;
-    Text yourChoiceLabel;
-    Text matchChoiceLabel;
-    Text readyLabel;
-    Text matchReadyLabel;
-    Text getMatchReady;
+    //Text yourNameLabel;
+    //Text roomNameLabel;
+    //Text matchNameLabel;
+    //Text yourChoiceLabel;
+    //Text matchChoiceLabel;
+    //Text readyLabel;
+    //Text matchReadyLabel;
+    //Text getMatchReady;
     //  static PhotonView myPhotonView;
 
 
@@ -83,6 +99,10 @@ public class UIController : MonoBehaviour {
 
     private const int UPDATE_ROOM_LIST_TIME_INTERVAL_SECONDS = 2;
     private float timeTemp = UPDATE_ROOM_LIST_TIME_INTERVAL_SECONDS;
+
+
+    private const int REGISTER_REQUEST_TIME_INTERVAL_SECONDS = 5;
+    public float registerTimeTemp = REGISTER_REQUEST_TIME_INTERVAL_SECONDS;
 
     void Awake() {
         //   PhotonNetwork.autoJoinLobby = false; 
@@ -115,6 +135,10 @@ public class UIController : MonoBehaviour {
         if (timeTemp < 0) {
             NetManager.Instance.TransferMessage(MessageFormater.formatRoomListMessage());
             timeTemp = UPDATE_ROOM_LIST_TIME_INTERVAL_SECONDS;
+        }
+
+        if (registerTimeTemp > 0) {
+            registerTimeTemp -= Time.deltaTime;
         }
     }
 
@@ -257,6 +281,7 @@ public class UIController : MonoBehaviour {
 
 
 
+
     //void OnPhotonRandomJoinFailed()  //加入随机房间失败
     //{
     //    print("随机房间加入失败");
@@ -319,6 +344,67 @@ public class UIController : MonoBehaviour {
     public void login() {
         //  GameCache.accountReqest = accountText.text;
         NetManager.Instance.TransferMessage(MessageFormater.formatLoginMessage(accountText.text, passwordText.text));
+    }
+
+    public void onBackToLoginPanel() {
+        hidePanel(registerPanel);
+        showPanel(loginPanel);
+    }
+
+    public void onGoToRegisterPanel() {
+        hidePanel(loginPanel);
+        showPanel(registerPanel);
+    }
+
+    public void onRegister() {
+        string account = registerAccountText.text;
+        string password = registerPasswordText.text;
+        string repeatedPassword = registerRepeatedPasswordText.text;
+
+        if (account.Length < 6 || password.Length < 6) {
+            return;
+        }
+
+        if (!System.Text.RegularExpressions.Regex.IsMatch(account, "^[0-9a-zA-Z]+$")) {
+
+            return;
+        }
+
+        if (!password.Equals(repeatedPassword)) {
+            return;
+        }
+
+        if (registerTimeTemp > 0) {
+            return;
+        }
+
+        NetManager.Instance.TransferMessage(MessageFormater.formatRegisterMessage(account, password));
+        registerTimeTemp = REGISTER_REQUEST_TIME_INTERVAL_SECONDS;
+    }
+
+
+
+    public void registerSuccess() {
+        showPromptWithButtonMessage("register success!");
+    }
+
+    public void registerFail() {
+        showPromptWithButtonMessage("register fail!");
+    }
+
+
+
+
+
+
+
+
+
+
+
+    public void showPromptWithButtonMessage(string message) {
+        promptWithButtonText.text = message;
+        showPanel(promptWithButtonPanel);
     }
 
 

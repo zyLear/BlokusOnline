@@ -11,7 +11,7 @@ using protos.blokus;
 
 public class NetManager : Singleton<NetManager> {
 
-    private string ip = "111.231.66.159"; //172.19.56.1 127.0.0.1   172.19.87.1
+    private string ip = "111.231.66.159"; //172.19.56.1    172.19.87.1   127.0.0.1
     private int port = 9090;
     private Socket client;
     //public Queue<string> messageQueue = new Queue<string>();
@@ -86,7 +86,7 @@ public class NetManager : Singleton<NetManager> {
             //TODO
             Debug.Log("receive message error");
             //   GameObject.Find("UIController").SendMessage("","");
-
+            
             GameObject.Find("UIController").GetComponent<UIController>().SendMessage("showOffline");
         }
     }
@@ -174,7 +174,17 @@ public class NetManager : Singleton<NetManager> {
             case OperationCode.GIVE_UP: giveUp(message); break;
             case OperationCode.CHAT_IN_GAME: chatInGame(message); break;
             case OperationCode.ROOM_LIST: RoomList(message); break;
+            case OperationCode.REGISTER: register(message); break;
+
             default: break;
+        }
+    }
+
+    private void register(MessageBean message) {
+        if (message.statusCode == StatusCode.SUCCESS) {
+            GameObject.Find("UIController").SendMessage("registerSuccess");
+        } else {
+            GameObject.Find("UIController").SendMessage("registerFail");
         }
     }
 
