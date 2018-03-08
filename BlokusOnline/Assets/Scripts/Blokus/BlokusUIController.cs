@@ -98,24 +98,27 @@ public class BlokusUIController : MonoBehaviour {
             //    print(myBlokusController.CurrentColor);
             //    if (myBlokusController.CurrentColor == myBlokusController.myColor) {
             //        ShowMessage("下棋截止时间到，很遗憾，你输了");
-            //        NetManager.Instance.TransferMessage(MessageFormater.formatFailMessage());
+            //        NetManager.Instance.TransferMessage(MessageFormater.formatLoseMessage());
             //    } else {
 
             //    }
             //    break;
             //}
+            // GameObject.Find("sdkfj ");
 
             deadline = DEADLINE_TIME;
             currentShowTime = DEADLINE_TIME;
-            fail(myBlokusController.CurrentColor);
+            lose(myBlokusController.CurrentColor);
 
         }
     }
 
 
-    public void fail(int color) {
+    public void lose(int color) {
         lock (lockObject) {
-            if (myBlokusController.loseColor[color] == 1) {
+            if (myBlokusController.loseColor[color] == 1 ||
+                myBlokusController.gameOver ||
+                myBlokusController.loseCount == 1) {
                 return;
             }
 
@@ -123,7 +126,7 @@ public class BlokusUIController : MonoBehaviour {
                 int nextColor = myBlokusController.getNextColor(color);
                 Debug.LogError("nextColor:" + nextColor);
                 if (color == myBlokusController.myColor) {
-                    NetManager.Instance.TransferMessage(MessageFormater.formatFailMessage());
+                    NetManager.Instance.TransferMessage(MessageFormater.formatLoseMessage());
                     ShowMessage(getColor(nextColor) + "方赢了！");
                 } else if (nextColor == myBlokusController.myColor) {
                     NetManager.Instance.TransferMessage(MessageFormater.formatWinMessage());
@@ -131,17 +134,18 @@ public class BlokusUIController : MonoBehaviour {
                 } else {
                     ShowMessage(getColor(nextColor) + "方赢了！");
                 }
+                myBlokusController.lose(color);
                 myBlokusController.gameOver = true;
                 return;
             }
 
             if (color == myBlokusController.myColor) {
                 ShowMessage("很遗憾，你输了");  //下棋截止时间到，
-                NetManager.Instance.TransferMessage(MessageFormater.formatFailMessage());
+                NetManager.Instance.TransferMessage(MessageFormater.formatLoseMessage());
             } else {
                 ShowMessage(getColor(color) + "方输了！");//"下棋截止时间到，" +
             }
-            myBlokusController.fail(color);
+            myBlokusController.lose(color);
             Debug.Log("lock  end*********************************!!!!!!!!!1");
         }
     }
@@ -183,7 +187,6 @@ public class BlokusUIController : MonoBehaviour {
             }
         }
     }
-
 
 
     //public void OnShow()
@@ -253,7 +256,7 @@ public class BlokusUIController : MonoBehaviour {
     //    {
     //        if (myBlokusController.loseColor[color] == 0)
     //        {
-    //            myBlokusController.fail(color);
+    //            myBlokusController.lose(color);
     //        }
     //    }
 

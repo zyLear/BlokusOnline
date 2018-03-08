@@ -207,7 +207,7 @@ public class NetManager : Singleton<NetManager> {
     private void giveUp(MessageBean message) {
         if (message.statusCode == StatusCode.SUCCESS) {
             BLOKUSChooseColor bLOKUSChooseColor = ProtobufHelper.DederializerFromBytes<BLOKUSChooseColor>(message.data);
-            GameObject.Find("BlokusUIController").SendMessage("fail", bLOKUSChooseColor.color);
+            GameObject.Find("BlokusUIController").SendMessage("lose", bLOKUSChooseColor.color);
         }
     }
 

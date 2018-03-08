@@ -420,7 +420,7 @@ public class BlokusController : MonoBehaviour {
     //}
 
     // [PunRPC]
-    public void fail(int color) {
+    public void lose(int color) {
         if (loseCount == 3) {
             //color赢啦
             return;
