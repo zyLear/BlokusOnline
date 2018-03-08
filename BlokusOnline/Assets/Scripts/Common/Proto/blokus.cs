@@ -326,4 +326,86 @@ namespace protos.blokus
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"BLOKUSRankItem")]
+  public partial class BLOKUSRankItem : global::ProtoBuf.IExtensible
+  {
+    public BLOKUSRankItem() {}
+    
+    private string _account = "";
+    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"account", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string account
+    {
+      get { return _account; }
+      set { _account = value; }
+    }
+    private int _rankScore = default(int);
+    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"rankScore", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int rankScore
+    {
+      get { return _rankScore; }
+      set { _rankScore = value; }
+    }
+    private int _winCount = default(int);
+    [global::ProtoBuf.ProtoMember(3, IsRequired = false, Name=@"winCount", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int winCount
+    {
+      get { return _winCount; }
+      set { _winCount = value; }
+    }
+    private int _loseCount = default(int);
+    [global::ProtoBuf.ProtoMember(4, IsRequired = false, Name=@"loseCount", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int loseCount
+    {
+      get { return _loseCount; }
+      set { _loseCount = value; }
+    }
+    private int _escapeCount = default(int);
+    [global::ProtoBuf.ProtoMember(5, IsRequired = false, Name=@"escapeCount", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int escapeCount
+    {
+      get { return _escapeCount; }
+      set { _escapeCount = value; }
+    }
+    private string _rank = "";
+    [global::ProtoBuf.ProtoMember(6, IsRequired = false, Name=@"rank", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string rank
+    {
+      get { return _rank; }
+      set { _rank = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"BLOKUSRankInfo")]
+  public partial class BLOKUSRankInfo : global::ProtoBuf.IExtensible
+  {
+    public BLOKUSRankInfo() {}
+    
+    private readonly global::System.Collections.Generic.List<BLOKUSRankItem> _twoPlayersRankItems = new global::System.Collections.Generic.List<BLOKUSRankItem>();
+    [global::ProtoBuf.ProtoMember(1, Name=@"twoPlayersRankItems", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public global::System.Collections.Generic.List<BLOKUSRankItem> twoPlayersRankItems
+    {
+      get { return _twoPlayersRankItems; }
+    }
+  
+    private readonly global::System.Collections.Generic.List<BLOKUSRankItem> _fourPlayersRankItems = new global::System.Collections.Generic.List<BLOKUSRankItem>();
+    [global::ProtoBuf.ProtoMember(2, Name=@"fourPlayersRankItems", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public global::System.Collections.Generic.List<BLOKUSRankItem> fourPlayersRankItems
+    {
+      get { return _fourPlayersRankItems; }
+    }
+  
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
 }

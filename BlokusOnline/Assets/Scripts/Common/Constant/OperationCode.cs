@@ -26,7 +26,7 @@ class OperationCode {
 
     public const short WIN = 12;
 
-    public const short FAIL = 13;
+    public const short LOSE = 13;
 
     public const short GIVE_UP = 14;
 
@@ -35,6 +35,8 @@ class OperationCode {
     public const short ROOM_LIST = 16;
 
     public const short REGISTER = 17;
+
+    public const short RANK_INFO = 18;
 
 
 

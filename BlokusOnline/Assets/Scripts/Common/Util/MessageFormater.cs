@@ -82,9 +82,9 @@ public class MessageFormater {
         return message;
     }
 
-    public static MessageBean formatFailMessage() {
+    public static MessageBean formatLoseMessage() {
         MessageBean message = new MessageBean();
-        message.operationCode = OperationCode.FAIL;
+        message.operationCode = OperationCode.LOSE;
         message.statusCode = StatusCode.SUCCESS;
         return message;
     }
