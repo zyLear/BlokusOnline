@@ -51,7 +51,10 @@ public class UIController : MonoBehaviour {
 
 
 
-
+    public Transform rankPanel;
+    public GameObject fourPlayersRankContent;
+    public GameObject twoPlayersRankContent;
+    public GameObject rankItem;
 
 
 
@@ -92,6 +95,9 @@ public class UIController : MonoBehaviour {
 
 
     ArrayList roomList = new ArrayList();
+    ArrayList fourPlayersRankInfoList = new ArrayList();
+    ArrayList twoPlayersRankInfoList = new ArrayList();
+
     int currentRoomCount = 0;
     string yourName;
     bool flag = true;
@@ -102,6 +108,7 @@ public class UIController : MonoBehaviour {
 
 
     private const int REGISTER_REQUEST_TIME_INTERVAL_SECONDS = 5;
+    [HideInInspector]
     public float registerTimeTemp = REGISTER_REQUEST_TIME_INTERVAL_SECONDS;
 
     void Awake() {
@@ -325,6 +332,61 @@ public class UIController : MonoBehaviour {
     }
 
 
+    public void onBackToRoomListPanelFromRankPanel() {
+        hidePanel(rankPanel);
+        showPanel(roomListPanel);
+    }
+
+    public void onGoToRankPanel() {
+        NetManager.Instance.TransferMessage(MessageFormater.formatRankInfoMessagae());
+        hidePanel(roomListPanel);
+        showPanel(rankPanel);
+    }
+
+    public void updateRankInfo(BLOKUSRankInfo rankInfo) {
+
+        foreach (GameObject gameObject in fourPlayersRankInfoList) {
+            Destroy(gameObject);
+        }
+        fourPlayersRankInfoList.Clear();
+        foreach (GameObject gameObject in twoPlayersRankInfoList) {
+            Destroy(gameObject);
+        }
+        twoPlayersRankInfoList.Clear();
+
+
+        for (int i = 0; i < rankInfo.twoPlayersRankItems.Count; i++) {
+            GameObject rankItemGameObject = Instantiate(rankItem, twoPlayersRankContent.transform, false);
+            twoPlayersRankInfoList.Add(rankItemGameObject);
+
+            BLOKUSRankItem bLOKUSRankItem = rankInfo.twoPlayersRankItems[i];
+            RankItemData rankItemData = rankItemGameObject.GetComponent<RankItemData>();
+            rankItemData.number = i + 1 + "";
+            rankItemData.account = bLOKUSRankItem.account;
+            rankItemData.rankScore = bLOKUSRankItem.rankScore + "";
+            rankItemData.winCount = bLOKUSRankItem.winCount;
+            rankItemData.loseCount = bLOKUSRankItem.loseCount;
+            rankItemData.escapeCount = bLOKUSRankItem.escapeCount;
+            rankItemData.ShowRankInfo();
+        }
+
+        for (int i = 0; i < rankInfo.fourPlayersRankItems.Count; i++) {
+            GameObject rankItemGameObject = Instantiate(rankItem, fourPlayersRankContent.transform, false);
+            fourPlayersRankInfoList.Add(rankItemGameObject);
+
+            BLOKUSRankItem bLOKUSRankItem = rankInfo.fourPlayersRankItems[i];
+            RankItemData rankItemData = rankItemGameObject.GetComponent<RankItemData>();
+            rankItemData.number = i + 1 + "";
+            rankItemData.account = bLOKUSRankItem.account;
+            rankItemData.rankScore = bLOKUSRankItem.rankScore + "";
+            rankItemData.winCount = bLOKUSRankItem.winCount;
+            rankItemData.loseCount = bLOKUSRankItem.loseCount;
+            rankItemData.escapeCount = bLOKUSRankItem.escapeCount;
+            rankItemData.ShowRankInfo();
+        }
+
+
+    }
 
 
 

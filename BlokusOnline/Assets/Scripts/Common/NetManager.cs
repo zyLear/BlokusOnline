@@ -11,7 +11,7 @@ using protos.blokus;
 
 public class NetManager : Singleton<NetManager> {
 
-    private string ip = "111.231.66.159"; //172.19.56.1    172.19.87.1   127.0.0.1
+    private string ip = "127.0.0.1"; //172.19.56.1    172.19.87.1   127.0.0.1  111.231.66.159
     private int port = 9090;
     private Socket client;
     //public Queue<string> messageQueue = new Queue<string>();
@@ -61,6 +61,8 @@ public class NetManager : Singleton<NetManager> {
             //TODO
             Debug.Log(e);
             Debug.Log("connecte to server fail");
+            disconnect();
+            return;
         }
 
         try {
@@ -85,9 +87,10 @@ public class NetManager : Singleton<NetManager> {
         } catch {
             //TODO
             Debug.Log("receive message error");
+            disconnect();
             //   GameObject.Find("UIController").SendMessage("","");
-            
-            GameObject.Find("UIController").GetComponent<UIController>().SendMessage("showOffline");
+
+
         }
     }
 
@@ -99,6 +102,16 @@ public class NetManager : Singleton<NetManager> {
         list.Add(message);
         MessageQueue.put(list);
     }
+
+    private void disconnect() {
+        MessageBean message = new MessageBean();
+        message.operationCode = OperationCode.DISCONNECT;
+        message.statusCode = StatusCode.SUCCESS;
+        List<MessageBean> list = new List<MessageBean>();
+        list.Add(message);
+        MessageQueue.put(list);
+    }
+
 
 
 
@@ -164,7 +177,8 @@ public class NetManager : Singleton<NetManager> {
         Debug.Log("enter");
 
         switch (message.operationCode) {
-            case OperationCode.CONNECT_SUCCESS: connectSucess(); break;
+            case OperationCode.CONNECT_SUCCESS: connectSuccess(message); break;
+            case OperationCode.DISCONNECT: disconnect(message); break;
             case OperationCode.LOGIN: login(message); break;
             case OperationCode.CREATE_ROOM: createRoom(message); break;
             case OperationCode.UPDATE_ROOM_PLAYERS_INFO: updateRoomPlayersInfo(message); break;
@@ -175,8 +189,21 @@ public class NetManager : Singleton<NetManager> {
             case OperationCode.CHAT_IN_GAME: chatInGame(message); break;
             case OperationCode.ROOM_LIST: RoomList(message); break;
             case OperationCode.REGISTER: register(message); break;
+            case OperationCode.RANK_INFO: rankInfo(message); break;
+
 
             default: break;
+        }
+    }
+
+    private void disconnect(MessageBean message) {
+        GameObject.Find("UIController").GetComponent<UIController>().SendMessage("showOffline");
+    }
+
+    private void rankInfo(MessageBean message) {
+        if (message.statusCode == StatusCode.SUCCESS) {
+            BLOKUSRankInfo bLOKUSRankInfo = ProtobufHelper.DederializerFromBytes<BLOKUSRankInfo>(message.data);
+            GameObject.Find("UIController").SendMessage("updateRankInfo", bLOKUSRankInfo);
         }
     }
 
@@ -243,7 +270,7 @@ public class NetManager : Singleton<NetManager> {
         GameObject.Find("BlokusRoomUIController").SendMessage("updateRoomPlayersInfo", bLOKUSRoomPlayerList);
     }
 
-    private void connectSucess() {
+    private void connectSuccess(MessageBean message) {
         GameObject.Find("UIController").SendMessage("hidePanel", GameObject.Find("ConnectionPanel").transform);
         GameObject.Find("UIController").SendMessage("showPanel", GameObject.Find("LoginPanel").transform);
     }

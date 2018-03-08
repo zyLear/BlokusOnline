@@ -153,6 +153,13 @@ public class MessageFormater {
     }
 
 
+    public static MessageBean formatRankInfoMessagae() {
+        MessageBean message = new MessageBean();
+        message.operationCode = OperationCode.RANK_INFO;
+        message.statusCode = StatusCode.SUCCESS;
+
+        return message;
+    }
 
 
 

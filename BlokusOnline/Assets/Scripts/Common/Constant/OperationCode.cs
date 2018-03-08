@@ -38,8 +38,12 @@ class OperationCode {
 
     public const short RANK_INFO = 18;
 
+    public const short PROFILE = 19;
+
 
 
     public const short CONNECT_SUCCESS = 10001;
+
+    public const short DISCONNECT = 10002;
 }
 

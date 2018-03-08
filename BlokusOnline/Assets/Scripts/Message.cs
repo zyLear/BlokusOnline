@@ -4,9 +4,9 @@ using UnityEngine;
 
 
 
-public class Message  {
+public class Message {
 
-	public static string roomName="";
+    public static string roomName = "";
     public static string name = "";
     public static string matchName = "";
     public static string myChoice = "";
