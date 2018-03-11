@@ -115,12 +115,12 @@ public class BlokusUIController : MonoBehaviour {
                     if (GameEvent.TIME_CONSUME == gameEvent) {
                         NetManager.Instance.TransferMessage(MessageFormater.formatLoseMessage());
                     }
-                    ShowMessage(getColor(nextColor) + "player win！");
+                    ShowMessage(getColor(nextColor) + " player win！");
                 } else if (nextColor == myBlokusController.myColor) {
                     NetManager.Instance.TransferMessage(MessageFormater.formatWinMessage());
                     ShowMessage("Congratulations to you on winning this match！");
                 } else {
-                    ShowMessage(getColor(nextColor) + "player win！");
+                    ShowMessage(getColor(nextColor) + " player win！");
                 }
                 myBlokusController.lose(color);
                 myBlokusController.gameOver = true;
@@ -134,7 +134,7 @@ public class BlokusUIController : MonoBehaviour {
                 }
                 //  NetManager.Instance.TransferMessage(MessageFormater.formatLoseMessage());
             } else {
-                ShowMessage(getColor(color) + "player lose");//"下棋截止时间到，" +
+                ShowMessage(getColor(color) + " player lose");//"下棋截止时间到，" +
             }
             myBlokusController.lose(color);
             Debug.Log("lock  end*********************************!!!!!!!!!1");
