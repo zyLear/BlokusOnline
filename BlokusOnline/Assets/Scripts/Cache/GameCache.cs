@@ -10,9 +10,10 @@ public class GameCache {
 
     //   public static string accountReqest { get; set; }
 
-    public static int roomType = RoomType.BLOKUS_TWO;
+    public static int gameType = GameType.BLOKUS_TWO;
 
-    public static bool isInRoom = false;
+ //   public static bool isInRoom = false;
 
+    public static bool inRoomListPanel = false;
 }
 

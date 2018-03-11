@@ -14,7 +14,8 @@ public class BlokusPlayer {
 
 public class BlokusRoomUIController : MonoBehaviour {
 
-    public GameObject buttonGroup;
+  //  public GameObject buttonGroup;
+    public GameObject colorMask;
 
     UIController myUIController;
     public Text BlokusRoomName;
@@ -31,6 +32,12 @@ public class BlokusRoomUIController : MonoBehaviour {
     public Text playerTwoReady;
     public Text playerThreeReady;
     public Text playerFourReady;
+
+
+
+    public Text chatContent;
+    public Text inputInfo;
+    public Scrollbar scrollbar;
 
 
     public Button Red;
@@ -71,7 +78,7 @@ public class BlokusRoomUIController : MonoBehaviour {
 
     private void OnBack() {
         NetManager.Instance.TransferMessage(MessageFormater.formatLeaveRoomMessage());
-        GameCache.isInRoom = false;
+        GameCache.inRoomListPanel = true;
         myUIController.hidePanel(myUIController.blokusRoomPanel);
         myUIController.showPanel(myUIController.roomListPanel);
     }
@@ -124,6 +131,44 @@ public class BlokusRoomUIController : MonoBehaviour {
         if (GameCache.myColor != Color.BLUE) {
             NetManager.Instance.TransferMessage(MessageFormater.chooseColor(GameCache.account, GameCache.roomName, Color.BLUE));
         }
+    }
+
+
+
+    public void onPlayerOne() {
+        if (!playerOneName.text.Equals("")) {
+            myUIController.onGoToProfilePanel(playerOneName.text);
+        }
+    }
+
+    public void onPlayerTwo() {
+        if (!playerTwoName.text.Equals("")) {
+            myUIController.onGoToProfilePanel(playerTwoName.text);
+        }
+    }
+
+    public void onPlayerThree() {
+        if (!playerThreeName.text.Equals("")) {
+            myUIController.onGoToProfilePanel(playerThreeName.text);
+        }
+    }
+
+    public void onPlayerFour() {
+        if (!playerFourName.text.Equals("")) {
+            myUIController.onGoToProfilePanel(playerFourName.text);
+        }
+    }
+
+
+    public void onSendMessage() {
+        print("按下发送按钮");
+        string str = GameCache.account + ":\n  " +/*"(player)：" +*/ inputInfo.text;
+        NetManager.Instance.TransferMessage(MessageFormater.formatChatInRoomMessage(str));
+    }
+
+    public void chatInRoom(string message) {
+        chatContent.text = chatContent.text + "\n" + message;
+        scrollbar.value = -10;
     }
 
     //public void OnBlokusReady()
@@ -258,7 +303,7 @@ public class BlokusRoomUIController : MonoBehaviour {
     public void StartBlokus() {
         //UpDateBlokusRoomInfo();        //更新信息
         myUIController.hidePanel(myUIController.blokusRoomPanel);
-        if (GameCache.roomType == RoomType.BLOKUS_FOUR) {
+        if (GameCache.gameType == GameType.BLOKUS_FOUR) {
             Application.LoadLevelAdditive("Blokus");
         } else {
             Application.LoadLevelAdditive("BlokusTP");
@@ -266,17 +311,21 @@ public class BlokusRoomUIController : MonoBehaviour {
 
     }
 
-    public void Update() {
-        if (GameCache.roomType == RoomType.BLOKUS_FOUR) {
-            if (!buttonGroup.activeSelf) {
-                buttonGroup.SetActive(true);
+    public void maskColor() {
+        if (GameCache.gameType == GameType.BLOKUS_FOUR) {
+            if (colorMask.activeSelf) {
+                colorMask.SetActive(false);
             }
         } else {
-            if (buttonGroup.activeSelf) {
-                buttonGroup.SetActive(false);
+            if (!colorMask.activeSelf) {
+                colorMask.SetActive(true);
             }
         }
     }
+
+    //public void Update() {
+    
+    //}
 
 
 

@@ -10,6 +10,24 @@
 // Generated from: protos/blokus.proto
 namespace protos.blokus
 {
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"BLOKUSVersion")]
+  public partial class BLOKUSVersion : global::ProtoBuf.IExtensible
+  {
+    public BLOKUSVersion() {}
+    
+    private string _version = "";
+    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"version", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string version
+    {
+      get { return _version; }
+      set { _version = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"BLOKUSAccount")]
   public partial class BLOKUSAccount : global::ProtoBuf.IExtensible
   {
@@ -49,13 +67,13 @@ namespace protos.blokus
       get { return _roomName; }
       set { _roomName = value; }
     }
-    private int _roomType = default(int);
-    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"roomType", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    private int _gameType = default(int);
+    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"gameType", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
     [global::System.ComponentModel.DefaultValue(default(int))]
-    public int roomType
+    public int gameType
     {
-      get { return _roomType; }
-      set { _roomType = value; }
+      get { return _gameType; }
+      set { _gameType = value; }
     }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
@@ -131,29 +149,13 @@ namespace protos.blokus
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
-  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"BLOKUSChooseColor")]
-  public partial class BLOKUSChooseColor : global::ProtoBuf.IExtensible
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"BLOKUSColor")]
+  public partial class BLOKUSColor : global::ProtoBuf.IExtensible
   {
-    public BLOKUSChooseColor() {}
+    public BLOKUSColor() {}
     
-    private string _account = "";
-    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"account", DataFormat = global::ProtoBuf.DataFormat.Default)]
-    [global::System.ComponentModel.DefaultValue("")]
-    public string account
-    {
-      get { return _account; }
-      set { _account = value; }
-    }
-    private string _roomName = "";
-    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"roomName", DataFormat = global::ProtoBuf.DataFormat.Default)]
-    [global::System.ComponentModel.DefaultValue("")]
-    public string roomName
-    {
-      get { return _roomName; }
-      set { _roomName = value; }
-    }
     private int _color = default(int);
-    [global::ProtoBuf.ProtoMember(3, IsRequired = false, Name=@"color", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"color", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
     [global::System.ComponentModel.DefaultValue(default(int))]
     public int color
     {
@@ -254,13 +256,13 @@ namespace protos.blokus
       get { return _roomName; }
       set { _roomName = value; }
     }
-    private int _roomType = default(int);
-    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"roomType", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    private int _gameType = default(int);
+    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"gameType", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
     [global::System.ComponentModel.DefaultValue(default(int))]
-    public int roomType
+    public int gameType
     {
-      get { return _roomType; }
-      set { _roomType = value; }
+      get { return _gameType; }
+      set { _gameType = value; }
     }
     private int _RoomStatus = default(int);
     [global::ProtoBuf.ProtoMember(3, IsRequired = false, Name=@"RoomStatus", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
@@ -401,6 +403,89 @@ namespace protos.blokus
     public global::System.Collections.Generic.List<BLOKUSRankItem> fourPlayersRankItems
     {
       get { return _fourPlayersRankItems; }
+    }
+  
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"BLOKUSPlayerGameLogItem")]
+  public partial class BLOKUSPlayerGameLogItem : global::ProtoBuf.IExtensible
+  {
+    public BLOKUSPlayerGameLogItem() {}
+    
+    private string _result = "";
+    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"result", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string result
+    {
+      get { return _result; }
+      set { _result = value; }
+    }
+    private int _gameType = default(int);
+    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"gameType", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int gameType
+    {
+      get { return _gameType; }
+      set { _gameType = value; }
+    }
+    private int _stepsCount = default(int);
+    [global::ProtoBuf.ProtoMember(3, IsRequired = false, Name=@"stepsCount", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int stepsCount
+    {
+      get { return _stepsCount; }
+      set { _stepsCount = value; }
+    }
+    private string _detail = "";
+    [global::ProtoBuf.ProtoMember(4, IsRequired = false, Name=@"detail", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string detail
+    {
+      get { return _detail; }
+      set { _detail = value; }
+    }
+    private string _time = "";
+    [global::ProtoBuf.ProtoMember(5, IsRequired = false, Name=@"time", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string time
+    {
+      get { return _time; }
+      set { _time = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"BLOKUSProfile")]
+  public partial class BLOKUSProfile : global::ProtoBuf.IExtensible
+  {
+    public BLOKUSProfile() {}
+    
+    private BLOKUSRankItem _twoPlayersRankItem = null;
+    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"twoPlayersRankItem", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(null)]
+    public BLOKUSRankItem twoPlayersRankItem
+    {
+      get { return _twoPlayersRankItem; }
+      set { _twoPlayersRankItem = value; }
+    }
+    private BLOKUSRankItem _fourPlayersRankItem = null;
+    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"fourPlayersRankItem", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(null)]
+    public BLOKUSRankItem fourPlayersRankItem
+    {
+      get { return _fourPlayersRankItem; }
+      set { _fourPlayersRankItem = value; }
+    }
+    private readonly global::System.Collections.Generic.List<BLOKUSPlayerGameLogItem> _playerGameLogs = new global::System.Collections.Generic.List<BLOKUSPlayerGameLogItem>();
+    [global::ProtoBuf.ProtoMember(3, Name=@"playerGameLogs", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public global::System.Collections.Generic.List<BLOKUSPlayerGameLogItem> playerGameLogs
+    {
+      get { return _playerGameLogs; }
     }
   
     private global::ProtoBuf.IExtension extensionObject;

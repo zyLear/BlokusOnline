@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using protos.blokus;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,7 +9,7 @@ public class BlokusUIController : MonoBehaviour {
 
     static public ArrayList allChess = new ArrayList();
     UIController myUIController;
-    public GameObject BlokusMessage;
+    public GameObject blokusMessage;
     public Text MessageText;
     public Text BlokusRoomName;
     public Text BlokusYourName;
@@ -25,8 +27,16 @@ public class BlokusUIController : MonoBehaviour {
     public Scrollbar scrollbar;
     public Text CurrentColor;
     public Text ShowTime;
-    const int DEADLINE_TIME = 120;
 
+    public AudioSource audioSource;
+    public GameObject confirmDialog;
+
+    private BLOKUSChessDoneInfo chessDoneInfoTemp;
+
+
+
+
+    const int DEADLINE_TIME = 120;
 
     const int blue = Color.BLUE;//定义颜色常量
     const int green = Color.GREEN;
@@ -46,14 +56,8 @@ public class BlokusUIController : MonoBehaviour {
 
     public void Start() {
         myUIController = GameObject.Find("UIController").GetComponent<UIController>();
-        //GameObject gameObject = GameObject.Find("BlokusController");
-        //if (gameObject != null) {
-        //    myBlokusController = gameObject.GetComponent<BlokusController>();
-        //    currentScenseName = "Blokus";
-        //} else {
         myBlokusController = GameObject.Find("BlokusController").GetComponent<BlokusController>();
-        //    currentScenseName = "BlokusTP";
-        //}
+        NetManager.Instance.TransferMessage(MessageFormater.formatInitPlayerInfoInGameMessage());
 
         StartCoroutine(JudgeTimeOut());   //开启协程
                                           //   InitBlokusRoomUIInfo();
@@ -69,10 +73,11 @@ public class BlokusUIController : MonoBehaviour {
     IEnumerator JudgeTimeOut() {
 
         while (true) {
-            if (myBlokusController.gameOver) {
-                break;
-            }
+           
             while (deadline > 0) {
+                if (myBlokusController.gameOver) {
+                    break;
+                }
                 deadline -= Time.deltaTime;
                 int time = (int)deadline;
                 if (time < currentShowTime) {
@@ -81,41 +86,22 @@ public class BlokusUIController : MonoBehaviour {
                 }
                 yield return 0;
             }
-
-            //if (myBlokusController.loseCount == 1) {
-            //    print(myBlokusController.CurrentColor);
-            //    if (myBlokusController.CurrentColor == myBlokusController.myColor) {
-            //        ShowMessage("恭喜你赢了！");
-            //        NetManager.Instance.TransferMessage(MessageFormater.formatWinMessage());
-            //    }
-            //    break;
-            //}
-
-
-
-
-            //if (myBlokusController.loseCount == 2) {
-            //    print(myBlokusController.CurrentColor);
-            //    if (myBlokusController.CurrentColor == myBlokusController.myColor) {
-            //        ShowMessage("下棋截止时间到，很遗憾，你输了");
-            //        NetManager.Instance.TransferMessage(MessageFormater.formatLoseMessage());
-            //    } else {
-
-            //    }
-            //    break;
-            //}
-            // GameObject.Find("sdkfj ");
-
+            if (myBlokusController.gameOver) {
+                break;
+            }
             deadline = DEADLINE_TIME;
             currentShowTime = DEADLINE_TIME;
-            lose(myBlokusController.CurrentColor);
+            LoseParam loseParam = new LoseParam { color = myBlokusController.CurrentColor, gameEvent = GameEvent.TIME_CONSUME };
+            lose(loseParam);
 
         }
     }
 
 
-    public void lose(int color) {
+    public void lose(LoseParam loseParam) {
         lock (lockObject) {
+            int color = loseParam.color;
+            int gameEvent = loseParam.gameEvent;
             if (myBlokusController.loseColor[color] == 1 ||
                 myBlokusController.gameOver ||
                 myBlokusController.loseCount == 1) {
@@ -124,15 +110,17 @@ public class BlokusUIController : MonoBehaviour {
 
             if (myBlokusController.MAX_PLAYERS_COUNT - myBlokusController.loseCount == 2) {
                 int nextColor = myBlokusController.getNextColor(color);
-                Debug.LogError("nextColor:" + nextColor);
+                //  Debug.LogError("nextColor:" + nextColor);
                 if (color == myBlokusController.myColor) {
-                    NetManager.Instance.TransferMessage(MessageFormater.formatLoseMessage());
-                    ShowMessage(getColor(nextColor) + "方赢了！");
+                    if (GameEvent.TIME_CONSUME == gameEvent) {
+                        NetManager.Instance.TransferMessage(MessageFormater.formatLoseMessage());
+                    }
+                    ShowMessage(getColor(nextColor) + "player win！");
                 } else if (nextColor == myBlokusController.myColor) {
                     NetManager.Instance.TransferMessage(MessageFormater.formatWinMessage());
-                    ShowMessage("恭喜你赢了！");
+                    ShowMessage("Congratulations to you on winning this match！");
                 } else {
-                    ShowMessage(getColor(nextColor) + "方赢了！");
+                    ShowMessage(getColor(nextColor) + "player win！");
                 }
                 myBlokusController.lose(color);
                 myBlokusController.gameOver = true;
@@ -140,15 +128,73 @@ public class BlokusUIController : MonoBehaviour {
             }
 
             if (color == myBlokusController.myColor) {
-                ShowMessage("很遗憾，你输了");  //下棋截止时间到，
-                NetManager.Instance.TransferMessage(MessageFormater.formatLoseMessage());
+                ShowMessage("you lose");  //下棋截止时间到，
+                if (GameEvent.TIME_CONSUME == gameEvent) {
+                    NetManager.Instance.TransferMessage(MessageFormater.formatLoseMessage());
+                }
+                //  NetManager.Instance.TransferMessage(MessageFormater.formatLoseMessage());
             } else {
-                ShowMessage(getColor(color) + "方输了！");//"下棋截止时间到，" +
+                ShowMessage(getColor(color) + "player lose");//"下棋截止时间到，" +
             }
             myBlokusController.lose(color);
             Debug.Log("lock  end*********************************!!!!!!!!!1");
         }
     }
+
+
+    //private string getShowMessageString(bool isWin, int gameEvent) {
+    //    switch (gameEvent) {
+    //        case GameEvent.TIME_CONSUME:
+    //            if (isWin) {
+
+    //            } else {
+
+    //            }
+    //            break;
+    //    }
+    //    return "";
+    //}
+
+
+
+    public void playChessDoneMusic() {
+        audioSource.Play();
+    }
+
+    public void onPlayerOne() {
+        if (!playerOneName.text.Equals("")) {
+            myUIController.onGoToProfilePanel(playerOneName.text);
+        }
+    }
+
+    public void onPlayerTwo() {
+        if (!playerTwoName.text.Equals("")) {
+            myUIController.onGoToProfilePanel(playerTwoName.text);
+        }
+    }
+
+    public void onPlayerThree() {
+        if (!playerThreeName.text.Equals("")) {
+            myUIController.onGoToProfilePanel(playerThreeName.text);
+        }
+    }
+
+    public void onPlayerFour() {
+        if (!playerFourName.text.Equals("")) {
+            myUIController.onGoToProfilePanel(playerFourName.text);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     /********协程***************/
 
@@ -166,24 +212,23 @@ public class BlokusUIController : MonoBehaviour {
     //}
 
     public void ChangeMessageByYourself(int color) {
-        string str = "<size=33>" + getColor(color) + "方已输！</size>";
+        string str = "<size=33>" + getColor(color) + " player lose</size>";
         //   SendMessageToAll(str);
     }
 
     public void OnSendMessage() {
         print("按下发送按钮");
-        string str = "<color=" + getColor(myBlokusController.myColor) + ">" + GameCache.account + "(player)：" + inputInfo.text + "</color>";
-        // GetComponent<PhotonView>().RPC("SendMessageToAll", PhotonTargets.All, str);
+        string str = "<color=" + getColor(myBlokusController.myColor) + ">" + GameCache.account + ":\n  " +/*"(player)：" +*/ inputInfo.text + "</color>";
         NetManager.Instance.TransferMessage(MessageFormater.formatChatInGameMessage(str));
     }
 
     public void OnGiveUp() {
-        if (myBlokusController.loseCount < 3) {
+        if (myBlokusController.loseCount < myBlokusController.MAX_PLAYERS_COUNT - 1) {
             if (myBlokusController.loseColor[myBlokusController.myColor] == 0) {
                 //myBlokusController.giveUp(myBlokusController.myColor);
                 NetManager.Instance.TransferMessage(MessageFormater.formatGiveUpMessage(myBlokusController.myColor));
             } else {
-                ShowMessage("你已经输了~");
+                ShowMessage("you have lost already");
             }
         }
     }
@@ -208,11 +253,13 @@ public class BlokusUIController : MonoBehaviour {
             Destroy(g);
         }
         Destroy(myBlokusController.currentCenter);
+        Destroy(myBlokusController.tempSquare);
+        Destroy(myBlokusController.currentCenterTemp);
         OnGiveUp();
 
         myUIController.showPanel(myUIController.blokusRoomPanel);
 
-        if (GameCache.roomType == RoomType.BLOKUS_FOUR) {
+        if (GameCache.gameType == GameType.BLOKUS_FOUR) {
             Application.UnloadLevel("Blokus");
         } else {
             Application.UnloadLevel("BlokusTP");
@@ -220,7 +267,7 @@ public class BlokusUIController : MonoBehaviour {
     }
 
     public void OnButtonOnMessage() {
-        ShowMessage("");
+        blokusMessage.SetActive(false);
     }
 
     public void BlokusUIUpdate(int color)   //其他脚本调用的函数
@@ -265,55 +312,64 @@ public class BlokusUIController : MonoBehaviour {
     //}
 
 
-    //public void InitBlokusRoomUIInfo()  //初始化房间信息
-    //{
-    //    BlokusRoomName.text = "房间名字:"+PhotonNetwork.room.Name;
-    //    BlokusYourName.text = "你的名字:"+PhotonNetwork.player.NickName;
-    //    playerOneName.text = "";
-    //    playerTwoName.text = "";
-    //    playerThreeName.text = "";
-    //    playerFourName.text = "";
-    //    playerOneChoice.text = "";
-    //    playerTwoChoice.text = "";
-    //    playerThreeChoice.text = "";
-    //    playerFourChoice.text = "";
-    //    CurrentColor.text = "目前下棋的颜色:蓝色";
-    //    PhotonPlayer[] players = PhotonNetwork.playerList;
-    //    int i = 1;
+    public void InitBlokusRoomUIInfo(BLOKUSRoomPlayerList info)  //初始化房间信息
+    {
+        BlokusRoomName.text = GameCache.roomName;
+        BlokusYourName.text = GameCache.account;
+        playerOneName.text = "";
+        playerTwoName.text = "";
+        playerThreeName.text = "";
+        playerFourName.text = "";
+        playerOneChoice.text = "";
+        playerTwoChoice.text = "";
+        playerThreeChoice.text = "";
+        playerFourChoice.text = "";
+        List<BLOKUSRoomPlayerInfo> playerInfos = info.itmes;
+        for (int i = 0; i < playerInfos.Count; i++) {
+            BLOKUSRoomPlayerInfo playerInfo = playerInfos[i];
+            if (playerInfo.account.Equals(GameCache.account)) {
+                GameCache.myColor = playerInfo.color;
+            }
+            switch (i) {
+                case 0: {
+                        playerOneName.text = playerInfo.account;
+                        playerOneChoice.text = Color.getColorText(playerInfo.color);
+                        break;
+                    }
+                case 1: {
+                        playerTwoName.text = playerInfo.account;
+                        playerTwoChoice.text = Color.getColorText(playerInfo.color);
+                        break;
+                    }
+                case 2: {
+                        playerThreeName.text = playerInfo.account;
+                        playerThreeChoice.text = Color.getColorText(playerInfo.color);
+                        break;
+                    }
+                case 3: {
+                        playerFourName.text = playerInfo.account;
+                        playerFourChoice.text = Color.getColorText(playerInfo.color);
+                        break;
+                    }
+            }
+        }
+    }
 
-    //    foreach (PhotonPlayer p in players)
-    //    {
-    //        ExitGames.Client.Photon.Hashtable ht = p.AllProperties;
-    //        switch (i)
-    //        {
-    //            case 1:
-    //                {
-    //                    playerOneName.text = ht["name"].ToString();
-    //                    playerOneChoice.text = ht["color"].ToString();
-    //                    break;
-    //                }
-    //            case 2:
-    //                {
-    //                    playerTwoName.text = ht["name"].ToString();
-    //                    playerTwoChoice.text = ht["color"].ToString();
-    //                    break;
-    //                }
-    //            case 3:
-    //                {
-    //                    playerThreeName.text = ht["name"].ToString();
-    //                    playerThreeChoice.text = ht["color"].ToString();
-    //                    break;
-    //                }
-    //            case 4:
-    //                {
-    //                    playerFourName.text = ht["name"].ToString();
-    //                    playerFourChoice.text = ht["color"].ToString();
-    //                    break;
-    //                }
-    //        }
-    //        i++;
-    //    }
-    //}
+    public void tryChess(BLOKUSChessDoneInfo chessDoneInfo) {
+        chessDoneInfoTemp = chessDoneInfo;
+        myBlokusController.tryChess(chessDoneInfo);
+        confirmDialog.SetActive(true);
+    }
+
+    public void onConfirmYes() {
+        myBlokusController.chessDoneOutSide(chessDoneInfoTemp, true);
+        confirmDialog.SetActive(false);
+    }
+
+    public void onConfirmNo() {
+        myBlokusController.chessDoneOutSide(chessDoneInfoTemp, false);
+        confirmDialog.SetActive(false);
+    }
 
 
     /******************功能函数***/
@@ -330,8 +386,12 @@ public class BlokusUIController : MonoBehaviour {
     }
 
     void ShowMessage(string message) {
-        BlokusMessage.SetActive(BlokusMessage.activeSelf ? false : true);
+        blokusMessage.SetActive(true);
         MessageText.text = message;
+    }
+
+    void showPanel(GameObject gameObject) {
+        gameObject.SetActive(true);
     }
 
     /******************功能函数***/
@@ -345,6 +405,6 @@ public class BlokusUIController : MonoBehaviour {
 
     public void chatInGame(string message) {
         chatContent.text = chatContent.text + "\n" + message;
-        scrollbar.value = 0;
+        scrollbar.value = -10;
     }
 }

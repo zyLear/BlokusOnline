@@ -57,11 +57,19 @@ public class UIController : MonoBehaviour {
     public GameObject rankItem;
 
 
+    public Text profileAccount;
+    public Transform profilePanel;
+    public GameObject playerGameLogContent;
+    public GameObject LogItem;
+
+    public Text profileRankScoreText2;
+    public Text profileRecordDetailText2;
+
+    public Text profileRankScoreText4;
+    public Text profileRecordDetailText4;
 
 
-
-
-
+    public Transform settingPanel;
 
 
 
@@ -97,6 +105,7 @@ public class UIController : MonoBehaviour {
     ArrayList roomList = new ArrayList();
     ArrayList fourPlayersRankInfoList = new ArrayList();
     ArrayList twoPlayersRankInfoList = new ArrayList();
+    ArrayList playerGameLogList = new ArrayList();
 
     int currentRoomCount = 0;
     string yourName;
@@ -140,7 +149,9 @@ public class UIController : MonoBehaviour {
     private void Update() {
         timeTemp -= Time.deltaTime;
         if (timeTemp < 0) {
-            NetManager.Instance.TransferMessage(MessageFormater.formatRoomListMessage());
+            if (GameCache.inRoomListPanel) {
+                NetManager.Instance.TransferMessage(MessageFormater.formatRoomListMessage());
+            }
             timeTemp = UPDATE_ROOM_LIST_TIME_INTERVAL_SECONDS;
         }
 
@@ -253,9 +264,9 @@ public class UIController : MonoBehaviour {
         //GameCache.roomNameRequest = roomName;
         //  = GameObject.Find("ToggleGroup").GetComponent<ToggleGroup>();
         if (toggleFour.isOn) {
-            NetManager.Instance.TransferMessage(MessageFormater.createRoom(roomName, RoomType.BLOKUS_FOUR));
+            NetManager.Instance.TransferMessage(MessageFormater.createRoom(roomName, GameType.BLOKUS_FOUR));
         } else {
-            NetManager.Instance.TransferMessage(MessageFormater.createRoom(roomName, RoomType.BLOKUS_TWO));
+            NetManager.Instance.TransferMessage(MessageFormater.createRoom(roomName, GameType.BLOKUS_TWO));
         }
 
         //PhotonNetwork.CreateRoom(str, roomOptions, TypedLobby.Default);
@@ -264,6 +275,7 @@ public class UIController : MonoBehaviour {
     public void createRoomSuccess() {
         hidePanel(promptPanel);
         hidePanel(roomListPanel);
+        GameObject.Find("BlokusRoomUIController").GetComponent<BlokusRoomUIController>().maskColor();
         showPanel(blokusRoomPanel);
     }
 
@@ -276,14 +288,27 @@ public class UIController : MonoBehaviour {
 
     public void joinRoomSuccess() {
         hidePanel(roomListPanel);
+        GameObject.Find("BlokusRoomUIController").GetComponent<BlokusRoomUIController>().maskColor();
         showPanel(blokusRoomPanel);
     }
 
 
+    public void onGoToSettingPanel() {
+        showPanel(settingPanel);
+    }
+
+    public void onBackFromSettingPanel() {
+        hidePanel(settingPanel);
+    }
 
 
-
-
+    public void onLogout() {
+        showPanel(loginPanel);
+        hidePanel(settingPanel);
+        hidePanel(roomListPanel);
+        GameCache.inRoomListPanel = false;
+        NetManager.Instance.TransferMessage(MessageFormater.formatLogoutMessage());
+    }
 
 
 
@@ -317,7 +342,7 @@ public class UIController : MonoBehaviour {
             roomItemData.roomName = roomInfo.roomName;
             roomItemData.connectPlayer = roomInfo.currentPlayers;
             roomItemData.roomStatus = roomInfo.RoomStatus;
-            if (roomInfo.roomType == RoomType.BLOKUS_FOUR) {
+            if (roomInfo.gameType == GameType.BLOKUS_FOUR) {
                 roomItemData.maxPlayer = 4;
             } else {
                 roomItemData.maxPlayer = 2;
@@ -331,6 +356,71 @@ public class UIController : MonoBehaviour {
         }
     }
 
+
+
+
+    public void onGoToProfilePanel() {
+        profileAccount.text = GameCache.account;
+        NetManager.Instance.TransferMessage(MessageFormater.formatProfileMessage(GameCache.account));
+        showPanel(profilePanel);
+    }
+
+    public void onGoToProfilePanel(String account) {
+        profileAccount.text = account;
+        NetManager.Instance.TransferMessage(MessageFormater.formatProfileMessage(account));
+        showPanel(profilePanel);
+    }
+
+    public void onBackFromProfilePanel() {
+        hidePanel(profilePanel);
+    }
+
+    public void onShowProfile(BLOKUSProfile profile) {
+        foreach (GameObject gameObject in playerGameLogList) {
+            Destroy(gameObject);
+        }
+        playerGameLogList.Clear();
+
+        BLOKUSRankItem bLOKUSRankItem2 = profile.twoPlayersRankItem;
+        BLOKUSRankItem bLOKUSRankItem4 = profile.fourPlayersRankItem;
+
+        profileRankScoreText2.text = bLOKUSRankItem2.rankScore + "";
+        profileRecordDetailText2.text = "win:" + bLOKUSRankItem2.winCount +
+            "   lose:" + bLOKUSRankItem2.loseCount + "   escape:" + bLOKUSRankItem2.escapeCount;
+        profileRankScoreText4.text = bLOKUSRankItem4.rankScore + "";
+        profileRecordDetailText4.text = "win:" + bLOKUSRankItem4.winCount +
+           "   lose:" + bLOKUSRankItem4.loseCount + "   escape:" + bLOKUSRankItem4.escapeCount;
+
+        foreach (BLOKUSPlayerGameLogItem gameLogItem in profile.playerGameLogs) {
+            GameObject logItemObject = Instantiate(LogItem, playerGameLogContent.transform, false);
+            playerGameLogList.Add(logItemObject);
+
+            LogItemData logItemData = logItemObject.GetComponent<LogItemData>();
+            if ("win".Equals(gameLogItem.result)) {
+                logItemData.resultText.color = new UnityEngine.Color(0.2588F, 0.6549F, 0.2274F, 1);
+            } else if ("lose".Equals(gameLogItem.result)) {
+                logItemData.resultText.color = new UnityEngine.Color(0.9411F, 0.098F, 0.098F, 1);
+            } else {
+                logItemData.resultText.color = new UnityEngine.Color(1, 0.6862F, 0.047F, 1);
+            }
+            logItemData.result = gameLogItem.result;
+            logItemData.stepsCount = gameLogItem.stepsCount + "";
+            if (GameType.BLOKUS_FOUR == gameLogItem.gameType) {
+                logItemData.gameType = "4 players";
+            } else {
+                logItemData.gameType = "2 players";
+            }
+            logItemData.detail = gameLogItem.detail;
+            logItemData.time = gameLogItem.time;
+            logItemData.ShowGameLogInfo();
+        }
+    }
+
+
+
+    public void onRefreshRank() {
+        NetManager.Instance.TransferMessage(MessageFormater.formatRankInfoMessagae());
+    }
 
     public void onBackToRoomListPanelFromRankPanel() {
         hidePanel(rankPanel);
@@ -368,6 +458,10 @@ public class UIController : MonoBehaviour {
             rankItemData.loseCount = bLOKUSRankItem.loseCount;
             rankItemData.escapeCount = bLOKUSRankItem.escapeCount;
             rankItemData.ShowRankInfo();
+
+            rankItemGameObject.GetComponent<Button>().onClick.AddListener(delegate {
+                onGoToProfilePanel(bLOKUSRankItem.account);
+            });
         }
 
         for (int i = 0; i < rankInfo.fourPlayersRankItems.Count; i++) {
@@ -383,6 +477,10 @@ public class UIController : MonoBehaviour {
             rankItemData.loseCount = bLOKUSRankItem.loseCount;
             rankItemData.escapeCount = bLOKUSRankItem.escapeCount;
             rankItemData.ShowRankInfo();
+
+            rankItemGameObject.GetComponent<Button>().onClick.AddListener(delegate {
+                onGoToProfilePanel(bLOKUSRankItem.account);
+            });
         }
 
 
@@ -424,19 +522,22 @@ public class UIController : MonoBehaviour {
         string repeatedPassword = registerRepeatedPasswordText.text;
 
         if (account.Length < 6 || password.Length < 6) {
+            showPromptWithButtonMessage("Password must be no fewer than six");
             return;
         }
 
         if (!System.Text.RegularExpressions.Regex.IsMatch(account, "^[0-9a-zA-Z]+$")) {
-
+            showPromptWithButtonMessage("Can only be made up of letters and numbers");
             return;
         }
 
         if (!password.Equals(repeatedPassword)) {
+            showPromptWithButtonMessage("Two passwords are different");
             return;
         }
 
         if (registerTimeTemp > 0) {
+            showPromptWithButtonMessage("Too frequent operation");
             return;
         }
 
@@ -459,7 +560,10 @@ public class UIController : MonoBehaviour {
 
 
 
-
+    public void checkVersionFail() {
+        promptText.text = "please download new version";
+        showPanel(promptPanel);
+    }
 
 
 

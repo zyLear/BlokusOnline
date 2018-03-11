@@ -40,6 +40,12 @@ class OperationCode {
 
     public const short PROFILE = 19;
 
+    public const short CHAT_IN_ROOM = 20;
+
+    public const short INIT_PLAYER_INFO_IN_GAME = 22;
+
+    public const short LOGOUT = 23;
+
 
 
     public const short CONNECT_SUCCESS = 10001;

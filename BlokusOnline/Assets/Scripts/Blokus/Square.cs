@@ -27,6 +27,13 @@ public class Square : MonoBehaviour {
         instance.transform.Rotate(new Vector3(0, symmetryFlag * 180, -90 * rotationFlag));
     }
 
+    public GameObject trySet(float x, float y) {
+        GameObject instance = (GameObject)Instantiate(spirit, new Vector2(x, y), Quaternion.identity);
+       // BlokusUIController.allChess.Add(instance);
+        instance.transform.Rotate(new Vector3(0, symmetryFlag * 180, -90 * rotationFlag));
+        return instance;
+    }
+
     public void rotationOne() {
         int[,] NewModel = new int[5, 5];   //数组旋转
         for (int i = 0; i < 5; i++)

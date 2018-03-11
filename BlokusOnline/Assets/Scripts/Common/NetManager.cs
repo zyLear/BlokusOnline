@@ -11,11 +11,14 @@ using protos.blokus;
 
 public class NetManager : Singleton<NetManager> {
 
-    private string ip = "111.231.66.159"; //172.19.56.1    172.19.87.1   127.0.0.1  111.231.66.159
-    private int port = 9090;
+    private const string ip = "111.231.66.159"; //172.19.56.1    172.19.87.1   127.0.0.1  111.231.66.159
+    private const int port = 9090;
+    private const string VERSION = "V1.1.0.RELEASE";
     private Socket client;
     //public Queue<string> messageQueue = new Queue<string>();
     private Thread startupThread;
+
+    private int ONE_TIME_READ_MAX_DATA_LENGTH = 1024;
 
 
     private void NetworkStartup() {
@@ -50,8 +53,9 @@ public class NetManager : Singleton<NetManager> {
             while (retryCount-- > 0) {
                 if (client.Connected) {
                     Debug.Log("connected!");
-                    // TransferMessage();
-                    connectSuccess();
+                    // TransferMessag
+                    checkVersion();
+                    //  connectSuccess();
                     break;
                 }
                 Thread.Sleep(5 * 1000);
@@ -68,13 +72,17 @@ public class NetManager : Singleton<NetManager> {
         try {
             //Thread.Sleep(5 * 1000);
             while (true) {
-                byte[] data = new byte[1024];
-                int length = client.Receive(data);
-                //string message = Encoding.UTF8.GetString(data);
-                //string[] messages = message.Split('\n');
-                //for (int i = 0; i < messages.Length - 1; i++) {
-                //    messageQueue.Enqueue(messages[i]);
-                //}
+
+                int length;
+                //List<byte> list = new List<byte>();
+                byte[] data = new byte[ONE_TIME_READ_MAX_DATA_LENGTH];
+                //do {
+                length = client.Receive(data);
+                //byte[] temp = new byte[length];
+                //    Array.Copy(data, 0, temp, 0, length);
+                //    list.AddRange(temp);
+                //} while (length >= ONE_TIME_READ_MAX_DATA_LENGTH);
+
                 if (length != 0) {
                     List<MessageBean> messages = CodeUtil.decode(data, length);
                     Debug.Log("message size:" + messages.Count);
@@ -94,14 +102,15 @@ public class NetManager : Singleton<NetManager> {
         }
     }
 
-    private void connectSuccess() {
-        MessageBean message = new MessageBean();
-        message.operationCode = OperationCode.CONNECT_SUCCESS;
-        message.statusCode = StatusCode.SUCCESS;
-        List<MessageBean> list = new List<MessageBean>();
-        list.Add(message);
-        MessageQueue.put(list);
-    }
+    //private void connectSuccess() {
+    //    MessageBean message = new MessageBean();
+    //    message.operationCode = OperationCode.CONNECT_SUCCESS;
+    //    message.statusCode = StatusCode.SUCCESS;
+
+    //    List<MessageBean> list = new List<MessageBean>();
+    //    list.Add(message);
+    //    MessageQueue.put(list);
+    //}
 
     private void disconnect() {
         MessageBean message = new MessageBean();
@@ -113,7 +122,9 @@ public class NetManager : Singleton<NetManager> {
     }
 
 
-
+    private void checkVersion() {
+        TransferMessage(MessageFormater.formatCheckVersionMessage(VERSION));
+    }
 
     //private void handleMessage(string message) {
 
@@ -177,8 +188,9 @@ public class NetManager : Singleton<NetManager> {
         Debug.Log("enter");
 
         switch (message.operationCode) {
-            case OperationCode.CONNECT_SUCCESS: connectSuccess(message); break;
+            //  case OperationCode.CONNECT_SUCCESS: connectSuccess(message); break;
             case OperationCode.DISCONNECT: disconnect(message); break;
+            case OperationCode.CHECK_VERSION: checkVersion(message); break;
             case OperationCode.LOGIN: login(message); break;
             case OperationCode.CREATE_ROOM: createRoom(message); break;
             case OperationCode.UPDATE_ROOM_PLAYERS_INFO: updateRoomPlayersInfo(message); break;
@@ -190,9 +202,43 @@ public class NetManager : Singleton<NetManager> {
             case OperationCode.ROOM_LIST: RoomList(message); break;
             case OperationCode.REGISTER: register(message); break;
             case OperationCode.RANK_INFO: rankInfo(message); break;
+            case OperationCode.PROFILE: profile(message); break;
+            case OperationCode.CHAT_IN_ROOM: chatInRoom(message); break;
+            case OperationCode.INIT_PLAYER_INFO_IN_GAME: initPlayerInfoInGame(message); break;
 
 
             default: break;
+        }
+    }
+
+    private void checkVersion(MessageBean message) {
+        if (message.statusCode == StatusCode.SUCCESS) {
+            //  GameObject.Find("BlokusUIController").SendMessage("InitBlokusRoomUIInfo", bLOKUSRoomPlayerList);
+            GameObject.Find("UIController").SendMessage("hidePanel", GameObject.Find("ConnectionPanel").transform);
+            GameObject.Find("UIController").SendMessage("showPanel", GameObject.Find("LoginPanel").transform);
+        } else {
+            GameObject.Find("UIController").SendMessage("checkVersionFail");
+        }
+    }
+
+    private void initPlayerInfoInGame(MessageBean message) {
+        if (message.statusCode == StatusCode.SUCCESS) {
+            BLOKUSRoomPlayerList bLOKUSRoomPlayerList = ProtobufHelper.DederializerFromBytes<BLOKUSRoomPlayerList>(message.data);
+            GameObject.Find("BlokusUIController").SendMessage("InitBlokusRoomUIInfo", bLOKUSRoomPlayerList);
+        }
+    }
+
+    private void chatInRoom(MessageBean message) {
+        if (message.statusCode == StatusCode.SUCCESS) {
+            BLOKUSChatMessage bLOKUSChatMessage = ProtobufHelper.DederializerFromBytes<BLOKUSChatMessage>(message.data);
+            GameObject.Find("BlokusRoomUIController").SendMessage("chatInRoom", bLOKUSChatMessage.chatMessage);
+        }
+    }
+
+    private void profile(MessageBean message) {
+        if (message.statusCode == StatusCode.SUCCESS) {
+            BLOKUSProfile bLOKUSProfile = ProtobufHelper.DederializerFromBytes<BLOKUSProfile>(message.data);
+            GameObject.Find("UIController").SendMessage("onShowProfile", bLOKUSProfile);
         }
     }
 
@@ -223,18 +269,17 @@ public class NetManager : Singleton<NetManager> {
     }
 
     private void chatInGame(MessageBean message) {
-
         if (message.statusCode == StatusCode.SUCCESS) {
             BLOKUSChatMessage bLOKUSChatMessage = ProtobufHelper.DederializerFromBytes<BLOKUSChatMessage>(message.data);
             GameObject.Find("BlokusUIController").SendMessage("chatInGame", bLOKUSChatMessage.chatMessage);
         }
-
     }
 
     private void giveUp(MessageBean message) {
         if (message.statusCode == StatusCode.SUCCESS) {
-            BLOKUSChooseColor bLOKUSChooseColor = ProtobufHelper.DederializerFromBytes<BLOKUSChooseColor>(message.data);
-            GameObject.Find("BlokusUIController").SendMessage("lose", bLOKUSChooseColor.color);
+            BLOKUSColor bLOKUSColor = ProtobufHelper.DederializerFromBytes<BLOKUSColor>(message.data);
+            LoseParam loseParam = new LoseParam { color = bLOKUSColor.color, gameEvent = GameEvent.GIVE_UP };
+            GameObject.Find("BlokusUIController").SendMessage("lose", loseParam);
         }
     }
 
@@ -257,8 +302,8 @@ public class NetManager : Singleton<NetManager> {
         BLOKUSCreateRoom room = ProtobufHelper.DederializerFromBytes<BLOKUSCreateRoom>(message.data);
         if (message.statusCode == StatusCode.SUCCESS) {
             GameCache.roomName = room.roomName;
-            GameCache.roomType = room.roomType;
-            GameCache.isInRoom = true;
+            GameCache.gameType = room.gameType;
+            GameCache.inRoomListPanel = false;
             GameObject.Find("UIController").SendMessage("joinRoomSuccess");
         } else {
             //GameObject.Find("UIController").SendMessage("createRoomFail");
@@ -270,10 +315,10 @@ public class NetManager : Singleton<NetManager> {
         GameObject.Find("BlokusRoomUIController").SendMessage("updateRoomPlayersInfo", bLOKUSRoomPlayerList);
     }
 
-    private void connectSuccess(MessageBean message) {
-        GameObject.Find("UIController").SendMessage("hidePanel", GameObject.Find("ConnectionPanel").transform);
-        GameObject.Find("UIController").SendMessage("showPanel", GameObject.Find("LoginPanel").transform);
-    }
+    //private void connectSuccess(MessageBean message) {
+    //    GameObject.Find("UIController").SendMessage("hidePanel", GameObject.Find("ConnectionPanel").transform);
+    //    GameObject.Find("UIController").SendMessage("showPanel", GameObject.Find("LoginPanel").transform);
+    //}
 
     private void login(MessageBean message) {
         //Debug.Log(message.operationCode);
@@ -283,10 +328,11 @@ public class NetManager : Singleton<NetManager> {
         if (message.statusCode == StatusCode.SUCCESS) {
             BLOKUSAccount account = ProtobufHelper.DederializerFromBytes<BLOKUSAccount>(message.data);
             GameCache.account = account.account;
+            GameCache.inRoomListPanel = true;
             GameObject.Find("UIController").SendMessage("hidePanel", GameObject.Find("LoginPanel").transform);
             GameObject.Find("UIController").SendMessage("showPanel", GameObject.Find("RoomListPanel").transform);
         } else {
-            //GameObject.Find("UIController").SendMessage("show", "login fail!");
+            GameObject.Find("UIController").SendMessage("showPromptWithButtonMessage", "login fail!");
         }
 
     }
@@ -295,8 +341,8 @@ public class NetManager : Singleton<NetManager> {
         BLOKUSCreateRoom room = ProtobufHelper.DederializerFromBytes<BLOKUSCreateRoom>(message.data);
         if (message.statusCode == StatusCode.SUCCESS) {
             GameCache.roomName = room.roomName;
-            GameCache.roomType = room.roomType;
-            GameCache.isInRoom = true;
+            GameCache.gameType = room.gameType;
+            GameCache.inRoomListPanel = false;
             GameObject.Find("UIController").SendMessage("createRoomSuccess");
         } else {
             GameObject.Find("UIController").SendMessage("createRoomFail");

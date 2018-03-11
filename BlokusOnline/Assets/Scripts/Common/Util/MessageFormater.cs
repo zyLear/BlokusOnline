@@ -7,14 +7,14 @@ using System.Text;
 
 public class MessageFormater {
 
-    public static MessageBean createRoom(string roomName, int roomType) {
+    public static MessageBean createRoom(string roomName, int gameType) {
         MessageBean message = new MessageBean();
         message.operationCode = OperationCode.CREATE_ROOM;
         message.statusCode = StatusCode.SUCCESS;
 
         BLOKUSCreateRoom bLOKUSCreateRoom = new BLOKUSCreateRoom();
         bLOKUSCreateRoom.roomName = roomName;
-        bLOKUSCreateRoom.roomType = roomType;
+        bLOKUSCreateRoom.gameType = gameType;
 
         message.data = ProtobufHelper.SerializerToBytes(bLOKUSCreateRoom);
         return message;
@@ -25,11 +25,11 @@ public class MessageFormater {
         message.operationCode = OperationCode.CHOOSE_COLOR;
         message.statusCode = StatusCode.SUCCESS;
 
-        BLOKUSChooseColor bLOKUSChooseColor = new BLOKUSChooseColor();
-        bLOKUSChooseColor.account = account;
-        bLOKUSChooseColor.roomName = roomName;
-        bLOKUSChooseColor.color = color;
-        message.data = ProtobufHelper.SerializerToBytes(bLOKUSChooseColor);
+        BLOKUSColor bLOKUSColor = new BLOKUSColor();
+        //bLOKUSColor.account = account;
+        //bLOKUSColor.roomName = roomName;
+        bLOKUSColor.color = color;
+        message.data = ProtobufHelper.SerializerToBytes(bLOKUSColor);
         return message;
     }
 
@@ -42,6 +42,13 @@ public class MessageFormater {
         message.operationCode = OperationCode.LOGIN;
         message.statusCode = StatusCode.SUCCESS;
         message.data = ProtobufHelper.SerializerToBytes(account);
+        return message;
+    }
+
+    internal static MessageBean formatInitPlayerInfoInGameMessage() {
+        MessageBean message = new MessageBean();
+        message.operationCode = OperationCode.INIT_PLAYER_INFO_IN_GAME;
+        message.statusCode = StatusCode.SUCCESS;
         return message;
     }
 
@@ -96,6 +103,25 @@ public class MessageFormater {
         return message;
     }
 
+    public static MessageBean formatCheckVersionMessage(string version) {
+        MessageBean message = new MessageBean();
+        message.operationCode = OperationCode.CHECK_VERSION;
+        message.statusCode = StatusCode.SUCCESS;
+
+        BLOKUSVersion bLOKUSVersion = new BLOKUSVersion();
+        bLOKUSVersion.version = version;
+        message.data = ProtobufHelper.SerializerToBytes(bLOKUSVersion);
+        return message;
+    }
+
+    public static MessageBean formatChessDoneMessage(BLOKUSChessDoneInfo chessDoneInfoTemp) {
+        MessageBean message = new MessageBean();
+        message.operationCode = OperationCode.CHESS_DONE;
+        message.statusCode = StatusCode.SUCCESS;
+        message.data = ProtobufHelper.SerializerToBytes(chessDoneInfoTemp);
+        return message;
+    }
+
     public static MessageBean formatChessDoneMessage(int x, int y, string currentSquareName, int rotationFlag, int symmetryFlag, int[,] model) {
 
         MessageBean message = new MessageBean();
@@ -118,9 +144,9 @@ public class MessageFormater {
         message.operationCode = OperationCode.GIVE_UP;
         message.statusCode = StatusCode.SUCCESS;
 
-        BLOKUSChooseColor bLOKUSChooseColor = new BLOKUSChooseColor();
-        bLOKUSChooseColor.color = myColor;
-        message.data = ProtobufHelper.SerializerToBytes(bLOKUSChooseColor);
+        BLOKUSColor bLOKUSColor = new BLOKUSColor();
+        bLOKUSColor.color = myColor;
+        message.data = ProtobufHelper.SerializerToBytes(bLOKUSColor);
         return message;
     }
 
@@ -137,7 +163,16 @@ public class MessageFormater {
 
     }
 
+    internal static MessageBean formatChatInRoomMessage(string str) {
+        MessageBean message = new MessageBean();
+        message.operationCode = OperationCode.CHAT_IN_ROOM;
+        message.statusCode = StatusCode.SUCCESS;
 
+        BLOKUSChatMessage bLOKUSChatMessage = new BLOKUSChatMessage();
+        bLOKUSChatMessage.chatMessage = str;
+        message.data = ProtobufHelper.SerializerToBytes(bLOKUSChatMessage);
+        return message;
+    }
 
     internal static MessageBean formatRegisterMessage(string account, string password) {
 
@@ -162,8 +197,25 @@ public class MessageFormater {
     }
 
 
+    public static MessageBean formatProfileMessage(string account) {
+
+        MessageBean message = new MessageBean();
+        message.operationCode = OperationCode.PROFILE;
+        message.statusCode = StatusCode.SUCCESS;
+
+        BLOKUSGameAccount gameAccount = new BLOKUSGameAccount();
+        gameAccount.account = account;
+        message.data = ProtobufHelper.SerializerToBytes(gameAccount);
+        return message;
+    }
 
 
+    internal static MessageBean formatLogoutMessage() {
+        MessageBean message = new MessageBean();
+        message.operationCode = OperationCode.LOGOUT;
+        message.statusCode = StatusCode.SUCCESS;
+        return message;
+    }
 
 
 
@@ -176,16 +228,8 @@ public class MessageFormater {
         }
 
         return modelBytes;
-        //for (int j = 0; j < 5; j++) {
-        //    for (int i = 0; i < 5; i++) {
-        //        if (model[j, i] == 1) {
-        //            int wx = x - 2 + i;
-        //            int wy = y - 2 + j;
-        //            modelBytes[wx, wy]=
-        //        }
-        //    }
-        //}
     }
+
 
 }
 

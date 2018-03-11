@@ -7,8 +7,8 @@ using UnityEngine;
 
 class CodeUtil {
 
-    private static int tempLength;
-    private static byte[] temp; //deal stick
+    private static int tempLength = 0;
+    private static byte[] tempData = null; //deal stick
     private static readonly List<MessageBean> emptyList = new List<MessageBean>();
 
 
@@ -23,10 +23,26 @@ class CodeUtil {
         List<MessageBean> messages = new List<MessageBean>();
         int index = 0;
 
+
+        //index point to data next start position
         while (index < totalLength) {
+
+            if (tempLength != 0 && tempData != null) {
+                byte[] temp = new byte[totalLength + tempLength];
+                Array.Copy(tempData, 0, temp, 0, tempLength);
+                Array.Copy(data, 0, temp, tempLength, totalLength);
+                data = temp;
+                totalLength += tempLength;
+                tempLength = 0;
+                tempData = null;
+            }
+
 
             if (totalLength < 8) {
                 Debug.Log("head less 8 bytes!");
+                tempLength = totalLength;
+                tempData = new byte[totalLength];
+                Array.Copy(data, index, tempData, 0, totalLength);
                 return messages;
             }
 
@@ -34,6 +50,9 @@ class CodeUtil {
 
             if (totalLength < length + 8) {
                 Debug.Log("total length less 8+length!");
+                tempLength = totalLength;
+                tempData = new byte[totalLength];
+                Array.Copy(data, index, tempData, 0, totalLength);
                 return messages;
             }
 
@@ -43,6 +62,7 @@ class CodeUtil {
             message.data = readBytes(data, 8 + index, length);
             messages.Add(message);
             index += (8 + length);
+            totalLength -= (8 + length);
             Debug.Log("index :" + index);
         }
         return messages;

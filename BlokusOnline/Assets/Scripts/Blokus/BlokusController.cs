@@ -1,4 +1,5 @@
 using protos.blokus;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,7 @@ public class BlokusController : MonoBehaviour {
     public int MAX_ROW_AND_COLUMN;
 
     public GameObject currentCenterPrefab;
+    public GameObject tempCenterPrefab;
 
     //每个棋子的预设体
     public GameObject green1_a_p;
@@ -110,6 +112,7 @@ public class BlokusController : MonoBehaviour {
     const int red = 3;
     const int yellow = 4;
     public Hashtable allSquare = new Hashtable();  //记录棋子对象的哈希表，用来快速按名字查找
+    public GameObject currentCenterTemp;
     public GameObject currentCenter;
 
     public int[] loseColor;  //记录已经输了的颜色
@@ -119,7 +122,7 @@ public class BlokusController : MonoBehaviour {
 
     public bool gameOver = false;
 
-
+    public GameObject tempSquare;
 
     // Use this for initialization
     void Start() {
@@ -150,7 +153,7 @@ public class BlokusController : MonoBehaviour {
     //    //{
     //    //    return;
     //    //}
-    //    GetComponent<PhotonView>().RPC("fail", PhotonTargets.AllBuffered, color);
+    //    GetComponent<PhotonView>().RPC("", PhotonTargets.AllBuffered, color);
     //}
 
     //当前棋子旋转操作
@@ -242,29 +245,6 @@ public class BlokusController : MonoBehaviour {
 
                 judgeAround(x, y);
 
-                //if (firstFour > 0) {
-                //    print("firstfour");
-                //    //四个角的判断
-                //    if (judgeFirstTime(x, y, CurrentSquare.model, CurrentSquare.color)) {
-                //        print("OK,可以放下,第一次");
-                //        //setModel();
-                //        GameObject.Find("Canvas").GetComponent<ChoosePanel>().DestoryBtn();//销毁图形
-
-                //        //   GetComponent<PhotonView>().RPC("judgeSuccess", PhotonTargets.AllBuffered,x, y,CurrentSquareName,CurrentSquare.rotationFlag,CurrentSquare.symmetryFlag,a1,b1,c1,d1,e1);
-                //        //   print("OK,可以放下,第一次");    
-                //        // judgeSuccess(x, y, CurrentSquareName, CurrentSquare.rotationFlag, CurrentSquare.symmetryFlag, a1, b1, c1, d1, e1);
-
-                //        NetManager.Instance.TransferMessage(MessageFormater.formatChessDoneMessage(x, y, CurrentSquareName, CurrentSquare.rotationFlag, CurrentSquare.symmetryFlag, CurrentSquare.model));
-
-                //    }
-                //} else if (judge(x, y, CurrentSquare.model, CurrentSquare.color)) //判断是否可以放下
-                //  {
-                //    //  setModel();
-                //    GameObject.Find("Canvas").GetComponent<ChoosePanel>().DestoryBtn();//销毁图形
-                //    print("OK,可以放下,后面");                                                                 //   GetComponent<PhotonView>().RPC("judgeSuccess", PhotonTargets.AllBuffered, x, y, CurrentSquareName, CurrentSquare.rotationFlag, CurrentSquare.symmetryFlag, a1, b1, c1, d1, e1);
-                //    NetManager.Instance.TransferMessage(MessageFormater.formatChessDoneMessage(x, y, CurrentSquareName, CurrentSquare.rotationFlag, CurrentSquare.symmetryFlag, CurrentSquare.model));
-                //}
-
             }
         }
     }
@@ -291,8 +271,9 @@ public class BlokusController : MonoBehaviour {
             GameObject.Find("Canvas").GetComponent<ChoosePanel>().DestoryBtn();//销毁图形
             MessageBean message = MessageFormater.formatChessDoneMessage(lastX, lastY, CurrentSquareName, CurrentSquare.rotationFlag, CurrentSquare.symmetryFlag, CurrentSquare.model);
             BLOKUSChessDoneInfo chessDoneInfo = ProtobufHelper.DederializerFromBytes<BLOKUSChessDoneInfo>(message.data);
-            NetManager.Instance.TransferMessage(message);
-            chessDone(chessDoneInfo);
+            // NetManager.Instance.TransferMessage(message);
+            GameObject.Find("BlokusUIController").GetComponent<BlokusUIController>().tryChess(chessDoneInfo);
+            //  chessDone(chessDoneInfo);
         }
     }
 
@@ -319,18 +300,10 @@ public class BlokusController : MonoBehaviour {
             //四个角的判断
 
             print("OK,可以放下,第一次");
-            //setModel();
-
-            //   GetComponent<PhotonView>().RPC("judgeSuccess", PhotonTargets.AllBuffered,x, y,CurrentSquareName,CurrentSquare.rotationFlag,CurrentSquare.symmetryFlag,a1,b1,c1,d1,e1);
-            //   print("OK,可以放下,第一次");    
-            // judgeSuccess(x, y, CurrentSquareName, CurrentSquare.rotationFlag, CurrentSquare.symmetryFlag, a1, b1, c1, d1, e1);
-
-            // NetManager.Instance.TransferMessage(MessageFormater.formatChessDoneMessage(x, y, CurrentSquareName, CurrentSquare.rotationFlag, CurrentSquare.symmetryFlag, CurrentSquare.model));
             return true;
-        } else if (judge(x, y, CurrentSquare.model, CurrentSquare.color)) //判断是否可以放下
-          {
-            //  setModel();
-            // GameObject.Find("Canvas").GetComponent<ChoosePanel>().DestoryBtn();//销毁图形
+
+        } else if (judge(x, y, CurrentSquare.model, CurrentSquare.color)) {
+            //判断是否可以放下
             print("OK,可以放下,后面");
             //   GetComponent<PhotonView>().RPC("judgeSuccess", PhotonTargets.AllBuffered, x, y, CurrentSquareName, CurrentSquare.rotationFlag, CurrentSquare.symmetryFlag, a1, b1, c1, d1, e1);
             return true;
@@ -338,6 +311,7 @@ public class BlokusController : MonoBehaviour {
 
         return false;
     }
+
 
 
     void intiChessBoard() //初始化棋盘
@@ -362,66 +336,9 @@ public class BlokusController : MonoBehaviour {
         }
     }
 
-    //void setModel()//获取数组模型的一维数组，用来传递
-    //{
-
-    //    for (int i = 0; i < 5; i++)
-    //        a1[i] = CurrentSquare.model[0, i];
-    //    for (int i = 0; i < 5; i++)
-    //        b1[i] = CurrentSquare.model[1, i];
-    //    for (int i = 0; i < 5; i++)
-    //        c1[i] = CurrentSquare.model[2, i];
-    //    for (int i = 0; i < 5; i++)
-    //        d1[i] = CurrentSquare.model[3, i];
-    //    for (int i = 0; i < 5; i++)
-    //        e1[i] = CurrentSquare.model[4, i];
-    //}
-
-
-
-    //int[,] getModel(int[] a, int[] b, int[] c, int[] d, int[] e) {  //一维数组组成二维数组
-
-
-    //    int[,] m = new int[5, 5];
-    //    for (int i = 0; i < 5; i++)
-    //        m[0, i] = a[i];
-    //    for (int i = 0; i < 5; i++)
-    //        m[1, i] = b[i];
-    //    for (int i = 0; i < 5; i++)
-    //        m[2, i] = c[i];
-    //    for (int i = 0; i < 5; i++)
-    //        m[3, i] = d[i];
-    //    for (int i = 0; i < 5; i++)
-    //        m[4, i] = e[i];
-    //    return m;
-    //}
-
-
-    //public void OtherCallFail(int color)
-    //{
-    //    if (loseCount == 3)
-    //    {
-    //        //color赢啦
-    //        return;
-    //    }
-    //    if (loseColor[color] == 1)
-    //    {
-    //        //color已经输了，不能再输
-    //        return;
-    //    }
-    //    loseCount++;
-    //    loseColor[color] = 1;
-    //    if (color == CurrentColor)
-    //    {
-    //        changeCurrentColor();
-    //    }
-    //    firstFour--;
-    //    GameObject.Find("BlokusUIController").GetComponent<BlokusUIController>().SendMessageByYourself(color);
-    //}
-
     // [PunRPC]
     public void lose(int color) {
-        if (loseCount == 3) {
+        if (loseCount == MAX_PLAYERS_COUNT - 1) {
             //color赢啦
             return;
         }
@@ -429,17 +346,6 @@ public class BlokusController : MonoBehaviour {
             //color已经输了，不能再输
             return;
         }
-
-
-        //if (loseCount == 2) {
-        //    if (color == myColor) {
-        //        changeCurrentColor();
-        //    } else {
-        //        ShowMessage("恭喜你赢了！");
-        //        NetManager.Instance.TransferMessage(MessageFormater.formatWinMessage());
-        //    }
-        //    return;
-        //}
 
         loseCount++;
         loseColor[color] = 1;
@@ -450,11 +356,38 @@ public class BlokusController : MonoBehaviour {
         if (color == CurrentColor) {
             changeCurrentColor();
         }
-        // GameObject.Find("BlokusUIController").GetComponent<BlokusUIController>().ChangeMessageByYourself(color);
     }
 
 
-    void chessDone(BLOKUSChessDoneInfo chessDoneInfo) {
+    public void tryChess(BLOKUSChessDoneInfo chessDoneInfo) {
+        Square oweSquare = (Square)allSquare[chessDoneInfo.squareName];
+        int oldRF = oweSquare.rotationFlag;
+        int oldSF = oweSquare.symmetryFlag;
+        oweSquare.rotationFlag = chessDoneInfo.rotationFlag;
+        oweSquare.symmetryFlag = chessDoneInfo.symmetryFlag;
+        int x = chessDoneInfo.x;
+        int y = chessDoneInfo.y;
+        Destroy(tempSquare);
+        tempSquare = oweSquare.trySet(x + 0.5f, -(y + 0.5f));
+        Destroy(currentCenterTemp);
+        print("实例化");
+        currentCenterTemp = Instantiate(tempCenterPrefab, new Vector2((float)(x + 0.5), -(float)(y + 0.5)), Quaternion.identity);
+
+        oweSquare.rotationFlag = oldRF;
+        oweSquare.symmetryFlag = oldSF;
+    }
+
+    internal void chessDoneOutSide(BLOKUSChessDoneInfo chessDoneInfoTemp, bool sure) {
+        Destroy(currentCenterTemp);
+        Destroy(tempSquare);
+        if (sure) {
+            NetManager.Instance.TransferMessage(MessageFormater.formatChessDoneMessage(chessDoneInfoTemp));
+            chessDone(chessDoneInfoTemp);
+        }
+    }
+
+
+    public void chessDone(BLOKUSChessDoneInfo chessDoneInfo) {
         Debug.Log("show dao************************************************************");
         Square oweSquare = (Square)allSquare[chessDoneInfo.squareName];
         int oldRF = oweSquare.rotationFlag;
@@ -467,6 +400,7 @@ public class BlokusController : MonoBehaviour {
         Destroy(currentCenter);
         print("实例化");
         currentCenter = Instantiate(currentCenterPrefab, new Vector2((float)(x + 0.5), -(float)(y + 0.5)), Quaternion.identity); //中心 图片转换   
+        GameObject.Find("BlokusUIController").GetComponent<BlokusUIController>().playChessDoneMusic();
         updateChess(x, y, chessDoneInfo.model, oweSquare.color);
         isSelect = false;
         changeCurrentColor();
