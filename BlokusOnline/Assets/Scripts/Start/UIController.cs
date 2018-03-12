@@ -71,9 +71,13 @@ public class UIController : MonoBehaviour {
 
     public Transform settingPanel;
 
+    public Transform helpPanel;
+    public GameObject EnglishHelp;
+    public GameObject ChineseHelp;
 
 
-    Text UISureText;
+
+    //Text UISureText;
 
 
     //public GameObject GameName;//GameName Text
@@ -107,9 +111,9 @@ public class UIController : MonoBehaviour {
     ArrayList twoPlayersRankInfoList = new ArrayList();
     ArrayList playerGameLogList = new ArrayList();
 
-    int currentRoomCount = 0;
-    string yourName;
-    bool flag = true;
+    //int currentRoomCount = 0;
+    //string yourName;
+    //bool flag = true;
     //float i = 5;
 
     private const int UPDATE_ROOM_LIST_TIME_INTERVAL_SECONDS = 2;
@@ -499,6 +503,24 @@ public class UIController : MonoBehaviour {
         return false;
     }
 
+
+    public void onGoToHelpPanel() {
+        showPanel(helpPanel);
+    }
+
+    public void onEnglishHelp() {
+        ChineseHelp.SetActive(false);
+        EnglishHelp.SetActive(true);
+    }
+
+    public void onChineseHelp() {
+        EnglishHelp.SetActive(false);
+        ChineseHelp.SetActive(true);
+    }
+
+    public void onBackFromHelpPanel() {
+        hidePanel(helpPanel);
+    }
 
 
     public void login() {

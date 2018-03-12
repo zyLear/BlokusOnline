@@ -185,7 +185,9 @@ public class BlokusUIController : MonoBehaviour {
         }
     }
 
-
+    public void onGoToHelpPanel() {
+        myUIController.onGoToHelpPanel();
+    }
 
 
 
