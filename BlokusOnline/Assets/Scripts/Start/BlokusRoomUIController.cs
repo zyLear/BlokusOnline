@@ -14,7 +14,7 @@ public class BlokusPlayer {
 
 public class BlokusRoomUIController : MonoBehaviour {
 
-  //  public GameObject buttonGroup;
+    //  public GameObject buttonGroup;
     public GameObject colorMask;
 
     UIController myUIController;
@@ -165,6 +165,7 @@ public class BlokusRoomUIController : MonoBehaviour {
         string str = GameCache.account + ":\n  " +/*"(player)：" +*/ inputInfo.text;
         NetManager.Instance.TransferMessage(MessageFormater.formatChatInRoomMessage(str));
     }
+
 
     public void chatInRoom(string message) {
         chatContent.text = chatContent.text + "\n" + message;
@@ -324,7 +325,7 @@ public class BlokusRoomUIController : MonoBehaviour {
     }
 
     //public void Update() {
-    
+
     //}
 
 

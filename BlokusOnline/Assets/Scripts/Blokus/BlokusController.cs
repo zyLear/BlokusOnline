@@ -124,6 +124,10 @@ public class BlokusController : MonoBehaviour {
 
     public GameObject tempSquare;
 
+    private System.Object CHESS_JUDGE_LOCK = new System.Object();
+
+    private System.Object CHESS_DONE_LOCK = new System.Object();
+
     // Use this for initialization
     void Start() {
         firstFour = MAX_PLAYERS_COUNT;
@@ -214,6 +218,12 @@ public class BlokusController : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+        lock (CHESS_JUDGE_LOCK) {
+            chessDoneJudge();
+        }
+    }
+
+    private void chessDoneJudge() {
         if (Input.touchCount == 1 || Input.GetMouseButtonUp(0)) {
             Vector2 p = new Vector2();
             if (Input.GetMouseButtonUp(0)) {
@@ -242,9 +252,7 @@ public class BlokusController : MonoBehaviour {
             }
             if (isSelect) {
                 print("选择了");
-
                 judgeAround(x, y);
-
             }
         }
     }
@@ -268,10 +276,8 @@ public class BlokusController : MonoBehaviour {
         }
 
         if (judgeSuccess) {
-            GameObject.Find("Canvas").GetComponent<ChoosePanel>().DestoryBtn();//销毁图形
             MessageBean message = MessageFormater.formatChessDoneMessage(lastX, lastY, CurrentSquareName, CurrentSquare.rotationFlag, CurrentSquare.symmetryFlag, CurrentSquare.model);
             BLOKUSChessDoneInfo chessDoneInfo = ProtobufHelper.DederializerFromBytes<BLOKUSChessDoneInfo>(message.data);
-            // NetManager.Instance.TransferMessage(message);
             GameObject.Find("BlokusUIController").GetComponent<BlokusUIController>().tryChess(chessDoneInfo);
             //  chessDone(chessDoneInfo);
         }
@@ -381,36 +387,50 @@ public class BlokusController : MonoBehaviour {
         Destroy(currentCenterTemp);
         Destroy(tempSquare);
         if (sure) {
-            NetManager.Instance.TransferMessage(MessageFormater.formatChessDoneMessage(chessDoneInfoTemp));
-            chessDone(chessDoneInfoTemp);
+            lock (CHESS_DONE_LOCK) {
+                if (CurrentColor == myColor) {
+                    GameObject.Find("ChoosePanel").GetComponent<ChoosePanel>().DestoryBtn();
+                    NetManager.Instance.TransferMessage(MessageFormater.formatChessDoneMessage(chessDoneInfoTemp));
+                    chessDone(chessDoneInfoTemp);
+                }
+            }
         }
     }
 
 
     public void chessDone(BLOKUSChessDoneInfo chessDoneInfo) {
-        Debug.Log("show dao************************************************************");
-        Square oweSquare = (Square)allSquare[chessDoneInfo.squareName];
-        int oldRF = oweSquare.rotationFlag;
-        int oldSF = oweSquare.symmetryFlag;
-        oweSquare.rotationFlag = chessDoneInfo.rotationFlag;
-        oweSquare.symmetryFlag = chessDoneInfo.symmetryFlag;
-        int x = chessDoneInfo.x;
-        int y = chessDoneInfo.y;
-        oweSquare.set(x + 0.5f, -(y + 0.5f));
-        Destroy(currentCenter);
-        print("实例化");
-        currentCenter = Instantiate(currentCenterPrefab, new Vector2((float)(x + 0.5), -(float)(y + 0.5)), Quaternion.identity); //中心 图片转换   
-        GameObject.Find("BlokusUIController").GetComponent<BlokusUIController>().playChessDoneMusic();
-        updateChess(x, y, chessDoneInfo.model, oweSquare.color);
-        isSelect = false;
-        changeCurrentColor();
-        //GameObject.Find("Canvas").GetComponent<ChoosePanel>().setPanelColor();//切换画板
 
-        if (firstFour > 0) {
-            firstFour--;
+        lock (CHESS_DONE_LOCK) {
+
+            Debug.Log("show dao************************************************************");
+            Square oweSquare = (Square)allSquare[chessDoneInfo.squareName];
+
+            if (oweSquare.color != CurrentColor) {
+                return;
+            }
+
+            int oldRF = oweSquare.rotationFlag;
+            int oldSF = oweSquare.symmetryFlag;
+            oweSquare.rotationFlag = chessDoneInfo.rotationFlag;
+            oweSquare.symmetryFlag = chessDoneInfo.symmetryFlag;
+            int x = chessDoneInfo.x;
+            int y = chessDoneInfo.y;
+            oweSquare.set(x + 0.5f, -(y + 0.5f));
+            Destroy(currentCenter);
+            print("实例化");
+            currentCenter = Instantiate(currentCenterPrefab, new Vector2((float)(x + 0.5), -(float)(y + 0.5)), Quaternion.identity); //中心 图片转换   
+            GameObject.Find("BlokusUIController").GetComponent<BlokusUIController>().playChessDoneMusic();
+            updateChess(x, y, chessDoneInfo.model, oweSquare.color);
+            isSelect = false;
+            changeCurrentColor();
+            //GameObject.Find("Canvas").GetComponent<ChoosePanel>().setPanelColor();//切换画板
+
+            if (firstFour > 0) {
+                firstFour--;
+            }
+            oweSquare.rotationFlag = oldRF;
+            oweSquare.symmetryFlag = oldSF;
         }
-        oweSquare.rotationFlag = oldRF;
-        oweSquare.symmetryFlag = oldSF;
     }
 
 

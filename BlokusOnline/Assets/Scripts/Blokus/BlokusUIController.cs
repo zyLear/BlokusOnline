@@ -73,7 +73,7 @@ public class BlokusUIController : MonoBehaviour {
     IEnumerator JudgeTimeOut() {
 
         while (true) {
-           
+
             while (deadline > 0) {
                 if (myBlokusController.gameOver) {
                     break;
@@ -104,7 +104,7 @@ public class BlokusUIController : MonoBehaviour {
             int gameEvent = loseParam.gameEvent;
             if (myBlokusController.loseColor[color] == 1 ||
                 myBlokusController.gameOver ||
-                myBlokusController.loseCount == 1) {
+                myBlokusController.loseCount == myBlokusController.MAX_PLAYERS_COUNT - 1) {
                 return;
             }
 
@@ -185,7 +185,9 @@ public class BlokusUIController : MonoBehaviour {
         }
     }
 
-
+    public void onGoToHelpPanel() {
+        myUIController.onGoToHelpPanel();
+    }
 
 
 
