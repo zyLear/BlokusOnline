@@ -416,6 +416,7 @@ public class UIController : MonoBehaviour {
             }
             logItemData.detail = gameLogItem.detail;
             logItemData.time = gameLogItem.time;
+            logItemData.score = gameLogItem.changeScore + "";
             logItemData.ShowGameLogInfo();
         }
     }

@@ -455,6 +455,14 @@ namespace protos.blokus
       get { return _time; }
       set { _time = value; }
     }
+    private int _changeScore = default(int);
+    [global::ProtoBuf.ProtoMember(6, IsRequired = false, Name=@"changeScore", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int changeScore
+    {
+      get { return _changeScore; }
+      set { _changeScore = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
