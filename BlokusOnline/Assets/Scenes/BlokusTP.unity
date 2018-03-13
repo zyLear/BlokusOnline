@@ -5887,7 +5887,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Quit
+  m_Text: Setting
 --- !u!222 &437923650
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8150,7 +8150,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.00040627, y: -1283.7106}
+  m_AnchoredPosition: {x: 0.00040627, y: -1283.2334}
   m_SizeDelta: {x: 333.68, y: 3352}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &610387200
@@ -9946,7 +9946,7 @@ GameObject:
   - component: {fileID: 697624187}
   - component: {fileID: 697624186}
   m_Layer: 5
-  m_Name: Button (5)
+  m_Name: Help
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9964,7 +9964,7 @@ RectTransform:
   m_Children:
   - {fileID: 695011748}
   m_Father: {fileID: 887830373}
-  m_RootOrder: 8
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -11960,7 +11960,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.7994363, y: 0.23300001}
   m_AnchorMax: {x: 0.9737507, y: 0.957}
-  m_AnchoredPosition: {x: 6.8586, y: -49.840847}
+  m_AnchoredPosition: {x: 6.8585815, y: -49.84085}
   m_SizeDelta: {x: -1, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &879662395
@@ -12131,9 +12131,9 @@ RectTransform:
   - {fileID: 2107705307}
   - {fileID: 1543963667}
   - {fileID: 1976517000}
+  - {fileID: 697624185}
   - {fileID: 1926426670}
   - {fileID: 1751352324}
-  - {fileID: 697624185}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -26389,7 +26389,7 @@ RectTransform:
   m_Children:
   - {fileID: 1575527525}
   m_Father: {fileID: 887830373}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -28086,7 +28086,7 @@ RectTransform:
   - {fileID: 470109583}
   - {fileID: 346856224}
   m_Father: {fileID: 887830373}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -28277,7 +28277,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1695306633}
-        m_MethodName: OnExit
+        m_MethodName: onGoToSettingPanel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

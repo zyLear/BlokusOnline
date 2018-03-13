@@ -190,7 +190,9 @@ public class BlokusUIController : MonoBehaviour {
     }
 
 
-
+    public void onGoToSettingPanel() {
+        GameObject.Find("UIController").GetComponent<UIController>().onGoToSettingPanel();
+    }
 
 
 
