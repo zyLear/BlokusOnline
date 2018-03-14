@@ -169,8 +169,20 @@ public class BlokusRoomUIController : MonoBehaviour {
 
     public void chatInRoom(string message) {
         chatContent.text = chatContent.text + "\n" + message;
-        scrollbar.value = -10;
+    
+        StartCoroutine(scrollBottom());
     }
+
+    IEnumerator scrollBottom() {
+        float count = 0.1F;
+        while (count > 0) {
+            count -= Time.deltaTime;
+            yield return 0;
+        }
+        scrollbar.value = 0;
+    }
+
+
 
     //public void OnBlokusReady()
     //{

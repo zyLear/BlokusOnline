@@ -14846,7 +14846,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2061077805}
   m_HandleRect: {fileID: 2061077804}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -15880,8 +15880,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "I.   Order of play is counter-clockwise,blue first,place a piece \n      on
-    the top right-hand cornerblue->green->red-yellow.\nII.  The first piece played
+  m_Text: "I.   Order of play is counter-clockwise, blue first,place a piece \n      on
+    the top right-hand corner, blue->green->red-yellow.\nII.  The first piece played
     of each color is placed in one of the\n      board's four corners.\nIII. Each
     new piece played must be placed so that it touches \n      at least one piece
     of the same color, with only \n      corner-to-corner contact allowed\u2014edges
