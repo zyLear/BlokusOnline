@@ -4810,7 +4810,7 @@ MonoBehaviour:
   roomItem: {fileID: 1723848048772548, guid: ae972ad6a63686b4895e9adba0691dd0, type: 2}
   registerPanel: {fileID: 849034795}
   registerAccountText: {fileID: 143046714}
-  registerPasswordText: {fileID: 891699284}
+  registerPasswordText: {fileID: 1970503067}
   registerRepeatedPasswordText: {fileID: 1821516622}
   rankPanel: {fileID: 1438316678}
   fourPlayersRankContent: {fileID: 2091454237}
@@ -7049,7 +7049,7 @@ MonoBehaviour:
   m_LineType: 2
   m_HideMobileInput: 0
   m_CharacterValidation: 0
-  m_CharacterLimit: 0
+  m_CharacterLimit: 1024
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
@@ -14847,7 +14847,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 2061077804}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99999994
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

@@ -13,7 +13,7 @@ public class NetManager : Singleton<NetManager> {
 
     private const string ip = "111.231.66.159"; //172.19.56.1    172.19.87.1   127.0.0.1  111.231.66.159
     private const int port = 9090;
-    private const string VERSION = "V1.1.0.RELEASE";
+    private const string VERSION = "V1.0.1.RELEASE";
     private Socket client;
     //public Queue<string> messageQueue = new Queue<string>();
     private Thread startupThread;
