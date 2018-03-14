@@ -110,7 +110,6 @@ public class BlokusUIController : MonoBehaviour {
 
             if (myBlokusController.MAX_PLAYERS_COUNT - myBlokusController.loseCount == 2) {
                 int nextColor = myBlokusController.getNextColor(color);
-                //  Debug.LogError("nextColor:" + nextColor);
                 if (color == myBlokusController.myColor) {
                     if (GameEvent.TIME_CONSUME == gameEvent) {
                         NetManager.Instance.TransferMessage(MessageFormater.formatLoseMessage());
@@ -122,20 +121,23 @@ public class BlokusUIController : MonoBehaviour {
                 } else {
                     ShowMessage(getColor(nextColor) + " player win！");
                 }
+                chatInGame(getColor(color) + " player lose！");
+                chatInGame(getColor(nextColor) + " player win！");
                 myBlokusController.lose(color);
                 myBlokusController.gameOver = true;
                 return;
             }
 
             if (color == myBlokusController.myColor) {
-                ShowMessage("you lose");  //下棋截止时间到，
+                ShowMessage("you lose!");  //下棋截止时间到，
                 if (GameEvent.TIME_CONSUME == gameEvent) {
                     NetManager.Instance.TransferMessage(MessageFormater.formatLoseMessage());
                 }
                 //  NetManager.Instance.TransferMessage(MessageFormater.formatLoseMessage());
             } else {
-                ShowMessage(getColor(color) + " player lose");//"下棋截止时间到，" +
+                ShowMessage(getColor(color) + " player lose!");//"下棋截止时间到，" +
             }
+            chatInGame(getColor(color) + " player lose!");
             myBlokusController.lose(color);
             Debug.Log("lock  end*********************************!!!!!!!!!1");
         }
@@ -215,10 +217,16 @@ public class BlokusUIController : MonoBehaviour {
     //    SendMessage(str);
     //}
 
-    public void ChangeMessageByYourself(int color) {
-        string str = "<size=33>" + getColor(color) + " player lose</size>";
+    public void sendChatMessageYourself(int color) {
+        string str = getColor(color) + " player lose";
         //   SendMessageToAll(str);
     }
+
+
+    //public void sendChatMessageYourself(string message) {
+    //    string str = getColor(color) + " player lose";
+    //    //   SendMessageToAll(str);
+    //}
 
     public void OnSendMessage() {
         print("按下发送按钮");
@@ -409,6 +417,15 @@ public class BlokusUIController : MonoBehaviour {
 
     public void chatInGame(string message) {
         chatContent.text = chatContent.text + "\n" + message;
-        scrollbar.value = -10;
+        StartCoroutine(scrollBottom());
+    }
+
+    IEnumerator scrollBottom() {
+        float count = 0.1F;
+        while (count > 0) {
+            count -= Time.deltaTime;
+            yield return 0;
+        }
+        scrollbar.value = 0;
     }
 }
