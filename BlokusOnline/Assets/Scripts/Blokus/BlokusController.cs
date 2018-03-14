@@ -128,6 +128,8 @@ public class BlokusController : MonoBehaviour {
 
     private System.Object CHESS_DONE_LOCK = new System.Object();
 
+    private System.Object SURE_LOCK = new System.Object();
+
     // Use this for initialization
     void Start() {
         firstFour = MAX_PLAYERS_COUNT;
@@ -387,9 +389,9 @@ public class BlokusController : MonoBehaviour {
         Destroy(currentCenterTemp);
         Destroy(tempSquare);
         if (sure) {
-            lock (CHESS_DONE_LOCK) {
+            lock (SURE_LOCK) {
                 if (CurrentColor == myColor) {
-                    GameObject.Find("ChoosePanel").GetComponent<ChoosePanel>().DestoryBtn();
+                    GameObject.Find("Canvas").GetComponent<ChoosePanel>().DestoryBtn();
                     NetManager.Instance.TransferMessage(MessageFormater.formatChessDoneMessage(chessDoneInfoTemp));
                     chessDone(chessDoneInfoTemp);
                 }

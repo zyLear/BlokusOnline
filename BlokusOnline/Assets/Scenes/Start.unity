@@ -3709,6 +3709,86 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 382111982}
+--- !u!1 &382357552
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 1611606891418910, guid: 11a8aa2f689547e48a2e31dad876da26,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 382357553}
+  - component: {fileID: 382357555}
+  - component: {fileID: 382357554}
+  m_Layer: 8
+  m_Name: RankScore (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &382357553
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 224789242714573140, guid: 11a8aa2f689547e48a2e31dad876da26,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 382357552}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.000082, y: 1.000082, z: 1.000082}
+  m_Children: []
+  m_Father: {fileID: 1182873961}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 672.59, y: -50.022}
+  m_SizeDelta: {x: 188.1, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &382357554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 114603377823892754, guid: 11a8aa2f689547e48a2e31dad876da26,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 382357552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 40
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 0
+    m_MaxSize: 50
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 'STEPS COUNT
+
+'
+--- !u!222 &382357555
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 222436683677569864, guid: 11a8aa2f689547e48a2e31dad876da26,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 382357552}
 --- !u!1 &389905702
 GameObject:
   m_ObjectHideFlags: 0
@@ -4224,8 +4304,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 305.05957, y: -50.002}
-  m_SizeDelta: {x: 216.3, y: 99.998}
+  m_AnchoredPosition: {x: 292.39, y: -50.02104}
+  m_SizeDelta: {x: 196.1, y: 99.998}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &499392633
 MonoBehaviour:
@@ -4260,7 +4340,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: GAME TYPE
+  m_Text: SCORE
 --- !u!222 &499392634
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4739,7 +4819,7 @@ MonoBehaviour:
   profileAccount: {fileID: 215456142}
   profilePanel: {fileID: 858395270}
   playerGameLogContent: {fileID: 655701185}
-  LogItem: {fileID: 1952029014946988, guid: 5099f6c92c5b0264abb19c478b1f8648, type: 2}
+  LogItem: {fileID: 1810436992475970, guid: 5099f6c92c5b0264abb19c478b1f8648, type: 2}
   profileRankScoreText2: {fileID: 1906835108}
   profileRecordDetailText2: {fileID: 1611367591}
   profileRankScoreText4: {fileID: 1099694821}
@@ -5727,8 +5807,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000087743, y: -1135.6}
-  m_SizeDelta: {x: 1685.5, y: 2879.5}
+  m_AnchoredPosition: {x: 0.0038624, y: -1135.6001}
+  m_SizeDelta: {x: 1766.9, y: 2879.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &655701187
 MonoBehaviour:
@@ -5749,7 +5829,7 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 1685.5, y: 140}
+  m_CellSize: {x: 1766.9, y: 140}
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
@@ -7054,8 +7134,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 519.9, y: -50.002}
-  m_SizeDelta: {x: 213.4, y: 100}
+  m_AnchoredPosition: {x: 484.49005, y: -50.021923}
+  m_SizeDelta: {x: 188.1, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &778988418
 MonoBehaviour:
@@ -7090,7 +7170,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: STEPS COUNT
+  m_Text: GAME TYPE
 --- !u!222 &778988419
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7132,8 +7212,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0.29200003}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 98.459656, y: -50.002075}
-  m_SizeDelta: {x: 196.9, y: 99.999}
+  m_AnchoredPosition: {x: 95.89, y: -50.02}
+  m_SizeDelta: {x: 196.9, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &780053553
 MonoBehaviour:
@@ -7913,8 +7993,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 968.71, y: -50.002}
-  m_SizeDelta: {x: 684.18, y: 100}
+  m_AnchoredPosition: {x: 1038.1, y: -50.022}
+  m_SizeDelta: {x: 598.7, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &862683025
 MonoBehaviour:
@@ -10245,8 +10325,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1498.2, y: -50.00173}
-  m_SizeDelta: {x: 374.7, y: 99.998}
+  m_AnchoredPosition: {x: 1552.1748, y: -49.999973}
+  m_SizeDelta: {x: 429.43, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1111373544
 MonoBehaviour:
@@ -11047,13 +11127,14 @@ RectTransform:
   - {fileID: 778988417}
   - {fileID: 862683024}
   - {fileID: 1111373543}
+  - {fileID: 382357553}
   m_Father: {fileID: 858395270}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.9500122, y: 160.21829}
-  m_SizeDelta: {x: 1685.6, y: 100}
+  m_AnchoredPosition: {x: 0.004211426, y: 160.21826}
+  m_SizeDelta: {x: 1766.9, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1182873962
 MonoBehaviour:
@@ -14765,7 +14846,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2061077805}
   m_HandleRect: {fileID: 2061077804}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -15764,8 +15845,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000073433, y: -9.65}
-  m_SizeDelta: {x: 1660, y: 847}
+  m_AnchoredPosition: {x: 8.8, y: -9.65}
+  m_SizeDelta: {x: 1677.7, y: 847}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1651417215
 MonoBehaviour:
@@ -15799,15 +15880,15 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "I.   Order of play is counter-clockwise,blue first,place a piece \n     on
+  m_Text: "I.   Order of play is counter-clockwise,blue first,place a piece \n      on
     the top right-hand cornerblue->green->red-yellow.\nII.  The first piece played
-    of each color is placed in one of the\n     board's four corners.\nIII. Each new
-    piece played must be placed so that it touches at\n     least one piece of the
-    same color, with only \n     corner-to-corner contact allowed\u2014edges cannot
-    touch. \n     However, edge-to-edge contact is allowed when two pieces \n     of
-    different color are involved.\r\nIV. When a player cannot place a piece, he or
-    she passes, \n     and play continues as normal. The game ends when no \n     one
-    can place a piece."
+    of each color is placed in one of the\n      board's four corners.\nIII. Each
+    new piece played must be placed so that it touches \n      at least one piece
+    of the same color, with only \n      corner-to-corner contact allowed\u2014edges
+    cannot touch. \n      However, edge-to-edge contact is allowed when two \n      pieces
+    of different color are involved.\r\nIV. When a player cannot place a piece, he
+    or she passes, \n      and play continues as normal. The game ends when no \n
+    \     one can place a piece."
 --- !u!222 &1651417216
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -20097,8 +20178,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 2, y: -194}
-  m_SizeDelta: {x: -234.5, y: -471.7}
+  m_AnchoredPosition: {x: 0.00012207031, y: -193.93}
+  m_SizeDelta: {x: -153.07, y: -471.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2094136282
 MonoBehaviour:

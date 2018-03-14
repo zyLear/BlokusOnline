@@ -16,6 +16,8 @@ public class LogItemData : MonoBehaviour {
     public string detail;
     [HideInInspector]
     public string time;
+    [HideInInspector]
+    public string score;
 
 
 
@@ -24,6 +26,7 @@ public class LogItemData : MonoBehaviour {
     public Text gameTypeText;
     public Text detailText;
     public Text timeText;
+    public Text scoreText;
 
     public void ShowGameLogInfo() {
         resultText.text = result;
@@ -31,6 +34,7 @@ public class LogItemData : MonoBehaviour {
         gameTypeText.text = gameType;
         detailText.text = detail;
         timeText.text = time;
+        scoreText.text = score;
     }
 
     //private string getRoomStatusString(int roomStatus) {

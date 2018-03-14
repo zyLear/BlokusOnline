@@ -312,6 +312,36 @@ public class UIController : MonoBehaviour {
         hidePanel(roomListPanel);
         GameCache.inRoomListPanel = false;
         NetManager.Instance.TransferMessage(MessageFormater.formatLogoutMessage());
+
+
+
+        try {
+            GameObject gameObject = GameObject.Find("BlokusCamera");
+            if (gameObject != null) {
+                GameObject.Find("StartCamera").GetComponent<Camera>().enabled = true;
+                GameObject.Find("BlokusCamera").GetComponent<Camera>().enabled = false;
+
+                foreach (GameObject g in BlokusUIController.allChess) {
+                    Destroy(g);
+                }
+                BlokusController blokusController = GameObject.Find("BlokusController").GetComponent<BlokusController>();
+                Destroy(blokusController.currentCenter);
+                Destroy(blokusController.tempSquare);
+                Destroy(blokusController.currentCenterTemp);
+                //OnGiveUp();
+                // myUIController.showPanel(myUIController.blokusRoomPanel);
+                if (GameCache.gameType == GameType.BLOKUS_FOUR) {
+                    Application.UnloadLevel("Blokus");
+                } else {
+                    Application.UnloadLevel("BlokusTP");
+                }
+            }
+        } catch (Exception e) {
+        }
+
+        //}
+
+
     }
 
 
@@ -416,6 +446,7 @@ public class UIController : MonoBehaviour {
             }
             logItemData.detail = gameLogItem.detail;
             logItemData.time = gameLogItem.time;
+            logItemData.score = gameLogItem.changeScore + "";
             logItemData.ShowGameLogInfo();
         }
     }
