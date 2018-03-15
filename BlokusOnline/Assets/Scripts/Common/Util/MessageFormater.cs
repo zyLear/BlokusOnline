@@ -45,7 +45,14 @@ public class MessageFormater {
         return message;
     }
 
-    internal static MessageBean formatInitPlayerInfoInGameMessage() {
+    public static MessageBean formatHeartbeatMessage() {
+        MessageBean message = new MessageBean();
+        message.operationCode = OperationCode.HEARTBEAT;
+        message.statusCode = StatusCode.SUCCESS;
+        return message;
+    }
+
+    public static MessageBean formatInitPlayerInfoInGameMessage() {
         MessageBean message = new MessageBean();
         message.operationCode = OperationCode.INIT_PLAYER_INFO_IN_GAME;
         message.statusCode = StatusCode.SUCCESS;

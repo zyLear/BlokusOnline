@@ -13,13 +13,19 @@ public class NetManager : Singleton<NetManager> {
 
     private const string ip = "111.231.66.159"; //172.19.56.1    172.19.87.1   127.0.0.1  111.231.66.159
     private const int port = 9090;
-    private const string VERSION = "V1.0.1.RELEASE";
+    private const string VERSION = "V1.0.2.RELEASE";
     private Socket client;
     //public Queue<string> messageQueue = new Queue<string>();
     private Thread startupThread;
 
-    private int ONE_TIME_READ_MAX_DATA_LENGTH = 1024;
+    private const int ONE_TIME_READ_MAX_DATA_LENGTH = 1024;
+    private const int HEARTBEAT_TIMEOUT_MILLIS = 8000;
 
+
+    public void Start() {
+    
+        NetworkStartup();
+    }
 
     private void NetworkStartup() {
         if (startupThread != null) {
@@ -29,10 +35,18 @@ public class NetManager : Singleton<NetManager> {
         startupThread.Start();
     }
 
-    public void Start() {
-
-        NetworkStartup();
+    private void heartbeatCheckStartup() {
+        startupThread = new Thread(heartbeatCheck);
+        startupThread.Start();
     }
+
+    private void heartbeatCheck() {
+        while (true) {
+            Thread.Sleep(HEARTBEAT_TIMEOUT_MILLIS);
+            NetManager.Instance.TransferMessage(MessageFormater.formatHeartbeatMessage());
+        }
+    }
+  
 
 
     public void TransferMessage(MessageBean message) {
@@ -55,6 +69,7 @@ public class NetManager : Singleton<NetManager> {
                     Debug.Log("connected!");
                     // TransferMessag
                     checkVersion();
+                    heartbeatCheckStartup();
                     //  connectSuccess();
                     break;
                 }

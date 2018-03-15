@@ -48,6 +48,10 @@ class OperationCode {
 
 
 
+
+
+    public const short HEARTBEAT = 10000;
+
     public const short CONNECT_SUCCESS = 10001;
 
     public const short DISCONNECT = 10002;

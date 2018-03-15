@@ -657,7 +657,7 @@ public class UIController : MonoBehaviour {
     }
 
     public void showOffline() {
-        promptText.text = "你已经掉线，请重新登录";
+        promptText.text = "Disconnected from remote host!";
         showPanel(promptPanel);
     }
 
